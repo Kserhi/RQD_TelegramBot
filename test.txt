@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-something important
-=======
-шось важливе
->>>>>>> 104cc0bd3dfd19164d0214099f76f78d221ed386
