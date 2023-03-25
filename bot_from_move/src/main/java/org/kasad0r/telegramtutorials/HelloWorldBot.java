@@ -40,10 +40,19 @@ public class HelloWorldBot extends TelegramLongPollingBot {
 
                 switch (textFromUser){
                     case "Створити заявку":
-                        sendMessageService.jastMesege(message,"тіпа заявка");
+                        sendMessageService.menuZayavku(message);
                         break;
                     case "Шось іще":
                         sendMessageService.jastMesege(message,"ну шось там");
+                        break;
+                    case "Заявка 1":
+                        sendMessageService.jastMesege(message,"Всьо тіпа заявка 1 прийннта");
+                        break;
+                    case "Заявка 2":
+                        sendMessageService.jastMesege(message,"Всьо тіпа заявка 2 прийннта");
+                        break;
+                    case "Заявка 3":
+                        sendMessageService.jastMesege(message,"Всьо тіпа заявка 3 прийннта");
                         break;
                     default:
                         sendMessageService.menu(message);
@@ -58,6 +67,7 @@ public class HelloWorldBot extends TelegramLongPollingBot {
 
         }
     }
+
 
 
 

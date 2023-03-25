@@ -63,6 +63,46 @@ public class SendMessageService {
 
 
     }
+
+
+    public void menuZayavku(Message message){
+        var markup=new ReplyKeyboardMarkup();
+        var keyboardRows=new ArrayList<KeyboardRow>();
+
+
+        KeyboardRow row1=new KeyboardRow();
+        KeyboardRow row2=new KeyboardRow();
+
+        row1.add("Головна");
+        row2.add("Заявка 1");
+        row2.add("Заявка 2");
+        row2.add("Заявка 3");
+
+
+        keyboardRows.add(row1);
+        keyboardRows.add(row2);
+
+
+        markup.setKeyboard(keyboardRows);
+
+        markup.setResizeKeyboard(true);
+
+
+
+        SendMessage sendMessage=new SendMessage();
+        sendMessage.setText("Якого типу заявка");
+        sendMessage.setChatId(message.getChatId().toString());
+
+        sendMessage.setReplyMarkup(markup);
+
+        messageSender.sendMessage(sendMessage);
+
+
+
+
+
+
+    }
 }
 
 
