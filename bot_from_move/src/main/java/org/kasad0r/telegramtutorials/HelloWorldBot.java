@@ -57,14 +57,8 @@ public class HelloWorldBot extends TelegramLongPollingBot {
                     default:
                         sendMessageService.menu(message);
                         break;
-
                 }
-
-
-
             }
-
-
         }
     }
 
