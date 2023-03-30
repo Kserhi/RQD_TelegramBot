@@ -45,7 +45,7 @@ public class MyFirstBot extends TelegramLongPollingBot {
             switch (textFromUser) {//порівнюєм текст від юзера з командами
                 case "/start":
                     //сетчу повідомлення
-                    sendMessage.setText("Привіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
+                    sendMessage.setText("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
                     sendMessage.setReplyMarkup(Keyboards.getKeyboard());//передаю клаву
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
@@ -55,7 +55,7 @@ public class MyFirstBot extends TelegramLongPollingBot {
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
                 case "Тіпа на головну"://костиль
-                    sendMessage.setText("Привіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
+                    sendMessage.setText("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
                     sendMessage.setReplyMarkup(Keyboards.getKeyboard());
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
