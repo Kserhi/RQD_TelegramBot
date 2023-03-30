@@ -33,8 +33,6 @@ public class MyFirstBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
 
-//        ReplyKeyboardMarkup replyKeyboardMarkup = Keyboards.getKeyboard();
-//        sendMessage.setReplyMarkup(replyKeyboardMarkup);
 
 
         if (update.hasMessage()) {//перевірка чи є в апдейту повідомлення так бжола казав
@@ -44,23 +42,29 @@ public class MyFirstBot extends TelegramLongPollingBot {
 
             switch (textFromUser) {//порівнюєм текст від юзера з командами
                 case "/start":
+                case "Тіпа на головну":
                     //сетчу повідомлення
                     sendMessage.setText("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
                     sendMessage.setReplyMarkup(Keyboards.getKeyboard());//передаю клаву
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
                 case "❗Потрібна послуга деканату":
-                    sendMessage.setText("Вибери те шо треба");
+                case "Скасувати":
+                    sendMessage.setText("Виберіть необхідну послугу");
                     sendMessage.setReplyMarkup(Keyboards.menuKeyboard());
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
-                case "Тіпа на головну"://костиль
-                    sendMessage.setText("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
-                    sendMessage.setReplyMarkup(Keyboards.getKeyboard());
+
+                case "Створити довідку з місця навчання":
+
+                    sendMessage.setText("Пройдіть реєстрацію");
+                    sendMessage.setReplyMarkup(Keyboards.regKeyboard());
                     sendMessage.setChatId(String.valueOf(message.getChatId()));
                     break;
-
-
+                case "Реєстрація":
+                    sendMessage.setText("Ведіть ПІБ");
+                    sendMessage.setChatId(String.valueOf(message.getChatId()));
+                    break;
             }
 
 

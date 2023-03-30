@@ -32,6 +32,33 @@ public class Keyboards {
         return replyKeyboardMarkup;
 
     }
+    public static ReplyKeyboardMarkup regKeyboard() {
+        //менюшка вибору запиту
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardRow row2 = new KeyboardRow();
+
+
+
+        row1.add("Реєстрація");
+        row2.add("Скасувати");
+
+
+        keyboardRows.add(row1);
+        keyboardRows.add(row2);
+
+
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        return replyKeyboardMarkup;
+
+    }
+
+
 
 
     public static ReplyKeyboardMarkup getKeyboard() {

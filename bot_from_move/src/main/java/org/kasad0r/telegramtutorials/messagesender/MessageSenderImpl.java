@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Service
 public class MessageSenderImpl implements MessageSender {
-    private HelloWorldBot helloWorldBot;
+    private HelloWorldBot helloWorldBot ;
 
     @Override
     public void sendMessage(SendMessage sendMessage) {
