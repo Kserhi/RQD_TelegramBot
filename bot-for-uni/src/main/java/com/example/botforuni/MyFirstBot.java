@@ -1,6 +1,8 @@
 package com.example.botforuni;
 
 import com.example.botforuni.Keybords.Keyboards;
+import com.example.botforuni.services.SendMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -28,60 +30,53 @@ public class MyFirstBot extends TelegramLongPollingBot {
         return "6139727723:AAGhYLSHJaIzSF0yDyps1b3d14PLB3oXQnI";
     }
 
+    private SendMessageService sendMessageService;
+
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
 
 
-
-        if (update.hasMessage()) {//перевірка чи є в апдейту повідомлення так бжола казав
+        if (update.hasMessage()) {
             Message message = update.getMessage();//шоб кожен раз через абдейт нетягнути
-            String textFromUser = message.getText();//
+
+            if (message.hasText()) {
+                String textFromUser = message.getText();
+
+                switch (textFromUser) {//порівнюєм текст від юзера з командами
+                    case "/start":
+                    case "Тіпа на головну":
+                        sendMessageService.sendStartMenu(message);
+                        
+                        break;
+                    case "❗Потрібна послуга деканату":
+                    case "Скасувати":
+                        sendMessage.setText("Виберіть необхідну послугу");
+                        sendMessage.setReplyMarkup(Keyboards.menuKeyboard());
+                        sendMessage.setChatId(String.valueOf(message.getChatId()));
+                        break;
+
+                    case "Створити довідку з місця навчання":
+
+                        sendMessage.setText("Пройдіть реєстрацію");
+                        sendMessage.setReplyMarkup(Keyboards.regKeyboard());
+                        sendMessage.setChatId(String.valueOf(message.getChatId()));
+                        break;
+                    case "Реєстрація":
+                        sendMessage.setText("Ведіть ПІБ");
+                        sendMessage.setChatId(String.valueOf(message.getChatId()));
+                        break;
+                }
 
 
-            switch (textFromUser) {//порівнюєм текст від юзера з командами
-                case "/start":
-                case "Тіпа на головну":
-                    //сетчу повідомлення
-                    sendMessage.setText("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!");
-                    sendMessage.setReplyMarkup(Keyboards.getKeyboard());//передаю клаву
-                    sendMessage.setChatId(String.valueOf(message.getChatId()));
-                    break;
-                case "❗Потрібна послуга деканату":
-                case "Скасувати":
-                    sendMessage.setText("Виберіть необхідну послугу");
-                    sendMessage.setReplyMarkup(Keyboards.menuKeyboard());
-                    sendMessage.setChatId(String.valueOf(message.getChatId()));
-                    break;
-
-                case "Створити довідку з місця навчання":
-
-                    sendMessage.setText("Пройдіть реєстрацію");
-                    sendMessage.setReplyMarkup(Keyboards.regKeyboard());
-                    sendMessage.setChatId(String.valueOf(message.getChatId()));
-                    break;
-                case "Реєстрація":
-                    sendMessage.setText("Ведіть ПІБ");
-                    sendMessage.setChatId(String.valueOf(message.getChatId()));
-                    break;
             }
-
-
         }
-
-
-
-
-
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-
-        }
-
     }
 
 
+}
+
+    @Autowired
+    public void setSendMessageService(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
+    }
 }
