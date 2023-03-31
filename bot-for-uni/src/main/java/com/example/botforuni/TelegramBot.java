@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 
 @Component
-public class MyFirstBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot {
 
 
     @Override
