@@ -22,7 +22,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         return "6139727723:AAGhYLSHJaIzSF0yDyps1b3d14PLB3oXQnI";
     }
 
-//    private SendMessageService sendMessageService;
     private Processor processor;
 
     @Autowired
@@ -33,41 +32,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         processor.process(update);
-
-//        if (update.hasMessage()) {
-//            Message message = update.getMessage();//шоб кожен раз через абдейт нетягнути
-//
-//            if (message.hasText()) {
-//                String textFromUser = message.getText();
-//
-//                switch (textFromUser) {//порівнюєм текст від юзера з командами
-//                    case "/start":
-//                    case "Тіпа на головну":
-//                        sendMessageService.sendStartMenu(message);
-//                        sendMessageService.sendStartMenuDemo(message);
-//                        break;
-//                    case "❗Потрібна послуга деканату":
-//                    case "Скасувати":
-//                        sendMessageService.sendMenu(message);
-//                        break;
-//
-//                    case "Створити довідку з місця навчання":
-//                        sendMessageService.sendRegMenu(message);
-//
-//                        break;
-//                    case "Реєстрація":
-//                        sendMessageService.rer(message);
-//                        break;
-//                }
-//
-//
-//            }
-//        }
     }
 
-
-//    @Autowired
-//    public void setSendMessageService(SendMessageService sendMessageService) {
-//        this.sendMessageService = sendMessageService;
-//    }
 }

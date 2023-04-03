@@ -26,14 +26,28 @@ public class MessageHandler implements Handler<Message>{
 
     @Override
     public void choose(Message message) {
-        if (message.hasText()){
-            if (message.getText().equals("/start")){
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setChatId(String.valueOf(message.getChatId()));
-                sendMessageService.sendStartMenu(message);
+        if (message.hasText()) {
+            String textFromUser = message.getText();
+            switch (textFromUser) {//порівнюєм текст від юзера з командами
+                case "/start":
+                case "На головну":
+                    sendMessageService.sendStartMenu(message);
+                    sendMessageService.sendStartMenuDemo(message);
+                    break;
+                case "❗Потрібна послуга деканату":
+                case "❌ Скасувати":
+                    sendMessageService.sendMenu(message);
+                    break;
+
+                case "Створити довідку з місця навчання":
+                    sendMessageService.sendRegMenu(message);
+                    break;
+                case "Реєстрація":
+                    sendMessageService.rer(message);
+                    break;
 
             }
-        }
 
+        }
     }
 }
