@@ -30,15 +30,14 @@ public class MessageHandler implements Handler<Message>{
             String textFromUser = message.getText();
             switch (textFromUser) {//порівнюєм текст від юзера з командами
                 case "/start":
-                case "На головну":
                     sendMessageService.sendStartMenu(message);
                     sendMessageService.sendStartMenuDemo(message);
                     break;
                 case "❗Потрібна послуга деканату":
                 case "❌ Скасувати":
+                case "/menu":
                     sendMessageService.sendMenu(message);
                     break;
-
                 case "Створити довідку з місця навчання":
                     sendMessageService.sendRegMenu(message);
                     break;

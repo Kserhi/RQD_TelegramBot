@@ -18,15 +18,11 @@ public class Keyboards {
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
 
 
         row1.add("Створити довідку з місця навчання");
-        row2.add("На головну");
-
 
         keyboardRows.add(row1);
-        keyboardRows.add(row2);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         return replyKeyboardMarkup;
@@ -44,7 +40,6 @@ public class Keyboards {
         KeyboardRow row2 = new KeyboardRow();
 
 
-
         row1.add("Реєстрація");
         row2.add("❌ Скасувати");
 
@@ -57,9 +52,6 @@ public class Keyboards {
         return replyKeyboardMarkup;
 
     }
-
-
-
 
     public static ReplyKeyboardMarkup getKeyboard() {
         ///менюшка після старту ❗Потрібна послуга деканату

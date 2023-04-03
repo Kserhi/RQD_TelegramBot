@@ -5,6 +5,11 @@ import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SendMessageService {
@@ -69,8 +74,22 @@ public class SendMessageService {
 
     public void rer(Message message){
 
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        KeyboardRow row1 = new KeyboardRow();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+
+        row1.add("❌ Скасувати");
+        keyboardRows.add(row1);
+
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
         SendMessage ms1= SendMessage.builder()
                 .text("Ведіть ПІБ")
+                .replyMarkup(replyKeyboardMarkup)
                 .chatId(String.valueOf(message.getChatId()))
                 .build();
 
