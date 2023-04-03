@@ -17,7 +17,20 @@ public class SendMessageService {
     public void sendStartMenu(Message message){
 
        SendMessage ms1= SendMessage.builder()
-                .text("Бот деканату замовляйте послуги")
+                .text("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!")
+                .replyMarkup(Keyboards.getKeyboard())
+                .chatId(String.valueOf(message.getChatId()))
+                .build();
+
+
+        messageSender.sendMessage(ms1);
+
+    }
+
+    public void sendStartMenuDemo(Message message){
+
+        SendMessage ms1= SendMessage.builder()
+                .text("Обирайте з меню нижче ⤵️")
                 .replyMarkup(Keyboards.getKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
                 .build();
@@ -30,7 +43,7 @@ public class SendMessageService {
     public void sendMenu(Message message){
 
         SendMessage ms1= SendMessage.builder()
-                .text("Виберіть необхідну послугу")
+                .text("Виберіть необхідну послугу ⤵ ")
                 .replyMarkup(Keyboards.menuKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
                 .build();

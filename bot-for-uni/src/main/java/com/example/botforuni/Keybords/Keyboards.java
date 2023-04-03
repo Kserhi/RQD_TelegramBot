@@ -22,7 +22,7 @@ public class Keyboards {
 
 
         row1.add("Створити довідку з місця навчання");
-        row2.add("Тіпа на головну");
+        row2.add("На головну");
 
 
         keyboardRows.add(row1);
@@ -46,7 +46,7 @@ public class Keyboards {
 
 
         row1.add("Реєстрація");
-        row2.add("Скасувати");
+        row2.add("❌ Скасувати");
 
 
         keyboardRows.add(row1);
