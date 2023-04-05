@@ -1,6 +1,9 @@
 package com.example.botforuni.services;
 
 import com.example.botforuni.Keybords.Keyboards;
+import com.example.botforuni.cache.Cache;
+import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,8 +18,19 @@ import java.util.List;
 public class SendMessageService {
     private final MessageSender messageSender;
 
-    public SendMessageService(MessageSender messageSender) {
+    private final Cache<BotUser> cache;
+
+    public SendMessageService(MessageSender messageSender, Cache<BotUser> cache) {
         this.messageSender = messageSender;
+        this.cache = cache;
+    }
+
+    private BotUser generateUserFromMessage(Message message){
+        BotUser user = new BotUser();
+        user.setUsername(message.getFrom().getUserName());
+        user.setId(message.getChatId());
+        user.setPosition(Position.INPUT_USER_NAME);
+        return user;
     }
 
     public void sendStartMenu(Message message){
@@ -86,15 +100,6 @@ public class SendMessageService {
         keyboardRows.add(row1);
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);
-
-        SendMessage ms1= SendMessage.builder()
-                .text("Ведіть ПІБ")
-                .replyMarkup(replyKeyboardMarkup)
-                .chatId(String.valueOf(message.getChatId()))
-                .build();
-
-
-        messageSender.sendMessage(ms1);
 
     }
 

@@ -1,12 +1,14 @@
 package com.example.botforuni.cache;
 
 import com.example.botforuni.domain.BotUser;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class BotUserCache implements Cache<BotUser>{
     private final Map<Long, BotUser> users;
 
