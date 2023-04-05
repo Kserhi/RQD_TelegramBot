@@ -1,0 +1,38 @@
+package com.example.botforuni.cache;
+
+import com.example.botforuni.domain.BotUser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class BotUserCache implements Cache<BotUser>{
+    private final Map<Long, BotUser> users;
+
+    public BotUserCache() {
+        this.users = new HashMap<>();
+    }
+
+    @Override
+    public void add(BotUser botUser) {
+        users.put(botUser.getId(), botUser);
+
+    }
+
+    @Override
+    public void remove(BotUser botUser) {
+        users.remove(botUser.getId());
+
+    }
+
+    @Override
+    public BotUser findBy(Long id) {
+        return users.get(id);
+    }
+
+    @Override
+    public List<BotUser> getAll() {
+        return new ArrayList<>(users.values());
+    }
+}
