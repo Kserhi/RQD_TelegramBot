@@ -1,5 +1,6 @@
 package com.example.botforuni.handlers;
 
+import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
@@ -29,7 +30,7 @@ public class MessageHandler implements Handler<Message>{
         this.cache = cache;
     }
 
-    private BotUser generateUserFromMessage(Message message){
+    private static BotUser generateUserFromMessage(Message message){
         BotUser user = new BotUser();
         user.setUsername(message.getFrom().getUserName());
         user.setId(message.getChatId());
@@ -40,38 +41,26 @@ public class MessageHandler implements Handler<Message>{
     @Override
     public void choose(Message message) {
         BotUser user = cache.findBy(message.getChatId());
-        if (user != null){
+
+
+        if (user != null && user.getPosition()!=Position.NONE){
             switch (user.getPosition()){
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
                     user.setPosition(Position.INPUT_USER_GROUP);
-                    messageSender.sendMessage(
-                            SendMessage.builder()
-                            .text("Введіть вашу групу⤵")
-                            .chatId(String.valueOf(message.getChatId()))
-                            .build()
-                    );
+                    sendMessageService.sendMessage(message,"Введіть вашу групу⤵");
                     break;
                 case INPUT_USER_GROUP:
                     user.setGroup(message.getText());
                     user.setPosition(Position.INPUT_USER_YEAR);
-                    messageSender.sendMessage(
-                            SendMessage.builder()
-                                    .text("Введіть ваш рік набору⤵")
-                                    .chatId(String.valueOf(message.getChatId()))
-                                    .build()
-                    );
+                    sendMessageService.sendMessage(message,"Введіть ваш рік набору⤵");
                     break;
                 case INPUT_USER_YEAR:
                     user.setYear(message.getText());
                     user.setPosition(Position.NONE);
-                    messageSender.sendMessage(SendMessage.builder()
-                            .parseMode("HTML")
-                            .chatId(String.valueOf(user.getId()))
-                            .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
-                                    "<b>Група: </b>" + user.getGroup() + "\n" +
-                                    "<b>Рік набору: </b>" + user.getYear())
-                            .build());
+                    sendMessageService.sendInfoAboutUser(message,user);
+                    sendMessageService.sendMessage(message,"Наразі я тебе сюда кидаю");
+                    sendMessageService.sendMenu(message);
                     break;
             }
 
@@ -92,14 +81,14 @@ public class MessageHandler implements Handler<Message>{
                     break;
                 case "Реєстрація":
                     cache.add(generateUserFromMessage(message));
-                    messageSender.sendMessage(
-                            SendMessage.builder()
-                                    .text("Введіть ваш ПІБ⤵")
-                                    .chatId(String.valueOf(message.getChatId()))
-                                    .build()
-                    );
+                    sendMessageService.sendMessage(message,"Введіть ваш ПІБ⤵");
                     break;
-
+                case "/reset":
+                    cache.remove(user);
+                    break;
+                case "/help":
+                    sendMessageService.sendInfoAboutUser(message,user);
+                    break;
             }
         }
     }

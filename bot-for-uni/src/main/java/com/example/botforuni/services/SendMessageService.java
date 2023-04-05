@@ -25,13 +25,7 @@ public class SendMessageService {
         this.cache = cache;
     }
 
-    private BotUser generateUserFromMessage(Message message){
-        BotUser user = new BotUser();
-        user.setUsername(message.getFrom().getUserName());
-        user.setId(message.getChatId());
-        user.setPosition(Position.INPUT_USER_NAME);
-        return user;
-    }
+
 
     public void sendStartMenu(Message message){
 
@@ -86,21 +80,30 @@ public class SendMessageService {
 
     }
 
-    public void rer(Message message){
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
-        KeyboardRow row1 = new KeyboardRow();
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
+    public void sendInfoAboutUser(Message message,BotUser user){
 
-        row1.add("❌ Скасувати");
-        keyboardRows.add(row1);
-
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        messageSender.sendMessage(SendMessage.builder()
+                .parseMode("HTML")
+                .chatId(String.valueOf(user.getId()))
+                .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
+                        "<b>Група: </b>" + user.getGroup() + "\n" +
+                        "<b>Рік набору: </b>" + user.getYear())
+                .build());
 
     }
+
+    public void sendMessage(Message message,String text){
+        SendMessage ms1= SendMessage.builder()
+                .text(text)
+                .chatId(String.valueOf(message.getChatId()))
+                .build();
+
+
+        messageSender.sendMessage(ms1);
+    }
+
+
 
 }
