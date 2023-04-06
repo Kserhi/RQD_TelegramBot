@@ -63,12 +63,12 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case CONFIMATION:
                     switch (message.getText()) {
-                        case "Підтвердити":
+                        case "Підтвердити✔":
                             user.setPosition(Position.NONE);
-                            sendMessageService.sendMessage(message, "Реєстрація пройшла успішно");
+                            sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                             break;
-                        case "Скасувати":
-                            sendMessageService.sendMessage(message, "Ведіть дані щераз");
+                        case "Скасувати❌":
+                            sendMessageService.sendMessage(message, "Введіть дані ще раз");
                             sendMessageService.sendMessage(message, "Введіть ваш ПІБ⤵");
                             user.setPosition(Position.INPUT_USER_NAME);
                             break;

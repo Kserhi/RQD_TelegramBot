@@ -89,7 +89,7 @@ public class SendMessageService {
     public void sndConfirmationMenu(Message message){
 
         SendMessage ms1= SendMessage.builder()
-                .text("Нажіміть щоб підтвердити дані")
+                .text("Нажміть, щоб підтвердити дані")
                 .chatId(String.valueOf(message.getChatId()))
                 .replyMarkup(Keyboards.confirmationKeyboard())
                 .build();

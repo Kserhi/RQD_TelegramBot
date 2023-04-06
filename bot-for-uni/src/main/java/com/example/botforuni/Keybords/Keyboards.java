@@ -81,8 +81,8 @@ public class Keyboards {
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add("Підтвердити");
-        keyboardRow.add("Скасувати");
+        keyboardRow.add("Підтвердити✔");
+        keyboardRow.add("Скасувати❌");
         keyboardRows.add(keyboardRow);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         return replyKeyboardMarkup;
