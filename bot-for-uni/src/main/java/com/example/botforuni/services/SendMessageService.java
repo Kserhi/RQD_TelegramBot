@@ -3,16 +3,10 @@ package com.example.botforuni.services;
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SendMessageService {
@@ -31,7 +25,7 @@ public class SendMessageService {
 
        SendMessage ms1= SendMessage.builder()
                 .text("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!")
-                .replyMarkup(Keyboards.getKeyboard())
+                .replyMarkup(Keyboards.starKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
                 .build();
 
@@ -40,18 +34,7 @@ public class SendMessageService {
 
     }
 
-    public void sendStartMenuDemo(Message message){
 
-        SendMessage ms1= SendMessage.builder()
-                .text("Обирайте з меню нижче ⤵️")
-                .replyMarkup(Keyboards.getKeyboard())
-                .chatId(String.valueOf(message.getChatId()))
-                .build();
-
-
-        messageSender.sendMessage(ms1);
-
-    }
 
     public void sendMenu(Message message){
 
@@ -101,6 +84,15 @@ public class SendMessageService {
                 .build();
 
 
+        messageSender.sendMessage(ms1);
+    }
+    public void sndConfirmationMenu(Message message){
+
+        SendMessage ms1= SendMessage.builder()
+                .text("Нажіміть щоб підтвердити дані")
+                .chatId(String.valueOf(message.getChatId()))
+                .replyMarkup(Keyboards.confirmationKeyboard())
+                .build();
         messageSender.sendMessage(ms1);
     }
 

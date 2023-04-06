@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
-public class MessageHandler implements Handler<Message>{
+public class MessageHandler implements Handler<Message> {
 
     private final MessageSender messageSender;
 
@@ -30,7 +30,7 @@ public class MessageHandler implements Handler<Message>{
         this.cache = cache;
     }
 
-    private static BotUser generateUserFromMessage(Message message){
+    private static BotUser generateUserFromMessage(Message message) {
         BotUser user = new BotUser();
         user.setUsername(message.getFrom().getUserName());
         user.setId(message.getChatId());
@@ -43,31 +43,44 @@ public class MessageHandler implements Handler<Message>{
         BotUser user = cache.findBy(message.getChatId());
 
 
-        if (user != null && user.getPosition()!=Position.NONE){
-            switch (user.getPosition()){
+        if (user != null && user.getPosition() != Position.NONE) {
+            switch (user.getPosition()) {
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
                     user.setPosition(Position.INPUT_USER_GROUP);
-                    sendMessageService.sendMessage(message,"Введіть вашу групу⤵");
+                    sendMessageService.sendMessage(message, "Введіть вашу групу⤵");
                     break;
                 case INPUT_USER_GROUP:
                     user.setGroup(message.getText());
                     user.setPosition(Position.INPUT_USER_YEAR);
-                    sendMessageService.sendMessage(message,"Введіть ваш рік набору⤵");
+                    sendMessageService.sendMessage(message, "Введіть ваш рік набору⤵");
                     break;
                 case INPUT_USER_YEAR:
                     user.setYear(message.getText());
-                    user.setPosition(Position.NONE);
-                    sendMessageService.sendInfoAboutUser(message,user);
+                    user.setPosition(Position.CONFIMATION);
+                    sendMessageService.sendInfoAboutUser(message, user);
+                    sendMessageService.sndConfirmationMenu(message);
                     break;
-
+                case CONFIMATION:
+                    switch (message.getText()) {
+                        case "Підтвердити":
+                            user.setPosition(Position.NONE);
+                            sendMessageService.sendMessage(message, "Реєстрація пройшла успішно");
+                            break;
+                        case "Скасувати":
+                            sendMessageService.sendMessage(message, "Ведіть дані щераз");
+                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ⤵");
+                            user.setPosition(Position.INPUT_USER_NAME);
+                            break;
+                    }
+                    break;
             }
-        }else if (message.hasText()) {
+        } else if (message.hasText()) {
             String textFromUser = message.getText();
             switch (textFromUser) {//порівнюєм текст від юзера з командами
                 case "/start":
                     sendMessageService.sendStartMenu(message);
-                    sendMessageService.sendStartMenuDemo(message);
+                    sendMessageService.sendMessage(message, "Обирайте з меню нижче ⤵️");
                     break;
                 case "❗Потрібна послуга деканату":
                 case "❌ Скасувати":
@@ -79,13 +92,13 @@ public class MessageHandler implements Handler<Message>{
                     break;
                 case "Реєстрація":
                     cache.add(generateUserFromMessage(message));
-                    sendMessageService.sendMessage(message,"Введіть ваш ПІБ⤵");
+                    sendMessageService.sendMessage(message, "Введіть ваш ПІБ⤵");
                     break;
                 case "/reset":
                     cache.remove(user);
                     break;
                 case "/help":
-                    sendMessageService.sendInfoAboutUser(message,user);
+                    sendMessageService.sendInfoAboutUser(message, user);
                     break;
             }
         }

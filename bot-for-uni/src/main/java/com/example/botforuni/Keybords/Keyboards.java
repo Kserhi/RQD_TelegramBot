@@ -53,7 +53,7 @@ public class Keyboards {
 
     }
 
-    public static ReplyKeyboardMarkup getKeyboard() {
+    public static ReplyKeyboardMarkup starKeyboard() {
         ///менюшка після старту ❗Потрібна послуга деканату
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -70,6 +70,25 @@ public class Keyboards {
         return replyKeyboardMarkup;
 
     }
+
+    public static ReplyKeyboardMarkup confirmationKeyboard() {
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardRow keyboardRow = new KeyboardRow();
+        keyboardRow.add("Підтвердити");
+        keyboardRow.add("Скасувати");
+        keyboardRows.add(keyboardRow);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        return replyKeyboardMarkup;
+
+    }
+
 
 
 }
