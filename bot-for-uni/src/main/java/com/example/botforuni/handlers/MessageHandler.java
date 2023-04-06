@@ -59,11 +59,9 @@ public class MessageHandler implements Handler<Message>{
                     user.setYear(message.getText());
                     user.setPosition(Position.NONE);
                     sendMessageService.sendInfoAboutUser(message,user);
-                    sendMessageService.sendMessage(message,"Наразі я тебе сюда кидаю");
-                    sendMessageService.sendMenu(message);
                     break;
-            }
 
+            }
         }else if (message.hasText()) {
             String textFromUser = message.getText();
             switch (textFromUser) {//порівнюєм текст від юзера з командами
