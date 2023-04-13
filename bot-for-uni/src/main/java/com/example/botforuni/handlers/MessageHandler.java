@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class MessageHandler implements Handler<Message> {
 
-    private final MessageSender messageSender;
+
 
     private SendMessageService sendMessageService;
 
@@ -25,8 +25,7 @@ public class MessageHandler implements Handler<Message> {
         this.sendMessageService = sendMessageService;
     }
 
-    public MessageHandler(MessageSender messageSender, Cache<BotUser> cache) {
-        this.messageSender = messageSender;
+    public MessageHandler( Cache<BotUser> cache) {
         this.cache = cache;
     }
 
@@ -41,7 +40,6 @@ public class MessageHandler implements Handler<Message> {
     @Override
     public void choose(Message message) {
         BotUser user = cache.findBy(message.getChatId());
-
 
         if (user != null && user.getPosition() != Position.NONE) {
             switch (user.getPosition()) {
