@@ -46,7 +46,7 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
                     user.setPosition(Position.INPUT_USER_GROUP);
-                    sendMessageService.sendMessage(message, "Введіть вашу групу(Наприклад: КН23с)⤵");
+                    sendMessageService.sendMessage(message, "Введіть вашу групу(Наприклад: КН23c)⤵");
                     break;
                 case INPUT_USER_GROUP:
                     user.setGroup(message.getText());
