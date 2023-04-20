@@ -12,11 +12,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class SendMessageService {
     private final MessageSender messageSender;
 
-    private final Cache<BotUser> cache;
 
-    public SendMessageService(MessageSender messageSender, Cache<BotUser> cache) {
+
+    public SendMessageService(MessageSender messageSender) {
         this.messageSender = messageSender;
-        this.cache = cache;
     }
 
 

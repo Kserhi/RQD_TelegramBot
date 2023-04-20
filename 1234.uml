@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>D:/OOP/bot-for-uni/src/main/java/com/example/botforuni</OriginalElement>
+  <nodes>
+    <node x="-100.91755793358638" y="-46.679573653798">com.example.botforuni.domain.Position</node>
+    <node x="-434.4737677838646" y="256.52890490346823">com.example.botforuni.processors.Processor</node>
+    <node x="-90.31549144565525" y="267.52890490346823">com.example.botforuni.processors.DefaultProcessor</node>
+    <node x="504.7833891467149" y="460.2483593801146">com.example.botforuni.messagesender.MessageSender</node>
+    <node x="-434.4737677838646" y="67.03819407479403">com.example.botforuni.Keybords.Keyboards</node>
+    <node x="348.592795279039" y="275.3438957994518">com.example.botforuni.handlers.Handler</node>
+    <node x="-434.4737677838646" y="422.36075682380056">com.example.botforuni.TelegramBot</node>
+    <node x="195.15800590230083" y="460.2483593801146">com.example.botforuni.handlers.CallbackQueryHandler</node>
+    <node x="485.0844396101548" y="540.5832470851819">com.example.botforuni.messagesender.MessageSenderImpl</node>
+    <node x="477.5762816919569" y="-55.878337814456586">com.example.botforuni.cache.BotUserCache</node>
+    <node x="660.9950376285065" y="201.5289049034683">com.example.botforuni.services.SendMessageService</node>
+    <node x="-434.4737677838646" y="-24.679573653798002">com.example.botforuni.BotForUniApplication</node>
+    <node x="171.53145658492383" y="-231.8783378144566">com.example.botforuni.domain.BotUser</node>
+    <node x="733.9950376285065" y="-55.33908899201782">com.example.botforuni.cache.Cache</node>
+    <node x="109.63865191669186" y="99.42466562483511">com.example.botforuni.handlers.MessageHandler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.example.botforuni.handlers.CallbackQueryHandler" target="com.example.botforuni.handlers.Handler" relationship="REALIZATION">
+      <point x="15.68439701736861" y="3.0324417733345967" />
+      <point x="310.84240291966944" y="465.3315631719869" />
+      <point x="310.69830844490184" y="465.3315631719869" />
+      <point x="310.69830844490184" y="302.3438957994518" />
+      <point x="372.5105500265921" y="302.3438957994518" />
+      <point x="-50.83975297644273" y="3.045064694882342" />
+    </edge>
+    <edge source="com.example.botforuni.handlers.MessageHandler" target="com.example.botforuni.services.SendMessageService" relationship="TO_ONE">
+      <point x="109.55621808949866" y="-1.5623681819238584" />
+      <point x="801.212899903343" y="146.86229744291126" />
+      <point x="801.212899903343" y="193.67808856848387" />
+      <point x="801.1102279711553" y="193.67808856848387" />
+      <point x="1.1151903426488161" y="-40.61298317329465" />
+    </edge>
+    <edge source="com.example.botforuni.handlers.CallbackQueryHandler" target="com.example.botforuni.messagesender.MessageSender" relationship="TO_ONE">
+      <point x="101.59360841283785" y="3.0046581276092184" />
+      <point x="396.7516143151387" y="487.2483593801146" />
+      <point x="561.7155625196804" y="487.2483593801146" />
+      <point x="-56.067826627034464" y="-10.055403664359005" />
+    </edge>
+    <edge source="com.example.botforuni.handlers.MessageHandler" target="com.example.botforuni.domain.BotUser" relationship="CREATE">
+      <point x="-153.43813800205967" y="-27.212134989794066" />
+      <point x="264.32107342529446" y="121.21253063504105" />
+      <point x="264.32107342529446" y="-68.54118104130129" />
+      <point x="278.53145658492383" y="-68.54118104130129" />
+      <point x="15.0" y="148.0" />
+    </edge>
+    <edge source="com.example.botforuni.handlers.MessageHandler" target="com.example.botforuni.cache.Cache" relationship="TO_ONE">
+      <point x="145.12635856323323" y="-2.0463895701847434" />
+      <point x="801.212899903343" y="146.37827605465037" />
+      <point x="801.212899903343" y="33.654114335055425" />
+      <point x="-59.541344810642386" y="28.993203327073246" />
+    </edge>
+    <edge source="com.example.botforuni.cache.BotUserCache" target="com.example.botforuni.cache.Cache" relationship="REALIZATION">
+      <point x="-79.05353734024811" y="0.5392488224387364" />
+      <point x="608.3678221275259" y="4.6609110079821505" />
+      <point x="608.3678221275259" y="4.660911007982179" />
+      <point x="-66.0" y="0.0" />
+    </edge>
+    <edge source="com.example.botforuni.processors.DefaultProcessor" target="com.example.botforuni.handlers.CallbackQueryHandler" relationship="TO_ONE">
+      <point x="127.34283233133868" y="-0.1133580445614939" />
+      <point x="267.63865191669186" y="305.41554685890674" />
+      <point x="267.63865191669186" y="487.2483593801146" />
+      <point x="100.0" y="0.0" />
+    </edge>
+    <edge source="com.example.botforuni.messagesender.MessageSenderImpl" target="com.example.botforuni.TelegramBot" relationship="TO_ONE">
+      <point x="-114.65390319258498" y="23.2765830225988" />
+      <point x="-295.9737677838646" y="601.8598301077807" />
+      <point x="0.0" y="60.0" />
+    </edge>
+    <edge source="com.example.botforuni.cache.BotUserCache" target="com.example.botforuni.domain.BotUser" relationship="TO_MANY">
+      <point x="-0.7624326317009036" y="33.86858330647584" />
+      <point x="559.813849060256" y="4.121662185543414" />
+      <point x="261.44193682654975" y="4.121662185543414" />
+      <point x="-2.089519758374081" y="134.00084962559902" />
+    </edge>
+    <edge source="com.example.botforuni.TelegramBot" target="com.example.botforuni.processors.Processor" relationship="TO_ONE">
+      <point x="-0.33132799368638644" y="-5.709098739352953" />
+      <point x="-296.305095777551" y="396.07817380905146" />
+      <point x="-295.9737677838646" y="396.07817380905146" />
+      <point x="0.0" y="48.99999999999999" />
+    </edge>
+    <edge source="com.example.botforuni.services.SendMessageService" target="com.example.botforuni.messagesender.MessageSender" relationship="TO_ONE">
+      <point x="4.715973585689426E-4" y="-81.99966989840397" />
+      <point x="799.995509225865" y="488.56693760804137" />
+      <point x="12.325034565513901" y="1.3185782279267642" />
+    </edge>
+    <edge source="com.example.botforuni.processors.DefaultProcessor" target="com.example.botforuni.processors.Processor" relationship="REALIZATION">
+      <point x="-138.5" y="-1.5900334621839534" />
+      <point x="35.712667353244115" y="303.9388714412843" />
+      <point x="35.712667353244115" y="305.52890490346823" />
+      <point x="-3.6006987828347974" y="305.52890490346823" />
+      <point x="-3.6006987828347974" y="305.5289049034683" />
+      <point x="-3.600698782834769" y="305.5289049034683" />
+      <point x="-3.600698782834769" y="305.52890490346823" />
+      <point x="138.5" y="0.0" />
+    </edge>
+    <edge source="com.example.botforuni.processors.DefaultProcessor" target="com.example.botforuni.handlers.MessageHandler" relationship="TO_ONE">
+      <point x="122.36625560631296" y="0.7160714096094694" />
+      <point x="267.63865191669186" y="306.2449763130777" />
+      <point x="0.0" y="49.0" />
+    </edge>
+    <edge source="com.example.botforuni.handlers.MessageHandler" target="com.example.botforuni.handlers.Handler" relationship="REALIZATION">
+      <point x="43.8789137368575" y="27.939060018830702" />
+      <point x="311.51756565354935" y="302.3438957994518" />
+      <point x="362.901404350058" y="302.3438957994518" />
+      <point x="-53.191390928981065" y="3.5758995455517493" />
+    </edge>
+    <edge source="com.example.botforuni.messagesender.MessageSenderImpl" target="com.example.botforuni.messagesender.MessageSender" relationship="REALIZATION">
+      <point x="33.06816595112048" y="-4.333236786521866" />
+      <point x="635.1526055612752" y="483.7187723995876" />
+      <point x="16.592217032479198" y="-3.5295869805270286" />
+    </edge>
+    <edge source="com.example.botforuni.domain.BotUser" target="com.example.botforuni.domain.Position" relationship="TO_ONE">
+      <point x="0.0" y="-148.0" />
+      <point x="263.53145658492383" y="-2.7168458799586688" />
+      <point x="0.6190524458315281" y="5.962727773839333" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.617291799109986" showDependencies="true" x="570.8063851699192" y="251.16426364572237" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
