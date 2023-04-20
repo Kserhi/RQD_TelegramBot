@@ -48,12 +48,12 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
                     user.setPosition(Position.INPUT_USER_GROUP);
-                    sendMessageService.sendMessage(message, "Введіть вашу групу⤵");
+                    sendMessageService.sendMessage(message, "Введіть вашу групу(Наприклад: КН23с)⤵");
                     break;
                 case INPUT_USER_GROUP:
                     user.setGroup(message.getText());
                     user.setPosition(Position.INPUT_USER_YEAR);
-                    sendMessageService.sendMessage(message, "Введіть ваш рік набору⤵");
+                    sendMessageService.sendMessage(message, "Введіть ваш рік набору(Наприклад: 2021)⤵");
                     break;
                 case INPUT_USER_YEAR:
                     user.setYear(message.getText());
@@ -69,7 +69,7 @@ public class MessageHandler implements Handler<Message> {
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
-                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ⤵");
+                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
                             user.setPosition(Position.INPUT_USER_NAME);
                             break;
                     }
@@ -92,7 +92,7 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case "Реєстрація":
                     cache.add(generateUserFromMessage(message));
-                    sendMessageService.sendMessage(message, "Введіть ваш ПІБ⤵");
+                    sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
                     break;
                 case "/reset":
                     cache.remove(user);
