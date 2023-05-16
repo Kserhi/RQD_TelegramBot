@@ -6,20 +6,22 @@ import java.sql.SQLException;
 
 public class UserData {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/databasebot";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root12345678";
+    private static final String PASSWORD = "root";
 
-    public static void main(String[] args) throws ClassNotFoundException{
+    public static void main(String[] args) {
         Connection connection;
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
 
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Зєднання виконано");
             connection.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
 
