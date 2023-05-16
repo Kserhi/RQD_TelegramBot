@@ -33,6 +33,13 @@
 			<artifactId>telegrambots-spring-boot-starter</artifactId>
 			<version>5.3.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.22</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
