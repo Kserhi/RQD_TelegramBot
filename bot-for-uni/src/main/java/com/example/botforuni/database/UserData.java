@@ -6,6 +6,9 @@ import com.mysql.cj.jdbc.ConnectionImpl;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class UserData {
 
@@ -53,5 +56,34 @@ public class UserData {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    public  List<String> getUserInfoFomDataBasa(Long userId){
+        Connection connection;
+        List<String> sss =new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            Statement stmt= connection.createStatement();
+            ResultSet rs=stmt.executeQuery("SELECT * FROM users WHERE teleqramId="+userId.toString()+";");
+            rs.next();
+            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "
+                            +rs.getString(3)+" "+rs.getString(4)+"  "
+                            +rs.getString(5)+" "+rs.getString(6)+"  "
+                            +rs.getString(7)+"  "+rs.getString(8));
+
+
+            for (int i = 0; i < 8; i++) {
+                sss.add(i,rs.getString(i+1));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return sss;
     }
 }

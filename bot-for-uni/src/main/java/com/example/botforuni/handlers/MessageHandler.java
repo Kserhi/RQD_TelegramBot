@@ -103,7 +103,7 @@ public class MessageHandler implements Handler<Message> {
                     cache.remove(user);
                     break;
                 case "/help":
-
+//                    userData.getUserInfoFomDataBasa(message.getChatId());
                     sendMessageService.sendInfoAboutUser(message, user);
                     break;
             }
