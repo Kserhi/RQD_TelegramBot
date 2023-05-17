@@ -34,7 +34,6 @@ public class MessageHandler implements Handler<Message> {
 
     private static BotUser generateUserFromMessage(Message message) {
         BotUser user = new BotUser();
-        user.setUsername(message.getFrom().getUserName());
         user.setId(message.getChatId());
         user.setPosition(Position.INPUT_USER_NAME);
         return user;
@@ -67,7 +66,7 @@ public class MessageHandler implements Handler<Message> {
                         case "Підтвердити✔":
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            userData.put(user);
+                            userData.putUserInDataBase(user);
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
@@ -100,7 +99,7 @@ public class MessageHandler implements Handler<Message> {
                     cache.remove(user);
                     break;
                 case "/help":
-                    userData.get(message.getChatId());
+//                    userData.get(message.getChatId());
 
 
                     sendMessageService.sendInfoAboutUser(message, user);

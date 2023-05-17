@@ -70,8 +70,8 @@ public class SendMessageService {
                 .parseMode("HTML")
                 .chatId(String.valueOf(user.getId()))
                 .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
-                        "<b>Група: </b>" + user.getGroup() + "\n" +
-                        "<b>Рік набору: </b>" + user.getYear())
+                        "<b>Група: </b>" + user.getGroupe() + "\n" +
+                        "<b>Рік набору: </b>" + user.getYearEntry())
                 .build());
 
     }
