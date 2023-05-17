@@ -2,7 +2,6 @@ package com.example.botforuni.handlers;
 
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
-import com.example.botforuni.database.UserData;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
@@ -16,25 +15,23 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class MessageHandler implements Handler<Message> {
 
 
-
     private SendMessageService sendMessageService;
 
     private final Cache<BotUser> cache;
-    private final UserData userData;
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
 
-    public MessageHandler( Cache<BotUser> cache,UserData userData) {
+    public MessageHandler( Cache<BotUser> cache) {
         this.cache = cache;
-        this.userData=userData;
+
 
     }
 
     private static BotUser generateUserFromMessage(Message message) {
         BotUser user = new BotUser();
-        user.setUsername(message.getFrom().getUserName());
+
         user.setId(message.getChatId());
         user.setPosition(Position.INPUT_USER_NAME);
         return user;
@@ -58,6 +55,11 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case INPUT_USER_YEAR:
                     user.setYearEntry(message.getText());
+                    user.setPosition(Position.INPUT_USER_PHONE);
+                    sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
+                    break;
+                case INPUT_USER_PHONE:
+                    user.setPhoneNumber(message.getText());
                     user.setPosition(Position.CONFIMATION);
                     sendMessageService.sendInfoAboutUser(message, user);
                     sendMessageService.sndConfirmationMenu(message);
@@ -67,7 +69,6 @@ public class MessageHandler implements Handler<Message> {
                         case "Підтвердити✔":
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            userData.put(user);
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
@@ -100,8 +101,7 @@ public class MessageHandler implements Handler<Message> {
                     cache.remove(user);
                     break;
                 case "/help":
-                    userData.get(message.getChatId());
-
+//                    userData.get(message.getChatId());
 
                     sendMessageService.sendInfoAboutUser(message, user);
                     break;
