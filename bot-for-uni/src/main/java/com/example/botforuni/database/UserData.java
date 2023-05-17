@@ -1,29 +1,81 @@
 package com.example.botforuni.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.example.botforuni.domain.BotUser;
+import com.mysql.cj.jdbc.ConnectionImpl;
+import org.springframework.stereotype.Component;
 
+import java.sql.*;
+@Component
 public class UserData {
 
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
-    public static void main(String[] args) {
-        Connection connection;
 
+    public void getAllUsers(){
+        Connection connection;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Зєднання виконано");
+
+            Statement stmt= connection.createStatement();
+            ResultSet rs=stmt.executeQuery("SELECT * FROM users ;");
+            while (rs.next()) System.out.println
+                    (rs.getString(1)+" "+rs.getString(2)+" "
+                            +rs.getString(3)+" "+rs.getString(4)+"  "
+                            +rs.getString(5)+" "+rs.getString(6)+"  "
+                            +rs.getString(7)+"  "+rs.getString(8)+"  "
+                            +rs.getString(9)+"  ");
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void get(Long id){
+        Connection connection;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            Statement stmt= connection.createStatement();
+            ResultSet rs=stmt.executeQuery("SELECT * FROM users WHERE teleqramId="+id.toString()+";");
+            while (rs.next()) System.out.println
+                    (rs.getString(1)+" "+rs.getString(2)+" "
+                            +rs.getString(3)+" "+rs.getString(4)+"  "
+                            +rs.getString(5)+" "+rs.getString(6)+"  "
+                            +rs.getString(7)+"  "+rs.getString(8)+"  "
+                            +rs.getString(9)+"  ");
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void put(BotUser botUseruser){
+        Connection connection;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            Statement stmt= connection.createStatement();
+
+            stmt.executeUpdate("INSERT INTO users (teleqramId,LastName,FirstName,patronymicName,yearEntry," +
+                    "statement) VALUES("+botUseruser.getId().toString()+",'"+botUseruser.getFullName()+
+                    "','cddsdscro','ba',2231,'standart');");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 }
