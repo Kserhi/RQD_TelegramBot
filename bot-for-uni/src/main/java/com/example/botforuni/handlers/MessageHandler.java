@@ -16,20 +16,18 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class MessageHandler implements Handler<Message> {
 
 
-
     private SendMessageService sendMessageService;
-
+    private final   UserData userData;
     private final Cache<BotUser> cache;
-    private final UserData userData;
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
+
         this.sendMessageService = sendMessageService;
     }
 
     public MessageHandler( Cache<BotUser> cache,UserData userData) {
         this.cache = cache;
         this.userData=userData;
-
     }
 
     private static BotUser generateUserFromMessage(Message message) {
@@ -57,6 +55,11 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case INPUT_USER_YEAR:
                     user.setYearEntry(message.getText());
+                    user.setPosition(Position.INPUT_USER_PHONE);
+                    sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
+                    break;
+                case INPUT_USER_PHONE:
+                    user.setPhoneNumber(message.getText());
                     user.setPosition(Position.CONFIMATION);
                     sendMessageService.sendInfoAboutUser(message, user);
                     sendMessageService.sndConfirmationMenu(message);
@@ -66,6 +69,7 @@ public class MessageHandler implements Handler<Message> {
                         case "Підтвердити✔":
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
+                            user.setStatement("Довідка з місця навчання");
                             userData.putUserInDataBase(user);
                             break;
                         case "Скасувати❌":
@@ -99,8 +103,6 @@ public class MessageHandler implements Handler<Message> {
                     cache.remove(user);
                     break;
                 case "/help":
-//                    userData.get(message.getChatId());
-
 
                     sendMessageService.sendInfoAboutUser(message, user);
                     break;

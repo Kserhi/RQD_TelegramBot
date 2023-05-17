@@ -71,7 +71,9 @@ public class SendMessageService {
                 .chatId(String.valueOf(user.getId()))
                 .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
                         "<b>Група: </b>" + user.getGroupe() + "\n" +
-                        "<b>Рік набору: </b>" + user.getYearEntry())
+                        "<b>Рік набору: </b>" + user.getYearEntry()+ "\n" +
+                        "<b>Номер телефону: </b>" + user.getPhoneNumber())
+
                 .build());
 
     }
