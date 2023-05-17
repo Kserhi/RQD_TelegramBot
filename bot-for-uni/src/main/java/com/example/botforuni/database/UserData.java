@@ -20,6 +20,9 @@ public class UserData {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
+
+
+
             Statement stmt= connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM users ;");
             while (rs.next()) System.out.println
@@ -29,6 +32,8 @@ public class UserData {
                             +rs.getString(7)+"  "+rs.getString(8)+"  "
                             +rs.getString(9)+"  ");
             connection.close();
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,9 +73,7 @@ public class UserData {
 
             Statement stmt= connection.createStatement();
 
-            stmt.executeUpdate("INSERT INTO users (teleqramId,LastName,FirstName,patronymicName,yearEntry," +
-                    "statement) VALUES("+botUseruser.getId().toString()+",'"+botUseruser.getFullName()+
-                    "','cddsdscro','ba',2231,'standart');");
+            stmt.executeUpdate("INSERT INTO users (teleqramId) мі("+botUseruser.getId().toString()+",";
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

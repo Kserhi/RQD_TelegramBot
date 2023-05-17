@@ -52,12 +52,12 @@ public class MessageHandler implements Handler<Message> {
                     sendMessageService.sendMessage(message, "Введіть вашу групу(Наприклад: КН23c)⤵");
                     break;
                 case INPUT_USER_GROUP:
-                    user.setGroup(message.getText());
+                    user.setGroupe(message.getText());
                     user.setPosition(Position.INPUT_USER_YEAR);
                     sendMessageService.sendMessage(message, "Введіть ваш рік набору(Наприклад: 2021)⤵");
                     break;
                 case INPUT_USER_YEAR:
-                    user.setYear(message.getText());
+                    user.setYearEntry(message.getText());
                     user.setPosition(Position.CONFIMATION);
                     sendMessageService.sendInfoAboutUser(message, user);
                     sendMessageService.sndConfirmationMenu(message);
@@ -102,7 +102,7 @@ public class MessageHandler implements Handler<Message> {
                 case "/help":
                     userData.get(message.getChatId());
 
-//                    userData.getAllUsers();
+
                     sendMessageService.sendInfoAboutUser(message, user);
                     break;
             }

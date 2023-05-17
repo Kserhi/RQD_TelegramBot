@@ -5,57 +5,75 @@ import org.springframework.stereotype.Component;
 @Component
 public class BotUser {
     private Long id;
-    private String username;
     private Position position;
     private String fullName;
-    private String group;
-    private String year;
+    private String yearEntry;
+    private String statement;
+    private String phoneNumber;
+    private String groupe;
+    private String mail;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     public String getFullName() {
         return fullName;
+    }
+
+    public String getYearEntry() {
+        return yearEntry;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getGroupe() {
+        return groupe;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getGroup() {
-        return group;
+    public void setYearEntry(String yearEntry) {
+        this.yearEntry = yearEntry;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setStatement(String statement) {
+        this.statement = statement;
     }
 
-    public String getYear() {
-        return year;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setGroupe(String groupe) {
+        this.groupe = groupe;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }
