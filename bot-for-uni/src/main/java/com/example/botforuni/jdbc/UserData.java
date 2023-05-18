@@ -11,9 +11,9 @@ import java.util.List;
 @Component
 public class UserData {
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/db_bot";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root12345678";
+    private static final String PASSWORD = "root";
 
 
     public void getAllUsersFormDataBasa(){
@@ -64,8 +64,9 @@ public class UserData {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             Statement stmt= connection.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT *,MAX(numbers)  FROM users  WHERE teleqramId="+userId.toString()+
-                    " GROUP BY(numbers);");
+            ResultSet rs=stmt.executeQuery("SELECT MAX(numbers) FROM users WHERE teleqramId="+userId.toString()+";");
+            rs.next();
+            rs=stmt.executeQuery("SELECT * FROM users WHERE numbers="+rs.getString(1)+";");
             rs.next();
 
             for (int i = 0; i < 5; i++) {
