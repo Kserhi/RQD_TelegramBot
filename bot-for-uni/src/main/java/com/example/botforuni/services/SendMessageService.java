@@ -69,11 +69,20 @@ public class SendMessageService {
 
     public void sendInfoAboutUserFromDataBasa(Message message){
         List<String> infoInLsit= userData.getUserInfoFomDataBasa(message.getChatId());
-        String info=infoInLsit.toString();
+//        String info=infoInLsit.toString();
+        String name = infoInLsit.get(0);
+        String group = infoInLsit.get(4);
+        String year = infoInLsit.get(1);
+        String phone = infoInLsit.get(3);
+        String stat = infoInLsit.get(2);
         messageSender.sendMessage(SendMessage.builder()
                 .parseMode("HTML")
                 .chatId(String.valueOf(message.getChatId()))
-                .text(info)
+                .text("<b>ПІБ: </b> " + name + "\n" +
+                        "<b>Група: </b>" + group + "\n" +
+                        "<b>Рік набору: </b>" + year + "\n" +
+                        "<b>Номер телефону: </b>" + phone + "\n" +
+                        "<b>Тип заявки: </b>" + stat)
                 .build());
     }
     public void sendInfoAboutUserForomCache(Message message,BotUser user){
@@ -105,6 +114,15 @@ public class SendMessageService {
                 .text("Нажміть, щоб підтвердити дані")
                 .chatId(String.valueOf(message.getChatId()))
                 .replyMarkup(Keyboards.confirmationKeyboard())
+                .build();
+        messageSender.sendMessage(ms1);
+    }
+
+    public void phoneNum(Message message){
+        SendMessage ms1= SendMessage.builder()
+                .text("Нажміть, щоб поділитися контактом")
+                .chatId(String.valueOf(message.getChatId()))
+                .replyMarkup(Keyboards.phoneKeyboard())
                 .build();
         messageSender.sendMessage(ms1);
     }

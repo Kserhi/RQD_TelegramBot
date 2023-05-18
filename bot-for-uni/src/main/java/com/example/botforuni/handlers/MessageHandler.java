@@ -54,6 +54,7 @@ public class MessageHandler implements Handler<Message> {
                     user.setYearEntry(message.getText());
                     user.setPosition(Position.INPUT_USER_PHONE);
                     sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
+                    sendMessageService.phoneNum(message);
                     break;
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getText());
@@ -68,6 +69,9 @@ public class MessageHandler implements Handler<Message> {
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                             user.setStatement("Довідка з місця навчання");
                             userData.putUserInDataBase(user);
+                            sendMessageService.sendMessage(message, "Ваша заявка⤵");
+                            sendMessageService.sendInfoAboutUserFromDataBasa(message);
+//                            userData.putUserInDataBase(user);
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
