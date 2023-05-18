@@ -14,11 +14,10 @@ public class MessageHandler implements Handler<Message> {
 
 
     private SendMessageService sendMessageService;
-    private final   UserData userData;
+    private final UserData userData;
     private final Cache<BotUser> cache;
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
-
         this.sendMessageService = sendMessageService;
     }
 
@@ -57,7 +56,7 @@ public class MessageHandler implements Handler<Message> {
                     sendMessageService.phoneNum(message);
                     break;
                 case INPUT_USER_PHONE:
-                    user.setPhoneNumber(message.getText());
+                    user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
                     sendMessageService.sendInfoAboutUserForomCache(message, user);
                     sendMessageService.sendConfirmationMenu(message);
