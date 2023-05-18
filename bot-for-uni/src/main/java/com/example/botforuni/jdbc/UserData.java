@@ -1,5 +1,5 @@
 
-package com.example.botforuni.database;
+package com.example.botforuni.jdbc;
 
 import com.example.botforuni.domain.BotUser;
 import org.springframework.stereotype.Component;
@@ -67,8 +67,8 @@ public class UserData {
             ResultSet rs=stmt.executeQuery("SELECT * FROM users WHERE teleqramId="+userId.toString()+";");
             rs.next();
 
-            for (int i = 0; i < 8; i++) {
-                info.add(i,rs.getString(i+1));
+            for (int i = 0; i < 5; i++) {
+                info.add(i,rs.getString(i+3));
             }
             connection.close();
 

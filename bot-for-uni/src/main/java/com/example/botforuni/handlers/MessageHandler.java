@@ -1,15 +1,12 @@
 package com.example.botforuni.handlers;
 
-import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
-import com.example.botforuni.database.UserData;
+import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
-import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
@@ -61,8 +58,8 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getText());
                     user.setPosition(Position.CONFIMATION);
-                    sendMessageService.sendInfoAboutUser(message, user);
-                    sendMessageService.sndConfirmationMenu(message);
+                    sendMessageService.sendInfoAboutUserForomCache(message, user);
+                    sendMessageService.sendConfirmationMenu(message);
                     break;
                 case CONFIMATION:
                     switch (message.getText()) {
@@ -104,7 +101,7 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case "/help":
 //                    userData.getUserInfoFomDataBasa(message.getChatId());
-                    sendMessageService.sendInfoAboutUser(message, user);
+                    sendMessageService.sendInfoAboutUserFromDataBasa(message);
                     break;
             }
         }

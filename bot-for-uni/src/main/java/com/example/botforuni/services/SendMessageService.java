@@ -1,8 +1,7 @@
 package com.example.botforuni.services;
 
 import com.example.botforuni.Keybords.Keyboards;
-import com.example.botforuni.cache.Cache;
-import com.example.botforuni.database.UserData;
+import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
@@ -68,26 +67,28 @@ public class SendMessageService {
 
 
 
-    public void sendInfoAboutUser(Message message,BotUser user){
-
-
-        List<String> ss= userData.getUserInfoFomDataBasa(message.getChatId());
-        String sss=ss.toString();
-
-
-
+    public void sendInfoAboutUserFromDataBasa(Message message){
+        List<String> infoInLsit= userData.getUserInfoFomDataBasa(message.getChatId());
+        String info=infoInLsit.toString();
         messageSender.sendMessage(SendMessage.builder()
                 .parseMode("HTML")
                 .chatId(String.valueOf(message.getChatId()))
-                                .text(sss)
-//                .text("<b>ПІБ: </b> " + ss. + "\n" +
-//                        "<b>Група: </b>" +  + "\n" +
-//                        "<b>Рік набору: </b>" + + "\n" +
-//                        "<b>Номер телефону: </b>"+
+                .text(info)
+                .build());
+    }
+    public void sendInfoAboutUserForomCache(Message message,BotUser user){
+        messageSender.sendMessage(SendMessage.builder()
+                                .parseMode("HTML")
+                                .chatId(String.valueOf(user.getId()))
+                                .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
+                                        "<b>Група: </b>" + user.getGroupe()+ "\n" +
+                                        "<b>Рік набору: </b>" + user.getYearEntry()+ "\n" +
+                                        "<b>Номер телефону: </b>" + user.getPhoneNumber())
 
                 .build());
 
     }
+
 
     public void sendMessage(Message message,String text){
         SendMessage ms1= SendMessage.builder()
@@ -98,7 +99,7 @@ public class SendMessageService {
 
         messageSender.sendMessage(ms1);
     }
-    public void sndConfirmationMenu(Message message){
+    public void sendConfirmationMenu(Message message){
 
         SendMessage ms1= SendMessage.builder()
                 .text("Нажміть, щоб підтвердити дані")
