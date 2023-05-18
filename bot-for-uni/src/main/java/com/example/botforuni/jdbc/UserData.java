@@ -2,7 +2,6 @@
 package com.example.botforuni.database;
 
 import com.example.botforuni.domain.BotUser;
-import com.mysql.cj.jdbc.ConnectionImpl;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -59,7 +58,7 @@ public class UserData {
     }
     public  List<String> getUserInfoFomDataBasa(Long userId){
         Connection connection;
-        List<String> sss =new ArrayList<>();
+        List<String> info =new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -67,14 +66,9 @@ public class UserData {
             Statement stmt= connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM users WHERE teleqramId="+userId.toString()+";");
             rs.next();
-            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "
-                            +rs.getString(3)+" "+rs.getString(4)+"  "
-                            +rs.getString(5)+" "+rs.getString(6)+"  "
-                            +rs.getString(7)+"  "+rs.getString(8));
-
 
             for (int i = 0; i < 8; i++) {
-                sss.add(i,rs.getString(i+1));
+                info.add(i,rs.getString(i+1));
             }
             connection.close();
 
@@ -84,6 +78,6 @@ public class UserData {
             e.printStackTrace();
         }
 
-        return sss;
+        return info;
     }
 }
