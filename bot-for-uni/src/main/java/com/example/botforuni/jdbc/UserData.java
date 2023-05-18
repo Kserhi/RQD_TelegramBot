@@ -64,7 +64,8 @@ public class UserData {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             Statement stmt= connection.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM users WHERE teleqramId="+userId.toString()+";");
+            ResultSet rs=stmt.executeQuery("SELECT *,MAX(numbers)  FROM users  WHERE teleqramId="+userId.toString()+
+                    " GROUP BY(numbers);");
             rs.next();
 
             for (int i = 0; i < 5; i++) {
