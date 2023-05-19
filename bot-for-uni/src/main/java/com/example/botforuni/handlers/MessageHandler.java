@@ -14,16 +14,15 @@ public class MessageHandler implements Handler<Message> {
 
 
     private SendMessageService sendMessageService;
-    private final UserData userData;
     private final Cache<BotUser> cache;
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
 
-    public MessageHandler( Cache<BotUser> cache,UserData userData) {
+    public MessageHandler( Cache<BotUser> cache) {
         this.cache = cache;
-        this.userData=userData;
+
     }
 
     private static BotUser generateUserFromMessage(Message message) {
@@ -67,7 +66,7 @@ public class MessageHandler implements Handler<Message> {
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                             user.setStatement("Довідка з місця навчання");
-                            userData.putUserInDataBase(user);
+                            UserData.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
                             sendMessageService.sendInfoAboutUserFromDataBasa(message);
 //                            userData.putUserInDataBase(user);

@@ -13,11 +13,11 @@ import java.util.List;
 @Component
 public class SendMessageService {
     private final MessageSender messageSender;
-    private final UserData userData;
 
 
-    public SendMessageService(MessageSender messageSender,UserData userData) {
-        this.userData=userData;
+
+    public SendMessageService(MessageSender messageSender) {
+
         this.messageSender = messageSender;
     }
 
@@ -68,7 +68,7 @@ public class SendMessageService {
 
 
     public void sendInfoAboutUserFromDataBasa(Message message){
-        List<String> infoInLsit= userData.getUserInfoFomDataBasa(message.getChatId());
+        List<String> infoInLsit= UserData.getUserInfoFomDataBasa(message.getChatId());
 //        String info=infoInLsit.toString();
         String name = infoInLsit.get(0);
         String group = infoInLsit.get(4);

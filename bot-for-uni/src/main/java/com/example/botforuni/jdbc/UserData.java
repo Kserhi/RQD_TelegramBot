@@ -8,15 +8,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class UserData {
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/db_bot";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root12345678";
+    private static final String PASSWORD = "root";
 
 
-    public void getAllUsersFormDataBasa(){
+    public static void getAllUsersFormDataBasa(){
         Connection connection;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -37,7 +36,7 @@ public class UserData {
         }
     }
 
-    public void putUserInDataBase(BotUser botUser){
+    public static void putUserInDataBase(BotUser botUser){
         Connection connection;
 
         try {
@@ -56,7 +55,7 @@ public class UserData {
             e.printStackTrace();
         }
     }
-    public  List<String> getUserInfoFomDataBasa(Long userId){
+    public static List<String> getUserInfoFomDataBasa(Long userId){
         Connection connection;
         List<String> info =new ArrayList<>();
 
