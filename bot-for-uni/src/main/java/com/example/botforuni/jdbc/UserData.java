@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UserData extends Config{
 
     private static Connection getConnectionToDataBasa() throws ClassNotFoundException,SQLException{
@@ -17,7 +18,8 @@ public class UserData extends Config{
     }
 
     public static void getAllUsersFormDataBasa(){
-        try(Connection connection=getConnectionToDataBasa()) {
+        try {
+            Connection connection=getConnectionToDataBasa();
             Statement stmt= connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM users ;");
             while (rs.next()) System.out.println
@@ -25,6 +27,7 @@ public class UserData extends Config{
                             +rs.getString(3)+" "+rs.getString(4)+"  "
                             +rs.getString(5)+" "+rs.getString(6)+"  "
                             +rs.getString(7)+"  "+rs.getString(8));
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -34,10 +37,8 @@ public class UserData extends Config{
 
     public static void putUserInDataBase(BotUser botUser){
 
-
         try {
            Connection connection=getConnectionToDataBasa();
-
             Statement stmt= connection.createStatement();
             stmt.executeUpdate(" INSERT INTO users (teleqramId,fullName,yearEntry,statement,phoneNumber," +
                     "groupe,mail) VALUES("+botUser.getId().toString()+",'"+botUser.getFullName()+"','"+
