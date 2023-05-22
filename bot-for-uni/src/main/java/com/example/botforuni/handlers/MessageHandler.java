@@ -100,6 +100,8 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case "/reset":
                     cache.remove(user);
+                    sendMessageService.deleteUser(message);
+                    sendMessageService.sendMessage(message, "Вашу заявку скасовано❗");
                     break;
                 case "/help":
 //                     UserData.getAllUsersFormDataBasa();

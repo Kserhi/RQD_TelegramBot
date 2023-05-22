@@ -127,5 +127,9 @@ public class SendMessageService {
         messageSender.sendMessage(ms1);
     }
 
+    public void deleteUser(Message message){
+        UserData.deleteUserFromDb(message.getChatId());
+    }
+
 
 }

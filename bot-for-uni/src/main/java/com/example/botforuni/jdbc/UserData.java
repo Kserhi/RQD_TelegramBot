@@ -76,4 +76,18 @@ public class UserData extends Config{
 
         return info;
     }
+
+    public static void deleteUserFromDb(Long userId){
+        try {
+            Connection connection = getConnectionToDataBasa();
+            Statement stmt = connection.createStatement();
+            stmt.execute("DELETE FROM users WHERE teleqramId = " + userId.toString() + ";");
+            connection.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+    }
 }
