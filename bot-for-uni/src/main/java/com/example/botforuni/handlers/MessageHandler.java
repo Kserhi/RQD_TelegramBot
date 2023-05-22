@@ -104,6 +104,7 @@ public class MessageHandler implements Handler<Message> {
                 case "/help":
 //                    userData.getUserInfoFomDataBasa(message.getChatId());
                     sendMessageService.sendInfoAboutUserFromDataBasa(message);
+
                     break;
             }
         }

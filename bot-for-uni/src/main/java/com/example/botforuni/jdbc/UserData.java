@@ -2,24 +2,22 @@
 package com.example.botforuni.jdbc;
 
 import com.example.botforuni.domain.BotUser;
-import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserData {
+public class UserData extends Config{
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-
+    private static Connection getConnectionToDataBasa() throws ClassNotFoundException,SQLException{
+        Connection connection;
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        return connection;
+    }
 
     public static void getAllUsersFormDataBasa(){
-        Connection connection;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        try(Connection connection=getConnectionToDataBasa()) {
             Statement stmt= connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM users ;");
             while (rs.next()) System.out.println
@@ -27,8 +25,6 @@ public class UserData {
                             +rs.getString(3)+" "+rs.getString(4)+"  "
                             +rs.getString(5)+" "+rs.getString(6)+"  "
                             +rs.getString(7)+"  "+rs.getString(8));
-            connection.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -37,11 +33,10 @@ public class UserData {
     }
 
     public static void putUserInDataBase(BotUser botUser){
-        Connection connection;
+
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+           Connection connection=getConnectionToDataBasa();
 
             Statement stmt= connection.createStatement();
             stmt.executeUpdate(" INSERT INTO users (teleqramId,fullName,yearEntry,statement,phoneNumber," +
@@ -56,12 +51,11 @@ public class UserData {
         }
     }
     public static List<String> getUserInfoFomDataBasa(Long userId){
-        Connection connection;
+
         List<String> info =new ArrayList<>();
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+           Connection connection=getConnectionToDataBasa();
             Statement stmt= connection.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT MAX(numbers) FROM users WHERE teleqramId="+userId.toString()+";");
             rs.next();
