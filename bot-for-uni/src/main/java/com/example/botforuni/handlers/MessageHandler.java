@@ -102,8 +102,7 @@ public class MessageHandler implements Handler<Message> {
                     cache.remove(user);
                     break;
                 case "/help":
-//                    userData.getUserInfoFomDataBasa(message.getChatId());
-                    sendMessageService.sendInfoAboutUserFromDataBasa(message);
+                    sendMessageService.sendMessage(message, "https://telegra.ph/POS%D0%86BNIK-KORISTUVACHA-TELEGRAM-BOTA-LDU-BZHD-05-22");
                     break;
             }
         }

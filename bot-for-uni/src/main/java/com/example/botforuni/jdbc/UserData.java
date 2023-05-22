@@ -10,9 +10,9 @@ import java.util.List;
 
 public class UserData {
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/databasa";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/db_bot";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "root12345678";
 
 
     public static void getAllUsersFormDataBasa(){
