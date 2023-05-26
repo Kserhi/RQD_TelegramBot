@@ -57,7 +57,7 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
-                    sendMessageService.sendInfoAboutUserForomCache(message, user);
+                    sendMessageService.sendInfoAboutUserFromCache(message, user);
                     sendMessageService.sendConfirmationMenu(message);
                     break;
                 case CONFIMATION:
@@ -69,7 +69,6 @@ public class MessageHandler implements Handler<Message> {
                             UserData.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
                             sendMessageService.sendInfoAboutUserFromDataBasa(message);
-//                            userData.putUserInDataBase(user);
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
@@ -81,7 +80,7 @@ public class MessageHandler implements Handler<Message> {
             }
         } else if (message.hasText()) {
             String textFromUser = message.getText();
-            switch (textFromUser) {//порівнюєм текст від юзера з командами
+            switch (textFromUser) {
                 case "/start":
                     sendMessageService.sendStartMenu(message);
                     sendMessageService.sendMessage(message, "Обирайте з меню нижче ⤵️");
@@ -104,8 +103,6 @@ public class MessageHandler implements Handler<Message> {
                     sendMessageService.sendMessage(message, "Вашу заявку скасовано❗");
                     break;
                 case "/help":
-//                     UserData.getAllUsersFormDataBasa();
-//                    sendMessageService.sendInfoAboutUserFromDataBasa(message);
                     sendMessageService.sendMessage(message, "https://telegra.ph/POS%D0%86BNIK-KORISTUVACHA-TELEGRAM-BOTA-LDU-BZHD-05-22");
 
                     break;

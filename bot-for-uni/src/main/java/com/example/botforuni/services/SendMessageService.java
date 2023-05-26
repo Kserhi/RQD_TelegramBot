@@ -68,13 +68,13 @@ public class SendMessageService {
 
 
     public void sendInfoAboutUserFromDataBasa(Message message){
-        List<String> infoInLsit= UserData.getUserInfoFomDataBasa(message.getChatId());
-//        String info=infoInLsit.toString();
-        String name = infoInLsit.get(0);
-        String group = infoInLsit.get(4);
-        String year = infoInLsit.get(1);
-        String phone = infoInLsit.get(3);
-        String stat = infoInLsit.get(2);
+        List<String> infoInList= UserData.getUserInfoFomDataBasa(message.getChatId());
+//        String info=infoInList.toString();
+        String name = infoInList.get(0);
+        String group = infoInList.get(4);
+        String year = infoInList.get(1);
+        String phone = infoInList.get(3);
+        String stat = infoInList.get(2);
         messageSender.sendMessage(SendMessage.builder()
                 .parseMode("HTML")
                 .chatId(String.valueOf(message.getChatId()))
@@ -85,7 +85,7 @@ public class SendMessageService {
                         "<b>Тип заявки: </b>" + stat)
                 .build());
     }
-    public void sendInfoAboutUserForomCache(Message message,BotUser user){
+    public void sendInfoAboutUserFromCache(Message message, BotUser user){
         messageSender.sendMessage(SendMessage.builder()
                                 .parseMode("HTML")
                                 .chatId(String.valueOf(user.getId()))
