@@ -17,24 +17,6 @@ public class UserData extends Config{
         return connection;
     }
 
-    public static void getAllUsersFormDataBasa(){
-        try {
-            Connection connection=getConnectionToDataBasa();
-            Statement stmt= connection.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM users ;");
-            while (rs.next()) System.out.println
-                    (rs.getString(1)+" "+rs.getString(2)+" "
-                            +rs.getString(3)+" "+rs.getString(4)+"  "
-                            +rs.getString(5)+" "+rs.getString(6)+"  "
-                            +rs.getString(7)+"  "+rs.getString(8));
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void putUserInDataBase(BotUser botUser){
 
         try {
