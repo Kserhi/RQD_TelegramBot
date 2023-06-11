@@ -12,7 +12,7 @@ public class UserData extends Config{
 
     private static Connection getConnectionToDataBasa() throws ClassNotFoundException,SQLException{
         Connection connection;
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName(JDBC_DRIVER);
         connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         return connection;
     }
