@@ -125,7 +125,7 @@ public class MessageHandler implements Handler<Message> {
                     messageSender.sendMessage(sendMessage);
                     break;
                 case "/menu":
-                 
+
                     break;
                 case "/reset":
 
