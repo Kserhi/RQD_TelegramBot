@@ -69,6 +69,7 @@ public class MessageHandler implements Handler<Message> {
                             UserData.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
                             sendMessageService.sendInfoAboutUserFromDataBasa(message);
+
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");

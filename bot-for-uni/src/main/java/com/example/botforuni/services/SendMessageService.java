@@ -15,17 +15,15 @@ public class SendMessageService {
     private final MessageSender messageSender;
 
 
-
     public SendMessageService(MessageSender messageSender) {
 
         this.messageSender = messageSender;
     }
 
 
+    public void sendStartMenu(Message message) {
 
-    public void sendStartMenu(Message message){
-
-       SendMessage ms1= SendMessage.builder()
+        SendMessage ms1 = SendMessage.builder()
                 .text("\uD83D\uDC4BПривіт! За допомогою цього чат-бота ви зможете зробити запит до деканату!")
                 .replyMarkup(Keyboards.starKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
@@ -37,10 +35,9 @@ public class SendMessageService {
     }
 
 
+    public void sendMenu(Message message) {
 
-    public void sendMenu(Message message){
-
-        SendMessage ms1= SendMessage.builder()
+        SendMessage ms1 = SendMessage.builder()
                 .text("Виберіть необхідну послугу ⤵ ")
                 .replyMarkup(Keyboards.menuKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
@@ -52,9 +49,9 @@ public class SendMessageService {
     }
 
 
-    public void sendRegMenu(Message message){
+    public void sendRegMenu(Message message) {
 
-        SendMessage ms1= SendMessage.builder()
+        SendMessage ms1 = SendMessage.builder()
                 .text("Пройдіть реєстрацію")
                 .replyMarkup(Keyboards.regKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
@@ -66,9 +63,8 @@ public class SendMessageService {
     }
 
 
-
-    public void sendInfoAboutUserFromDataBasa(Message message){
-        List<String> infoInList= UserData.getUserInfoFomDataBasa(message.getChatId());
+    public void sendInfoAboutUserFromDataBasa(Message message) {
+        List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId());
 //        String info=infoInList.toString();
         String name = infoInList.get(0);
         String group = infoInList.get(4);
@@ -76,6 +72,7 @@ public class SendMessageService {
         String phone = infoInList.get(3);
         String stat = infoInList.get(2);
         messageSender.sendMessage(SendMessage.builder()
+                .replyMarkup(Keyboards.starKeyboard())
                 .parseMode("HTML")
                 .chatId(String.valueOf(message.getChatId()))
                 .text("<b>ПІБ: </b> " + name + "\n" +
@@ -85,22 +82,23 @@ public class SendMessageService {
                         "<b>Тип заявки: </b>" + stat)
                 .build());
     }
-    public void sendInfoAboutUserFromCache(Message message, BotUser user){
+
+    public void sendInfoAboutUserFromCache(Message message, BotUser user) {
         messageSender.sendMessage(SendMessage.builder()
-                                .parseMode("HTML")
-                                .chatId(String.valueOf(user.getId()))
-                                .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
-                                        "<b>Група: </b>" + user.getGroupe()+ "\n" +
-                                        "<b>Рік набору: </b>" + user.getYearEntry()+ "\n" +
-                                        "<b>Номер телефону: </b>" + user.getPhoneNumber())
+                .parseMode("HTML")
+                .chatId(String.valueOf(user.getId()))
+                .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
+                        "<b>Група: </b>" + user.getGroupe() + "\n" +
+                        "<b>Рік набору: </b>" + user.getYearEntry() + "\n" +
+                        "<b>Номер телефону: </b>" + user.getPhoneNumber())
 
                 .build());
 
     }
 
 
-    public void sendMessage(Message message,String text){
-        SendMessage ms1= SendMessage.builder()
+    public void sendMessage(Message message, String text) {
+        SendMessage ms1 = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(message.getChatId()))
                 .build();
@@ -108,9 +106,10 @@ public class SendMessageService {
 
         messageSender.sendMessage(ms1);
     }
-    public void sendConfirmationMenu(Message message){
 
-        SendMessage ms1= SendMessage.builder()
+    public void sendConfirmationMenu(Message message) {
+
+        SendMessage ms1 = SendMessage.builder()
                 .text("Нажміть, щоб підтвердити дані")
                 .chatId(String.valueOf(message.getChatId()))
                 .replyMarkup(Keyboards.confirmationKeyboard())
@@ -118,8 +117,8 @@ public class SendMessageService {
         messageSender.sendMessage(ms1);
     }
 
-    public void phoneNum(Message message){
-        SendMessage ms1= SendMessage.builder()
+    public void phoneNum(Message message) {
+        SendMessage ms1 = SendMessage.builder()
                 .text("Нажміть, щоб поділитися контактом")
                 .chatId(String.valueOf(message.getChatId()))
                 .replyMarkup(Keyboards.phoneKeyboard())
@@ -127,7 +126,7 @@ public class SendMessageService {
         messageSender.sendMessage(ms1);
     }
 
-    public void deleteUser(Message message){
+    public void deleteUser(Message message) {
         UserData.deleteUserFromDb(message.getChatId());
     }
 
