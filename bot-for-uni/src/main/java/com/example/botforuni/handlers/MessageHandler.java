@@ -1,26 +1,43 @@
 package com.example.botforuni.handlers;
 
 import com.example.botforuni.cache.Cache;
-import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
+import com.example.botforuni.jdbc.UserData;
+import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class MessageHandler implements Handler<Message> {
 
 
     private SendMessageService sendMessageService;
+    private MessageSender messageSender;
+
+
+
     private final Cache<BotUser> cache;
+
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
+    @Autowired
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
 
-    public MessageHandler( Cache<BotUser> cache) {
+    public MessageHandler(Cache<BotUser> cache) {
         this.cache = cache;
 
     }
@@ -80,33 +97,43 @@ public class MessageHandler implements Handler<Message> {
                     break;
             }
         } else if (message.hasText()) {
-            String textFromUser = message.getText();
-            switch (textFromUser) {
+            switch (message.getText()) {
                 case "/start":
-                    sendMessageService.sendStartMenu(message);
-                    sendMessageService.sendMessage(message, "Обирайте з меню нижче ⤵️");
+                    SendMessage sendMessage = new SendMessage();
+
+                    sendMessage.setChatId(String.valueOf(message.getChatId()));
+
+                    sendMessage.setText("провірочка");
+
+
+                    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+                    List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
+                    keyboardButtonList.add(
+                            InlineKeyboardButton.builder()
+                                    .text("кнопка")
+                                    .callbackData("/menu")
+                                    .build()
+                    );
+                    keyboardButtonList.add(
+                            InlineKeyboardButton.builder()
+                                    .text("конопка2")
+                                    .callbackData("/reset")
+                                    .build()
+                    );
+                    inlineKeyboardMarkup.setKeyboard(Collections.singletonList(keyboardButtonList));
+                    sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+                    messageSender.sendMessage(sendMessage);
                     break;
-                case "❗Потрібна послуга деканату":
-                case "❌ Скасувати":
                 case "/menu":
-                    sendMessageService.sendMenu(message);
-                    break;
-                case "Створити довідку з місця навчання":
-                    sendMessageService.sendRegMenu(message);
-                    break;
-                case "Реєстрація":
-                    cache.add(generateUserFromMessage(message));
-                    sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
+                 
                     break;
                 case "/reset":
-                    cache.remove(user);
-                    sendMessageService.deleteUser(message);
-                    sendMessageService.sendMessage(message, "Вашу заявку скасовано❗");
-                    break;
-                case "/help":
-                    sendMessageService.sendMessage(message, "https://telegra.ph/POS%D0%86BNIK-KORISTUVACHA-TELEGRAM-BOTA-LDU-BZHD-05-22");
 
                     break;
+                case "/help":
+
+                    break;
+
             }
         }
     }
