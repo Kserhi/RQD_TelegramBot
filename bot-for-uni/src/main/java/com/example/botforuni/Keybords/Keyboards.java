@@ -1,32 +1,45 @@
 package com.example.botforuni.Keybords;
 
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Keyboards {
     //переніс сюда менюшки шоб тягнути їх без проблем
 
-    public static ReplyKeyboardMarkup menuKeyboard() {
+    public static InlineKeyboardMarkup menuKeyboard() {
         //менюшка вибору запиту
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-//        replyKeyboardMarkup.setOneTimeKeyboard(true);
+        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Замовити довітку")
+                                        .callbackData("choose_statement")
+                                        .build()
+                        ))
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Переглянути мої довідки")
+                                        .callbackData("statements")
+                                        .build()
+                        )
+                )
+                .build();
 
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
 
 
-        row1.add("Створити довідку з місця навчання");
 
-        keyboardRows.add(row1);
 
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-        return replyKeyboardMarkup;
+
+
+        return inlineKeyboardMarkup;
 
     }
     public static ReplyKeyboardMarkup regKeyboard() {
@@ -54,21 +67,22 @@ public class Keyboards {
 
     }
 
-    public static ReplyKeyboardMarkup starKeyboard() {
+    public static InlineKeyboardMarkup starKeyboard() {
         ///менюшка після старту ❗Потрібна послуга деканату
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        InlineKeyboardMarkup inlineKeyboardMarkup= InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("❗Потрібна послуга деканату")
+                                        .callbackData("/menu").build()
 
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-//        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add("❗Потрібна послуга деканату");
-        keyboardRows.add(keyboardRow);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-        return replyKeyboardMarkup;
+                        )
+
+                )
+                .build();
+        return inlineKeyboardMarkup;
 
     }
 
@@ -95,13 +109,15 @@ public class Keyboards {
 
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
-//        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(KeyboardButton.builder().text("Номер телефону")
-                        .requestContact(true)
-                                .build());
+        keyboardRow.add(KeyboardButton.builder()
+                .text("Номер телефону")
+                .requestContact(true)
+                .build());
+
         keyboardRows.add(keyboardRow);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         return replyKeyboardMarkup;

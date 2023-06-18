@@ -8,14 +8,7 @@ import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class MessageHandler implements Handler<Message> {
@@ -25,13 +18,13 @@ public class MessageHandler implements Handler<Message> {
     private MessageSender messageSender;
 
 
-
     private final Cache<BotUser> cache;
 
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
+
     @Autowired
     public void setMessageSender(MessageSender messageSender) {
         this.messageSender = messageSender;
@@ -99,39 +92,13 @@ public class MessageHandler implements Handler<Message> {
         } else if (message.hasText()) {
             switch (message.getText()) {
                 case "/start":
-                    SendMessage sendMessage = new SendMessage();
-
-                    sendMessage.setChatId(String.valueOf(message.getChatId()));
-
-                    sendMessage.setText("провірочка");
-
-
-                    InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                    List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
-                    keyboardButtonList.add(
-                            InlineKeyboardButton.builder()
-                                    .text("кнопка")
-                                    .callbackData("/menu")
-                                    .build()
-                    );
-                    keyboardButtonList.add(
-                            InlineKeyboardButton.builder()
-                                    .text("конопка2")
-                                    .callbackData("/reset")
-                                    .build()
-                    );
-                    inlineKeyboardMarkup.setKeyboard(Collections.singletonList(keyboardButtonList));
-                    sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-                    messageSender.sendMessage(sendMessage);
+                    sendMessageService.sendStartMenu(message);
                     break;
                 case "/menu":
-
-                    break;
-                case "/reset":
-
+                    sendMessageService.sendMenu(message);
                     break;
                 case "/help":
-
+                    sendMessageService.sendHelp(message);
                     break;
 
             }

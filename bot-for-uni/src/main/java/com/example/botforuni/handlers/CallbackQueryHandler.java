@@ -4,8 +4,8 @@ import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
@@ -29,11 +29,21 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
     @Override
     public void choose(CallbackQuery callbackQuery) {
-        if (callbackQuery.getData().equals("/menu")) {
-            SendMessage sendMessage=SendMessage.builder()
-                    .text("Вдало")
-                    .chatId(String.valueOf(callbackQuery.getMessage().getChatId())).build();
-            messageSender.sendMessage(sendMessage);
+        Message message =callbackQuery.getMessage();
+        switch (callbackQuery.getData()){
+            case "/menu":
+                sendMessageService.sendMenu(message);
+                break;
+            case "choose_statement":
+                sendMessageService.sendMessage(message,"вдало вибір");
+                break;
+            case "statements":
+                sendMessageService.sendMessage(message,"Ваші довідки:");
+
+                break;
+
+        }
+
         }
     }
-}
+

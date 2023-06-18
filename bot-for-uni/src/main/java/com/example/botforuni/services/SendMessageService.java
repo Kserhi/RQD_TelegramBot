@@ -7,7 +7,10 @@ import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -65,7 +68,6 @@ public class SendMessageService {
 
     public void sendInfoAboutUserFromDataBasa(Message message) {
         List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId());
-//        String info=infoInList.toString();
         String name = infoInList.get(0);
         String group = infoInList.get(4);
         String year = infoInList.get(1);
@@ -125,6 +127,29 @@ public class SendMessageService {
                 .build();
         messageSender.sendMessage(ms1);
     }
+
+        public void sendHelp(Message message){
+            SendMessage ms1 = SendMessage.builder()
+                    .text("Довідник для бота")
+                    .replyMarkup(
+                            InlineKeyboardMarkup.builder()
+                                    .keyboardRow(
+                                            Collections.singletonList(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Посилання")
+                                                            .url("https://telegra.ph/Pos%D1%96bni" +
+                                                                    "k-koristuvacha-dlya-Bota-LDU-BZHD-02-04")
+                                                            .build()
+                                            ))
+                                    .build()
+                    )
+                    .chatId(String.valueOf(message.getChatId()))
+                    .build();
+
+
+            messageSender.sendMessage(ms1);
+
+        }
 
     public void deleteUser(Message message) {
         UserData.deleteUserFromDb(message.getChatId());
