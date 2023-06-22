@@ -52,6 +52,34 @@ public class SendMessageService {
     }
 
 
+
+    public void choose_statement(Message message){
+
+
+        SendMessage ms=SendMessage.builder()
+                .text("Виберіть тип довідки")
+                .chatId(String.valueOf(message.getChatId()))
+                .replyMarkup( InlineKeyboardMarkup.builder()
+                        .keyboardRow(
+                                Collections.singletonList(
+                                        InlineKeyboardButton.builder()
+                                                .text("Замовити довітку з місця навчання")
+                                                .callbackData("statementForStudy")
+                                                .build()
+                                ))
+                        .keyboardRow(
+                                Collections.singletonList(
+                                        InlineKeyboardButton.builder()
+                                                .text("Замовити довітку для військомату")
+                                                .callbackData("statementForMilitaryOfficer")
+                                                .build()
+                                )
+                        )
+                        .build())
+                .build();
+
+        messageSender.sendMessage(ms);
+    }
     public void sendRegMenu(Message message) {
 
         SendMessage ms1 = SendMessage.builder()
@@ -66,8 +94,8 @@ public class SendMessageService {
     }
 
 
-    public void sendInfoAboutUserFromDataBasa(Message message) {
-        List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId());
+    public void sendInfoAboutUserFromDataBasa(Message message,String tupStatment) {
+        List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId(),tupStatment);
         String name = infoInList.get(0);
         String group = infoInList.get(4);
         String year = infoInList.get(1);
