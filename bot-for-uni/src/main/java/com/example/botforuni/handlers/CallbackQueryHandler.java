@@ -49,7 +49,16 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
             case "statements":
                 sendMessageService.sendMessage(message,"Ваші довідки:");
+<<<<<<< HEAD
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
+=======
+<<<<<<< HEAD
+                sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
+=======
+                sendMessageService.sendInfoAboutUserFromDataBasa(message,"Довідка з місця навчання");
+                sendMessageService.sendInfoAboutUserFromDataBasa(message,"Довідка для військомату");
+>>>>>>> 6f63b87767fa1130bcaaecb64c56b8c029f3c163
+>>>>>>> 8ea85061dfe14e24951da0f1067897aa8e269e08
                 break;
 
             case "statementForMilitaryOfficer":
