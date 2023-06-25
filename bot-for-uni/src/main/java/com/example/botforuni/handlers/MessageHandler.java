@@ -35,12 +35,7 @@ public class MessageHandler implements Handler<Message> {
 
     }
 
-    private static BotUser generateUserFromMessage(Message message) {
-        BotUser user = new BotUser();
-        user.setId(message.getChatId());
-        user.setPosition(Position.INPUT_USER_NAME);
-        return user;
-    }
+
 
     @Override
     public void choose(Message message) {
@@ -75,16 +70,16 @@ public class MessageHandler implements Handler<Message> {
                         case "Підтвердити✔":
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            user.setStatement("Довідка з місця навчання");
                             UserData.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                            sendMessageService.sendInfoAboutUserFromDataBasa(message);
+                            sendMessageService.sendInfoAboutUserFromDataBasa(message, user.getStatement());
 
                             break;
                         case "Скасувати❌":
                             sendMessageService.sendMessage(message, "Введіть дані ще раз");
                             sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
                             user.setPosition(Position.INPUT_USER_NAME);
+
                             break;
                     }
                     break;

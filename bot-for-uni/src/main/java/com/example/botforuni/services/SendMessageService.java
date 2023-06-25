@@ -52,6 +52,34 @@ public class SendMessageService {
     }
 
 
+
+    public void choose_statement(Message message){
+
+
+        SendMessage ms=SendMessage.builder()
+                .text("Виберіть тип довідки")
+                .chatId(String.valueOf(message.getChatId()))
+                .replyMarkup( InlineKeyboardMarkup.builder()
+                        .keyboardRow(
+                                Collections.singletonList(
+                                        InlineKeyboardButton.builder()
+                                                .text("Замовити довітку з місця навчання")
+                                                .callbackData("statementForStudy")
+                                                .build()
+                                ))
+                        .keyboardRow(
+                                Collections.singletonList(
+                                        InlineKeyboardButton.builder()
+                                                .text("Замовити довітку для військомату")
+                                                .callbackData("statementForMilitaryOfficer")
+                                                .build()
+                                )
+                        )
+                        .build())
+                .build();
+
+        messageSender.sendMessage(ms);
+    }
     public void sendRegMenu(Message message) {
 
         SendMessage ms1 = SendMessage.builder()
@@ -66,8 +94,8 @@ public class SendMessageService {
     }
 
 
-    public void sendInfoAboutUserFromDataBasa(Message message) {
-        List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId());
+    public void sendInfoAboutUserFromDataBasa(Message message,String tupStatment) {
+        List<String> infoInList = UserData.getUserInfoFomDataBasa(message.getChatId(),tupStatment);
         String name = infoInList.get(0);
         String group = infoInList.get(4);
         String year = infoInList.get(1);
@@ -84,6 +112,45 @@ public class SendMessageService {
                         "<b>Тип заявки: </b>" + stat)
                 .build());
     }
+
+    public void sendAllInfoAboutUserFromDataBasa(Message message) {
+        List<String> infoInList1= UserData.getUserInfoFomDataBasa(message.getChatId(),UserData.STATEMENTFORSTUDY);
+        List<String> infoInList2 = UserData.getUserInfoFomDataBasa(message.getChatId(),UserData.STATEMENTFORMILITARI);
+
+        String name = infoInList1.get(2);
+        String group = infoInList1.get(6);
+        String year = infoInList1.get(3);
+        String phone = infoInList1.get(5);
+        String statatment = infoInList1.get(4);
+
+        messageSender.sendMessage(SendMessage.builder()
+                .parseMode("HTML")
+                .chatId(String.valueOf(message.getChatId()))
+                .text("<b>ПІБ: </b> " + name + "\n" +
+                        "<b>Група: </b>" + group + "\n" +
+                        "<b>Рік набору: </b>" + year + "\n" +
+                        "<b>Номер телефону: </b>" + phone + "\n" +
+                        "<b>Тип заявки: </b>" + statatment)
+                .build());
+        name = infoInList2.get(2);
+        group = infoInList2.get(6);
+        year = infoInList2.get(3);
+        phone = infoInList2.get(5);
+        statatment = infoInList2.get(4);
+
+        messageSender.sendMessage(SendMessage.builder()
+                .parseMode("HTML")
+                .chatId(String.valueOf(message.getChatId()))
+                        .replyMarkup(Keyboards.starKeyboard())
+                .text("<b>ПІБ: </b> " + name + "\n" +
+                        "<b>Група: </b>" + group + "\n" +
+                        "<b>Рік набору: </b>" + year + "\n" +
+                        "<b>Номер телефону: </b>" + phone + "\n" +
+                        "<b>Тип заявки: </b>" + statatment)
+                .build());
+
+    }
+
 
     public void sendInfoAboutUserFromCache(Message message, BotUser user) {
         messageSender.sendMessage(SendMessage.builder()
@@ -151,9 +218,7 @@ public class SendMessageService {
 
         }
 
-    public void deleteUser(Message message) {
-        UserData.deleteUserFromDb(message.getChatId());
-    }
+
 
 
 }
