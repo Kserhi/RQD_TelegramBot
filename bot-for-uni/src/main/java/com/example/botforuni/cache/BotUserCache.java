@@ -1,7 +1,9 @@
 package com.example.botforuni.cache;
 
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.domain.Position;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,4 +39,12 @@ public class BotUserCache implements Cache<BotUser>{
     public List<BotUser> getAll() {
         return new ArrayList<>(users.values());
     }
+
+   public static BotUser generateUserFromMessage(Message message) {
+        BotUser user = new BotUser();
+        user.setId(message.getChatId());
+        user.setPosition(Position.INPUT_USER_NAME);
+        return user;
+    }
+
 }
