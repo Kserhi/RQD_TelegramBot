@@ -3,6 +3,7 @@ package com.example.botforuni.handlers;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "choose_statement":
                 sendMessageService.choose_statement(message);
 
-
                 break;
             case "statements":
                 sendMessageService.sendMessage(message,"Ваші довідки:");
@@ -53,16 +53,16 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
 
             case "statementForMilitaryOfficer":
-                sendMessageService.sendMessage(message,"військо");
+                sendMessageService.sendMessage(message,"Введіть своє повне імя");
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement("Довідка для військомату");
+                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORMILITARI);
 
                 break;
 
             case "statementForStudy":
-                sendMessageService.sendMessage(message,"Реєстрація студента");
+                sendMessageService.sendMessage(message,"Введіть своє повне імя");
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement("Довідка з місця навчання");
+                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORSTUDY);
 
                 break;
         }

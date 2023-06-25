@@ -7,12 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class UserData extends Config {
 
-    public static final String STATEMENTFORMILITARI="Довідка для військомату";
-    public static final String STATEMENTFORSTUDY="Довідка з місця навчання";
+    public static final String STATEMENTFORMILITARI = "Довідка для військомату";
+    public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
+
     private static Connection getConnectionToDataBasa() throws ClassNotFoundException, SQLException {
         Connection connection;
         Class.forName(JDBC_DRIVER);
@@ -47,33 +46,29 @@ public class UserData extends Config {
         }
     }
 
-    public static List<String> getUserInfoFomDataBasa(Long userId, String tupStetment) {
+    public static List<String> getMilitariStatment(Long userId) {
 
         List<String> info = new ArrayList<>();
 
         try {
             Connection connection = getConnectionToDataBasa();
             Statement stmt = connection.createStatement();
-            if (tupStetment.equals(STATEMENTFORSTUDY)) {
-                ResultSet rs = stmt.executeQuery("SELECT MAX(numbers) FROM users WHERE teleqramId=" +
-                        userId.toString() + ";");
-                rs.next();
-                rs = stmt.executeQuery("SELECT * FROM users WHERE numbers=" + rs.getString(1) + ";");
-                rs.next();
 
-                for (int i = 0; i < 8; i++) {
-                    info.add(i, rs.getString(i+1));
-                }
-            } else if (tupStetment.equals(STATEMENTFORMILITARI)) {
                 ResultSet rs = stmt.executeQuery("SELECT MAX(numbers) FROM militari WHERE teleqramId=" +
                         userId.toString() + ";");
                 rs.next();
                 rs = stmt.executeQuery("SELECT * FROM militari WHERE numbers=" + rs.getString(1) + ";");
-                rs.next();
-                for (int i = 0; i < 8; i++) {
-                    info.add(i, rs.getString(i+1));
+
+                if(rs.next()){
+                    for (int i = 0; i < 8; i++) {
+                        info.add(i, rs.getString(i + 1));
+                    }
+
+                }else {
+                    return info;
                 }
-            }
+
+
 
             connection.close();
 
@@ -85,6 +80,39 @@ public class UserData extends Config {
 
         return info;
     }
+
+    public static List<String> getStudiStatment(Long userId) {
+        List<String> info = new ArrayList<>();
+        try {
+            Connection connection = getConnectionToDataBasa();
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT MAX(numbers) FROM users WHERE teleqramId=" +
+                    userId.toString() + ";");
+            rs.next();
+            rs = stmt.executeQuery("SELECT * FROM users WHERE numbers=" + rs.getString(1) + ";");
+
+            if(rs.next()){
+                for (int i = 0; i < 8; i++) {
+                    info.add(i, rs.getString(i + 1));
+                }
+
+            }else {
+                return info;
+            }
+
+
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return info;
+    }
+
 
 //    public static void deleteUserFromDb(Long userId) {
 //        try {
