@@ -54,12 +54,11 @@ public class UserData extends Config {
             Connection connection = getConnectionToDataBasa();
             Statement stmt = connection.createStatement();
 
-                ResultSet rs = stmt.executeQuery("SELECT MAX(numbers) FROM militari WHERE teleqramId=" +
-                        userId.toString() + ";");
-                rs.next();
-                rs = stmt.executeQuery("SELECT * FROM militari WHERE numbers=" + rs.getString(1) + ";");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM militari WHERE numbers = (SELECT " +
+                    "MAX(numbers) FROM militari WHERE teleqramId ="+userId.toString()+")");
 
-                if(rs.next()){
+
+            if(rs.next()){
                     for (int i = 0; i < 8; i++) {
                         info.add(i, rs.getString(i + 1));
                     }
@@ -87,10 +86,10 @@ public class UserData extends Config {
             Connection connection = getConnectionToDataBasa();
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT MAX(numbers) FROM users WHERE teleqramId=" +
-                    userId.toString() + ";");
-            rs.next();
-            rs = stmt.executeQuery("SELECT * FROM users WHERE numbers=" + rs.getString(1) + ";");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE numbers = (SELECT " +
+                    "MAX(numbers) FROM users WHERE teleqramId ="+userId.toString()+")");
+
+
 
             if(rs.next()){
                 for (int i = 0; i < 8; i++) {
