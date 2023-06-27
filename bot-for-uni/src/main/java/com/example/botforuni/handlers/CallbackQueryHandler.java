@@ -45,7 +45,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "choose_statement":
                 sendMessageService.choose_statement(message);
 
-
                 break;
             case "statements":
                 sendMessageService.sendMessage(message,"Ваші довідки:");
@@ -54,7 +53,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
 
             case "statementForMilitaryOfficer":
-                sendMessageService.sendMessage(message,"військо");
+                sendMessageService.sendMessage(message,"Реєстрація студента");
                 cache.add(BotUserCache.generateUserFromMessage(message));
                 cache.findBy(message.getChatId()).setStatement("Довідка для військомату");
 
@@ -62,6 +61,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             case "statementForStudy":
                 sendMessageService.sendMessage(message,"Реєстрація студента");
+                sendMessageService.sendRegMenu(message);
                 cache.add(BotUserCache.generateUserFromMessage(message));
                 cache.findBy(message.getChatId()).setStatement("Довідка з місця навчання");
 

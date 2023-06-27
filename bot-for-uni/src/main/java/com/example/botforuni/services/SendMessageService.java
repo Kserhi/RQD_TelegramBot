@@ -57,20 +57,20 @@ public class SendMessageService {
 
 
         SendMessage ms=SendMessage.builder()
-                .text("Виберіть тип довідки")
+                .text("Виберіть тип довідки⤵")
                 .chatId(String.valueOf(message.getChatId()))
                 .replyMarkup( InlineKeyboardMarkup.builder()
                         .keyboardRow(
                                 Collections.singletonList(
                                         InlineKeyboardButton.builder()
-                                                .text("Замовити довітку з місця навчання")
+                                                .text("Замовити довідку з місця навчання")
                                                 .callbackData("statementForStudy")
                                                 .build()
                                 ))
                         .keyboardRow(
                                 Collections.singletonList(
                                         InlineKeyboardButton.builder()
-                                                .text("Замовити довітку для військомату")
+                                                .text("Замовити довідку для військомату")
                                                 .callbackData("statementForMilitaryOfficer")
                                                 .build()
                                 )
@@ -83,7 +83,7 @@ public class SendMessageService {
     public void sendRegMenu(Message message) {
 
         SendMessage ms1 = SendMessage.builder()
-                .text("Пройдіть реєстрацію")
+                .text("Пройдіть реєстрацію⤵")
                 .replyMarkup(Keyboards.regKeyboard())
                 .chatId(String.valueOf(message.getChatId()))
                 .build();
