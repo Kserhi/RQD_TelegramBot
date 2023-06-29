@@ -19,7 +19,7 @@ public class Keyboards {
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
-                                        .text("Замовити довітку")
+                                        .text("Замовити довідку")
                                         .callbackData("choose_statement")
                                         .build()
                         ))

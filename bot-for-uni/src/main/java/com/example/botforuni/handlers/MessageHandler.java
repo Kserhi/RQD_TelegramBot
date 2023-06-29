@@ -42,6 +42,9 @@ public class MessageHandler implements Handler<Message> {
         BotUser user = cache.findBy(message.getChatId());
 
         if (user != null && user.getPosition() != Position.NONE) {
+            //нагадування для себе тут буде перевірка чи юзер має довідку для навчання чи для війська
+            // в залежності від того який тип заявки така і реєстрація
+
             switch (user.getPosition()) {
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
@@ -72,7 +75,7 @@ public class MessageHandler implements Handler<Message> {
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                             UserData.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                            sendMessageService.sendInfoAboutUserFromDataBasa(message, user.getStatement());
+                            sendMessageService.sendInfoAboutUserFromCache(message,user);
 
                             break;
                         case "Скасувати❌":

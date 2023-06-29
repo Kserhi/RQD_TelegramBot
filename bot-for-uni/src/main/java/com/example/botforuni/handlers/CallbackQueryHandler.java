@@ -3,6 +3,7 @@ package com.example.botforuni.handlers;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,22 +49,29 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
             case "statements":
                 sendMessageService.sendMessage(message,"Ваші довідки:");
-                sendMessageService.sendInfoAboutUserFromDataBasa(message,"Довідка з місця навчання");
-                sendMessageService.sendInfoAboutUserFromDataBasa(message,"Довідка для військомату");
+                sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
                 break;
 
             case "statementForMilitaryOfficer":
+
                 sendMessageService.sendMessage(message,"Реєстрація студента");
+
+                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement("Довідка для військомату");
+                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORMILITARI);
 
                 break;
 
             case "statementForStudy":
+
                 sendMessageService.sendMessage(message,"Реєстрація студента");
                 sendMessageService.sendRegMenu(message);
+
+                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement("Довідка з місця навчання");
+                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORSTUDY);
 
                 break;
         }
