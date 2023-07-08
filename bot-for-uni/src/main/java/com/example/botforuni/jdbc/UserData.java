@@ -6,7 +6,6 @@ import com.example.botforuni.domain.BotUser;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 
 public class UserData {
@@ -14,28 +13,23 @@ public class UserData {
     public static final String STATEMENTFORMILITARI = "Довідка для військомату";
     public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
 
-//    private static String url;
-//    private static String username;
-//    private static String password;
-//    private static String jdbc_driver;
+    private static String url_key = "db.url";
+    private static String username_key = "db.username";
+    private static String password_key = "db.password";
+//    private static String jdbc_driver_key = "db.jdbcDriver";
 
 
     private static Connection getConnectionToDataBasa() throws ClassNotFoundException, SQLException {
-        Properties properties = new Properties();
-//        try (FileInputStream input = new FileInputStream("application.properties")) {
-//            properties.load(input);
-//            url = properties.getProperty("telegram.bot.url");
-//            username = properties.getProperty("telegram.bot.userName");
-//            password = properties.getProperty("telegram.bot.password");
-//            jdbc_driver = properties.getProperty("telegram.bot.jdbcDriver");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         Connection connection;
-        Class.forName(properties.getProperty("telegram.bot.jdbcDriver"));
-        connection = DriverManager.getConnection(properties.getProperty("telegram.bot.url"),properties.getProperty("telegram.bot.userName"), properties.getProperty("telegram.bot.password"));
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(
+                PropertiesUtil.get(url_key),
+                PropertiesUtil.get(username_key),
+                PropertiesUtil.get(password_key)
 
+        );
         return connection;
+
     }
 
 
