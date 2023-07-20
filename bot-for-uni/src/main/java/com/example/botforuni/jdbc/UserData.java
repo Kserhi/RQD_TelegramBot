@@ -39,9 +39,7 @@ public class UserData extends Config {
             }
 
             connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -71,9 +69,7 @@ public class UserData extends Config {
 
             connection.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -87,43 +83,25 @@ public class UserData extends Config {
             Statement stmt = connection.createStatement();
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE numbers = (SELECT " +
-                    "MAX(numbers) FROM users WHERE teleqramId ="+userId.toString()+")");
+                    "MAX(numbers) FROM users WHERE teleqramId =" + userId.toString() + ")");
 
 
-
-            if(rs.next()){
+            if (rs.next()) {
                 for (int i = 0; i < 8; i++) {
                     info.add(i, rs.getString(i + 1));
                 }
 
-            }else {
+            } else {
                 return info;
             }
 
 
             connection.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         return info;
-    }
+    }}
 
-
-//    public static void deleteUserFromDb(Long userId) {
-//        try {
-//            Connection connection = getConnectionToDataBasa();
-//            Statement stmt = connection.createStatement();
-//            stmt.execute("DELETE FROM users WHERE teleqramId = " + userId.toString() + ";");
-//            connection.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-}
