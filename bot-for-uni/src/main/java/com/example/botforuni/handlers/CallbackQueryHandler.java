@@ -31,7 +31,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         this.messageSender = messageSender;
     }
 
-    public CallbackQueryHandler(MessageSender messageSender,Cache<BotUser> cache) {
+    public CallbackQueryHandler(MessageSender messageSender, Cache<BotUser> cache) {
         this.messageSender = messageSender;
         this.cache = cache;
     }

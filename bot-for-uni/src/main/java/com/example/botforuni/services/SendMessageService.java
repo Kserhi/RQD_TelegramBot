@@ -1,8 +1,8 @@
 package com.example.botforuni.services;
 
 import com.example.botforuni.Keybords.Keyboards;
-import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
