@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserData extends Config {
-
     public static final String STATEMENTFORMILITARI = "Довідка для військомату";
     public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
-
     private static Connection getConnectionToDataBasa() throws ClassNotFoundException, SQLException {
         Connection connection;
         Class.forName(JDBC_DRIVER);
