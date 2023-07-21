@@ -2,103 +2,45 @@
 package com.example.botforuni.jdbc;
 
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.repositories.BotUserRepository;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserData extends Config {
+public class UserData {
+    private final BotUserRepository botUserRepository;
+    
+    public UserData(BotUserRepository botUserRepository) {
+        this.botUserRepository = botUserRepository;
+    }
+
     public static final String STATEMENTFORMILITARI = "Довідка для військомату";
     public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
-    private static Connection getConnectionToDataBasa() throws ClassNotFoundException, SQLException {
-        Connection connection;
-        Class.forName(JDBC_DRIVER);
-        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
-        return connection;
-    }
 
 
     public static void putUserInDataBase(BotUser botUser) {
 
-        try {
-            Connection connection = getConnectionToDataBasa();
-            Statement stmt = connection.createStatement();
+
+
             if (botUser.getStatement().equals(STATEMENTFORSTUDY)) {
-                stmt.executeUpdate(" INSERT INTO users (teleqramId,fullName,yearEntry,statement,phoneNumber," +
-                        "groupe,mail) VALUES(" + botUser.getId().toString() + ",'" + botUser.getFullName() + "','" +
-                        botUser.getYearEntry() + "','" + botUser.getStatement() + "','" + botUser.getPhoneNumber() + "','" +
-                        botUser.getGroupe() + "','" + botUser.getMail() + "');");
+
             } else if (botUser.getStatement().equals(STATEMENTFORMILITARI)) {
-                stmt.executeUpdate(" INSERT INTO militari (teleqramId,fullName,yearEntry,statement,phoneNumber," +
-                        "groupe,mail) VALUES(" + botUser.getId().toString() + ",'" + botUser.getFullName() + "','" +
-                        botUser.getYearEntry() + "','" + botUser.getStatement() + "','" + botUser.getPhoneNumber() + "','" +
-                        botUser.getGroupe() + "','" + botUser.getMail() + "');");
+
             }
 
-            connection.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public static List<String> getMilitariStatment(Long userId) {
 
         List<String> info = new ArrayList<>();
-
-        try {
-            Connection connection = getConnectionToDataBasa();
-            Statement stmt = connection.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT * FROM militari WHERE numbers = (SELECT " +
-                    "MAX(numbers) FROM militari WHERE teleqramId ="+userId.toString()+")");
-
-
-            if(rs.next()){
-                    for (int i = 0; i < 8; i++) {
-                        info.add(i, rs.getString(i + 1));
-                    }
-
-                }else {
-                    return info;
-                }
-
-
-
-            connection.close();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
         return info;
     }
 
     public static List<String> getStudiStatment(Long userId) {
         List<String> info = new ArrayList<>();
-        try {
-            Connection connection = getConnectionToDataBasa();
-            Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE numbers = (SELECT " +
-                    "MAX(numbers) FROM users WHERE teleqramId =" + userId.toString() + ")");
-
-
-            if (rs.next()) {
-                for (int i = 0; i < 8; i++) {
-                    info.add(i, rs.getString(i + 1));
-                }
-
-            } else {
-                return info;
-            }
-
-
-            connection.close();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         return info;
     }}

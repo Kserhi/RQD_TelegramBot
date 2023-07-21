@@ -180,7 +180,7 @@ public class SendMessageService {
     public void sendInfoAboutUserFromCache(Message message, BotUser user) {
         messageSender.sendMessage(SendMessage.builder()
                 .parseMode("HTML")
-                .chatId(String.valueOf(user.getId()))
+                .chatId(String.valueOf(user.getTelegramId()))
                 .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
                         "<b>Група: </b>" + user.getGroupe() + "\n" +
                         "<b>Рік набору: </b>" + user.getYearEntry() + "\n" +

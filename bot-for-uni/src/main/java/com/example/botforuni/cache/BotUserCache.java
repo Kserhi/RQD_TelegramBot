@@ -20,13 +20,13 @@ public class BotUserCache implements Cache<BotUser>{
 
     @Override
     public void add(BotUser botUser) {
-        users.put(botUser.getId(), botUser);
+        users.put(botUser.getTelegramId(), botUser);
 
     }
 
     @Override
     public void remove(BotUser botUser) {
-        users.remove(botUser.getId());
+        users.remove(botUser.getTelegramId());
 
     }
 
@@ -42,7 +42,7 @@ public class BotUserCache implements Cache<BotUser>{
 
    public static BotUser generateUserFromMessage(Message message) {
         BotUser user = new BotUser();
-        user.setId(message.getChatId());
+        user.setTelegramId(message.getChatId());
         user.setPosition(Position.INPUT_USER_NAME);
         return user;
     }
