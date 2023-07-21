@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserData {
     private final BotUserRepository botUserRepository;
-    
+
     public UserData(BotUserRepository botUserRepository) {
         this.botUserRepository = botUserRepository;
     }
