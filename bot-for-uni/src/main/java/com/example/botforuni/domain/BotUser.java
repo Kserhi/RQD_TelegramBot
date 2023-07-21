@@ -3,7 +3,7 @@ package com.example.botforuni.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "botUsers")
+//@Table
 public class BotUser {
     //    @Id
 //    @SequenceGenerator(
@@ -23,6 +23,7 @@ public class BotUser {
 
 
     private Long telegramId;
+    @Transient
     private Position position;
     private String fullName;
     private String yearEntry;
