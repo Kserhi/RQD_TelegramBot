@@ -146,7 +146,7 @@ public class SendMessageService {
 //                            "<b>Тип заявки: </b>" + statatment)
 //                    .build());
 //        } else {
-            BotUserDataService.getAllInfoAboutUser(message,BotUserDataService.STATEMENTFORMILITARI);
+            BotUserDataService.getAllInfoAboutUser(message.getChatId(),BotUserDataService.STATEMENTFORMILITARI);
 
             messageSender.sendMessage(SendMessage.builder()
                     .chatId(String.valueOf(message.getChatId()))

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BotUserRepository extends JpaRepository<BotUser,Long> {
+//    просто прописав в назві методу те за чим вім має знаходити
     List<BotUser> findByTelegramIdAndStatement(Long telegramId,String statement);
 }

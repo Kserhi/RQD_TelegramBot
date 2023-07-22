@@ -5,7 +5,6 @@ import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.repositories.BotUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
@@ -27,8 +26,13 @@ public class BotUserDataService {
     }
 
 
-    public static void getAllInfoAboutUser(Message message, String typeOfStatement) {
-        List<BotUser> botUsers=botUserRepository.findByTelegramIdAndStatement(message.getChatId(),
+    public static void getAllInfoAboutUser(Long telegramId, String typeOfStatement) {
+
+//        написав метод який витягує список  користувачів із бази даних з необхідними
+//                телеграм id and statement
+//
+        List<BotUser> botUsers=botUserRepository.findByTelegramIdAndStatement(
+                telegramId,
                 STATEMENTFORMILITARI);
 
 
