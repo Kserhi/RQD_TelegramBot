@@ -1,19 +1,19 @@
 
-package com.example.botforuni.jdbc;
+package com.example.botforuni.services;
 
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.repositories.BotUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserData {
+public class BotUserDataService {
     private static  BotUserRepository botUserRepository;
     @Autowired
-    public UserData(BotUserRepository botUserRepository) {
+    public BotUserDataService(BotUserRepository botUserRepository) {
         this.botUserRepository = botUserRepository;
     }
 
@@ -26,16 +26,20 @@ public class UserData {
 
     }
 
-    public static List<String> getMilitariStatment(Long userId) {
-        List<String> info = new ArrayList<>();
-        return info;
+
+    public static void getAllInfoAboutUser(Message message, String typeOfStatement) {
+        List<BotUser> botUsers=botUserRepository.findByTelegramIdAndStatement(message.getChatId(),
+                STATEMENTFORMILITARI);
+
+
+
+        for (int i = 0; i < botUsers.size(); i++) {
+           BotUser element = botUsers.get(i);
+            // Виконати дії з елементом
+            System.out.println(element.getFullName());
+        }
     }
 
-    public static List<String> getStudiStatment(Long userId) {
-        List<String> info = new ArrayList<>();
 
-
-        return info;
-    }
 }
 

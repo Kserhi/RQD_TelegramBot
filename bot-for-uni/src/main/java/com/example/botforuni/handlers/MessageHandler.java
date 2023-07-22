@@ -3,8 +3,8 @@ package com.example.botforuni.handlers;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
-import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.messagesender.MessageSender;
+import com.example.botforuni.services.BotUserDataService;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,7 +73,7 @@ public class MessageHandler implements Handler<Message> {
                         case "Підтвердити✔":
                             user.setPosition(Position.NONE);
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            UserData.putUserInDataBase(user);
+                            BotUserDataService.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
                             sendMessageService.sendInfoAboutUserFromCache(message,user);
 
