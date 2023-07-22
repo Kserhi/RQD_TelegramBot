@@ -53,8 +53,7 @@ public class SendMessageService {
     public void choose_statement(Message message) {
 
 
-//        SendMessage ms= SendMessage.builder()
-//                .text("Виберіть тип довідки⤵").build();
+
 
         SendMessage ms1 = SendMessage.builder()
                 .text("Виберіть тип довідки⤵")
