@@ -23,6 +23,7 @@ public class UserData {
 
     public static void putUserInDataBase(BotUser botUser) {
         botUserRepository.save(botUser);
+
     }
 
     public static List<String> getMilitariStatment(Long userId) {

@@ -230,8 +230,9 @@ public class SendMessageService {
                                         Collections.singletonList(
                                                 InlineKeyboardButton.builder()
                                                         .text("Посилання")
-                                                        .url("https://telegra.ph/Pos%D1%96bni" +
-                                                                "k-koristuvacha-dlya-Bota-LDU-BZHD-02-04")
+                                                        .url("https://telegra.ph/P" +
+                                                                "OS%D0%86BNIK-KORISTUVACHA-TELEGRAM-" +
+                                                                "BOTA-LDU-BZHD-05-22")
                                                         .build()
                                         ))
                                 .build()
