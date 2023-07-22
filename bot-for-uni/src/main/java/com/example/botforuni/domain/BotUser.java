@@ -1,20 +1,38 @@
 package com.example.botforuni.domain;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.*;
 
-@Component
+@Entity
+@Table
 public class BotUser {
-    private Long id;
+    //    @Id
+//    @SequenceGenerator(
+//            name = "botUsers_sequence",
+//            sequenceName = "user_sequence",
+//            allocationSize = 1
+//    )
+//    @GeneratedValue(
+//            strategy = GenerationType.SEQUENCE,
+//            generator = "user_sequence"
+//    )
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long dataId;
+
+
+
+    private Long telegramId;
+    @Transient
     private Position position;
     private String fullName;
     private String yearEntry;
     private String statement;
     private String phoneNumber;
     private String groupe;
-    private String mail;
 
-    public Long getId() {
-        return id;
+    public Long getTelegramId() {
+        return telegramId;
     }
 
     public Position getPosition() {
@@ -41,12 +59,9 @@ public class BotUser {
         return groupe;
     }
 
-    public String getMail() {
-        return mail;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTelegramId(Long telegramId) {
+        this.telegramId = telegramId;
     }
 
     public void setPosition(Position position) {
@@ -73,7 +88,5 @@ public class BotUser {
         this.groupe = groupe;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
+
 }

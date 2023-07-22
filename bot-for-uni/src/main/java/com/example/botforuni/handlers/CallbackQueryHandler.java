@@ -3,7 +3,7 @@ package com.example.botforuni.handlers;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.jdbc.UserData;
+import com.example.botforuni.services.BotUserDataService;
 import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +53,10 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
 
             case "statementForMilitaryOfficer":
-
-                sendMessageService.sendMessage(message,"Реєстрація студента");
-
                 sendMessageService.sendMessage(message,"Введіть своє повне імя");
 
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORMILITARI);
+                cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORMILITARI);
 
                 break;
 
@@ -71,7 +68,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 sendMessageService.sendMessage(message,"Введіть своє повне імя");
 
                 cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement(UserData.STATEMENTFORSTUDY);
+                cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORSTUDY);
 
                 break;
         }
