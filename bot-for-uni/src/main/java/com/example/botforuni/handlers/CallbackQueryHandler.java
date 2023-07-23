@@ -53,14 +53,14 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
 
             case "statementForMilitaryOfficer":
-                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+                sendMessageService.sendMessage(message,"Введіть своє повне ім'я⤵");
                 cache.add(BotUserCache.generateUserFromMessage(message));
                 cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORMILITARI);
 
                 break;
 
             case "statementForStudy":
-                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+                sendMessageService.sendMessage(message,"Введіть своє повне ім'я⤵");
                 cache.add(BotUserCache.generateUserFromMessage(message));
                 cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORSTUDY);
 
