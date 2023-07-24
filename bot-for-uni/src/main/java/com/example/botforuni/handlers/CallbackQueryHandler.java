@@ -4,17 +4,15 @@ import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.services.BotUserDataService;
-import com.example.botforuni.messagesender.MessageSender;
-import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
+import com.example.botforuni.services.SendMessageService;
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
-    private MessageSender messageSender;
+
     private SendMessageService sendMessageService;
     private final Cache<BotUser> cache;
 
@@ -26,13 +24,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     }
 
 
-    @Autowired
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
-    }
-
-    public CallbackQueryHandler(MessageSender messageSender, Cache<BotUser> cache) {
-        this.messageSender = messageSender;
+    public CallbackQueryHandler(Cache<BotUser> cache) {
         this.cache = cache;
     }
 
@@ -66,9 +58,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 //                sendMessageService.sendRegMenu(message);
 
                 sendMessageService.sendMessage(message,"Введіть своє повне імя");
-
-                cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORSTUDY);
+                //генерує користувача з меседжа  та записує в кеш
+                cache.add(
+                        BotUserCache.generateUserFromMessage(
+                                message,
+                                BotUserDataService.STATEMENTFORSTUDY));
 
                 break;
         }

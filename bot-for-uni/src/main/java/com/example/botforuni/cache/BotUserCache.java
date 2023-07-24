@@ -46,5 +46,10 @@ public class BotUserCache implements Cache<BotUser>{
         user.setPosition(Position.INPUT_USER_NAME);
         return user;
     }
+    public static BotUser generateUserFromMessage(Message message,String statement) {
+        BotUser user = generateUserFromMessage(message);
+        user.setStatement(statement);
+        return user;
+    }
 
 }
