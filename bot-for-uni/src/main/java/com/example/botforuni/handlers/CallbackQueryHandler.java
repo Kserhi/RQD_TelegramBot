@@ -3,6 +3,7 @@ import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.domain.MenuText;
 import com.example.botforuni.services.BotUserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,19 +36,21 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "/menu":
                 sendMessageService.sendMessage(
                         message,
-                        "Виберіть необхідну послугу ⤵ ",
+                        MenuText.MENU,
                         Keyboards.menuKeyboard()
                 );
                 break;
             case "choose_statement":
                 sendMessageService.sendMessage(
                         message,
-                        "Виберіть тип довідки⤵",
+                        MenuText.CHOOSESTATEMENT,
                         Keyboards.chooseStatementKeyboard()
                 );
                 break;
             case "statements":
-                sendMessageService.sendMessage(message, "Ваші довідки:");
+                sendMessageService.sendMessage(
+                        message,
+                        MenuText.STATEMENTS);
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
                 break;
 

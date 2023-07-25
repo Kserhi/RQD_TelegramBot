@@ -1,8 +1,8 @@
 package com.example.botforuni.handlers;
-
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.domain.MenuText;
 import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.BotUserDataService;
@@ -85,13 +85,20 @@ public class MessageHandler implements Handler<Message> {
                             BotUserDataService.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
                             sendMessageService.sendInfoAboutUserFromCache(message,user);
-
                             break;
-                        case "Скасувати❌":
-                            sendMessageService.sendMessage(message, "Введіть дані ще раз");
-                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
-                            user.setPosition(Position.INPUT_USER_NAME);
 
+                        case "Скасувати❌":
+                            //на головне меню перекидає
+                            sendMessageService.sendMessage(
+                                    message,
+                                    MenuText.MENU,
+                                    Keyboards.menuKeyboard()
+                            );
+                            user.setPosition(Position.NONE);
+
+//                            sendMessageService.sendMessage(message, "Введіть дані ще раз");
+//                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
+//                            user.setPosition(Position.INPUT_USER_NAME);
                             break;
                     }
                     break;
@@ -101,14 +108,13 @@ public class MessageHandler implements Handler<Message> {
                 case "/start":
                     sendMessageService.sendMessage(
                             message,
-                            "\uD83D\uDC4BПривіт! За допомогою ц" +
-                                    "ього чат-бота ви зможете зробити запит до деканату!",
+                            MenuText.START,
                             Keyboards.starKeyboard());
                     break;
                 case "/help":
                     sendMessageService.sendMessage(
                             message,
-                            "Довідник для бота",
+                            MenuText.HELP,
                             Keyboards.helpMenu()
                     );
                     break;
