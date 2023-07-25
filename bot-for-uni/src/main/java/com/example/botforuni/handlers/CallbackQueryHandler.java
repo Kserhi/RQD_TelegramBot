@@ -1,15 +1,17 @@
 package com.example.botforuni.handlers;
+
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.MenuText;
+import com.example.botforuni.domain.Position;
 import com.example.botforuni.services.BotUserDataService;
+import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import com.example.botforuni.services.SendMessageService;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
@@ -32,6 +34,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     @Override
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
+        BotUser user = cache.findBy(message.getChatId());
         switch (callbackQuery.getData()) {
             case "/menu":
                 sendMessageService.sendMessage(
@@ -51,7 +54,9 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 sendMessageService.sendMessage(
                         message,
                         MenuText.STATEMENTS);
+
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
+
                 break;
 
             case "statementForMilitaryOfficer":
@@ -77,8 +82,26 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                                 BotUserDataService.STATEMENTFORSTUDY));
 
                 break;
-        }
 
+            case "confirm":
+                user.setPosition(Position.NONE);
+                sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
+                BotUserDataService.putUserInDataBase(user);
+                sendMessageService.sendMessage(message, "Ваша заявка⤵");
+                sendMessageService.sendInfoAboutUserFromCache(user);
+                break;
+
+            case "cancel":
+                sendMessageService.sendMessage(
+                        message,
+                        MenuText.MENU,
+                        Keyboards.menuKeyboard()
+                );
+                user.setPosition(Position.NONE);
+                break;
+
+
+        }
     }
 }
 

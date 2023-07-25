@@ -70,7 +70,7 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
-                    sendMessageService.sendInfoAboutUserFromCache(message, user);
+                    sendMessageService.sendInfoAboutUserFromCache(user);
                     sendMessageService.sendMessage(
                             message,
                             "Нажміть, щоб підтвердити дані",
@@ -84,7 +84,7 @@ public class MessageHandler implements Handler<Message> {
                             sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                             BotUserDataService.putUserInDataBase(user);
                             sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                            sendMessageService.sendInfoAboutUserFromCache(message,user);
+                            sendMessageService.sendInfoAboutUserFromCache(user);
                             break;
 
                         case "Скасувати❌":

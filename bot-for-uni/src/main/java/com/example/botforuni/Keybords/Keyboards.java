@@ -56,12 +56,6 @@ public class Keyboards {
                 )
                 .build();
 
-
-
-
-
-
-
         return inlineKeyboardMarkup;
 
     }
@@ -109,13 +103,6 @@ public class Keyboards {
                         )
                 )
                 .build();
-
-
-
-
-
-
-
         return inlineKeyboardMarkup;
 
     }
@@ -174,21 +161,26 @@ public class Keyboards {
 
     }
 
-    public static ReplyKeyboardMarkup confirmationKeyboard() {
+    public static InlineKeyboardMarkup confirmationKeyboard() {
+        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Підтвердити✔")
+                                        .callbackData("confirm")
+                                        .build()
+                        ))
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Скасувати❌")
+                                        .callbackData("cancel")
+                                        .build()
+                        )
+                )
+                .build();
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add("Підтвердити✔");
-        keyboardRow.add("Скасувати❌");
-        keyboardRows.add(keyboardRow);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-        return replyKeyboardMarkup;
+        return inlineKeyboardMarkup;
 
     }
 
@@ -197,20 +189,15 @@ public class Keyboards {
 
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
-
+//        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(KeyboardButton.builder()
-                .text("Номер телефону")
+        keyboardRow.add(KeyboardButton.builder().text("Номер телефону")
                 .requestContact(true)
                 .build());
-
         keyboardRows.add(keyboardRow);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         return replyKeyboardMarkup;
     }
-
-
-
 }

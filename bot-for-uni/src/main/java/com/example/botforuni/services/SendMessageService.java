@@ -1,7 +1,8 @@
 package com.example.botforuni.services;
 
-import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.Keybords.Keyboards;
+import com.example.botforuni.cache.Cache;
+import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -9,17 +10,24 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
 import java.util.Collections;
+import java.util.List;
+
 @Service
 public class SendMessageService {
     private final MessageSender messageSender;
-    
 
+    private final Cache<BotUser> cache;
 
-    public SendMessageService(MessageSender messageSender) {
-
+    public SendMessageService(MessageSender messageSender,Cache<BotUser> cache) {
+        this.cache=cache;
         this.messageSender = messageSender;
     }
+
+
+
+
 
     /**
      * Надсилає просте текстове повідомлення до чату з вказаним текстом.
@@ -104,8 +112,11 @@ public class SendMessageService {
                                         .build()
                         ))
                 .build();
-        
-            BotUserDataService.getAllInfoAboutUser(message.getChatId(),BotUserDataService.STATEMENTFORMILITARI);
+    BotUser botUser=cache.findBy(message.getChatId());
+
+            sendInfoAboutUserFromDataBasa(message,BotUserDataService.STATEMENTFORSTUDY,botUser);
+//            sendInfoAboutUserFromDataBasa(message,BotUserDataService.STATEMENTFORMILITARI,botUser);
+
 
             messageSender.sendMessage(SendMessage.builder()
                     .chatId(String.valueOf(message.getChatId()))
@@ -116,8 +127,16 @@ public class SendMessageService {
 
     }
 
+    public void sendInfoAboutUserFromDataBasa(Message message,String statement,BotUser botUser){
 
-    public void sendInfoAboutUserFromCache(Message message, BotUser user) {
+        List<BotUser> users=BotUserDataService.getAllInfoAboutUser(message,statement);
+//        List<BotUser> users=BotUserDataService.getAllInfoAboutUser(message,botUser.getStatement());
+        sendMessage(message,users.get(0).getFullName());
+
+
+    }
+
+    public void sendInfoAboutUserFromCache(BotUser user) {
         messageSender.sendMessage(SendMessage.builder()
                 .parseMode("HTML")
                 .chatId(String.valueOf(user.getTelegramId()))
@@ -130,5 +149,38 @@ public class SendMessageService {
                 .build());
 
     }
+
+//    public void getPhoneNumber(BotUser user) {
+//        SendMessage message = SendMessage.builder()
+//                .text("Натисніть кнопку, щоб надіслати свій номер телефону:")
+//                .chatId(String.valueOf(user.getTelegramId()))
+//                .replyMarkup(ReplyKeyboardMarkup.builder()
+//                        .keyboardRow(Collections.singletonList(
+//                                KeyboardButtonContact.builder()
+//                                        .text("Відправити номер телефону")
+//                                        .build()
+//                        ))
+//                        //привіт
+//                        .oneTimeKeyboard(true)
+//                        .resizeKeyboard(true)
+//                        .build())
+//                .build();
+
+//        messageSender.sendMessage(message);
+//        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
+//                .keyboardRow(Collections.singletonList(
+//                        InlineKeyboardButton.builder()
+//                                .text("Отримати номер телефону")
+//                                .requestContact(true) // Включаємо опцію запиту контакту (телефону)
+//                                .build()
+//                ))
+//                .build();
+//
+//        messageSender.sendMessage(SendMessage.builder()
+//                .chatId(String.valueOf(user.getTelegramId()))
+//                .text("Будь ласка, натисніть кнопку \"Отримати номер телефону\", щоб надіслати свій номер телефону.")
+//                .replyMarkup(inlineKeyboardMarkup)
+//                .build());
+//   }
 
 }
