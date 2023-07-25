@@ -1,11 +1,11 @@
 package com.example.botforuni.handlers;
+
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.MenuText;
 import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
-import com.example.botforuni.services.BotUserDataService;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,37 +70,15 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
-                    sendMessageService.sendInfoAboutUserFromCache(user);
+                    messageSender.sendMessage(
+                            sendMessageService.setInfoAboutBotUser(user)
+                    );
+
                     sendMessageService.sendMessage(
                             message,
                             "Нажміть, щоб підтвердити дані",
                             Keyboards.confirmationKeyboard()
                     );
-                    break;
-                case CONFIMATION:
-                    switch (message.getText()) {
-                        case "Підтвердити✔":
-                            user.setPosition(Position.NONE);
-                            sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            BotUserDataService.putUserInDataBase(user);
-                            sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                            sendMessageService.sendInfoAboutUserFromCache(user);
-                            break;
-
-                        case "Скасувати❌":
-                            //на головне меню перекидає
-                            sendMessageService.sendMessage(
-                                    message,
-                                    MenuText.MENU,
-                                    Keyboards.menuKeyboard()
-                            );
-                            user.setPosition(Position.NONE);
-
-//                            sendMessageService.sendMessage(message, "Введіть дані ще раз");
-//                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
-//                            user.setPosition(Position.INPUT_USER_NAME);
-                            break;
-                    }
                     break;
             }
         } else if (message.hasText()) {

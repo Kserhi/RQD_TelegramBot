@@ -9,9 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.Collections;
 
 @Service
 public class SendMessageService {
@@ -84,44 +81,44 @@ public class SendMessageService {
     }
 
 
-    public void sendRegMenu(Message message) {
 
-        SendMessage ms1 = SendMessage.builder()
-                .text("Пройдіть реєстрацію⤵")
-                .replyMarkup(Keyboards.regKeyboard())
-                .chatId(String.valueOf(message.getChatId()))
-                .build();
-
-
-        messageSender.sendMessage(ms1);
-
-    }
 
 
 
     public void sendAllInfoAboutUserFromDataBasa(Message message) {
+        BotUser botUser=BotUserDataService.getAllInfoAboutUser(
+                message.getChatId(),
+                BotUserDataService.STATEMENTFORSTUDY);
 
 
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
-                .keyboardRow(
-                        Collections.singletonList(
-                                InlineKeyboardButton.builder()
-                                        .text("Повернутись")
-                                        .callbackData("/menu")
-                                        .build()
-                        ))
-                .build();
+        if (botUser.getTelegramId()!=null){
+            messageSender.sendMessage(
+                    setInfoAboutBotUser(botUser)
+            );
+        }else {
+            sendMessage(
+                    message,
+                    "Інформації про "+BotUserDataService.STATEMENTFORSTUDY +" незнайдено");
+        }
 
-            sendInfoAboutUserFromDataBasa(message,BotUserDataService.STATEMENTFORSTUDY);
-//            sendInfoAboutUserFromDataBasa(message,BotUserDataService.STATEMENTFORMILITARI);
 
-//
-//            messageSender.sendMessage(SendMessage.builder()
-//                    .chatId(String.valueOf(message.getChatId()))
-//                    .replyMarkup(inlineKeyboardMarkup)
-//                    .text("Довідки для військомату не знайдено")
-//                    .build());
-//
+        botUser=BotUserDataService.getAllInfoAboutUser(
+                message.getChatId(),
+                BotUserDataService.STATEMENTFORMILITARI);
+
+
+        if (botUser.getTelegramId()!=null){
+            messageSender.sendMessage(
+                    setInfoAboutBotUser(botUser,Keyboards.linkToMenuKeyboard())
+            );
+        }else {
+            sendMessage(
+                    message,
+                    "Інформації про "+BotUserDataService.STATEMENTFORMILITARI
+                            +" незнайдено",
+                    Keyboards.linkToMenuKeyboard());
+        }
+
 
     }
 
@@ -135,34 +132,34 @@ public class SendMessageService {
                     Keyboards.linkToMenuKeyboard()
             );
         }else {
-            messageSender.sendMessage(SendMessage.builder()
-                    .parseMode("HTML")
-                    .chatId(String.valueOf(botUser.getTelegramId()))
-                    .text("<b>ПІБ: </b> " + botUser.getFullName() + "\n" +
-                            "<b>Група: </b>" + botUser.getGroupe() + "\n" +
-                            "<b>Рік набору: </b>" + botUser.getYearEntry() + "\n" +
-                            "<b>Номер телефону: </b>" + botUser.getPhoneNumber() + "\n" +
-                            "<b>Тип заявки: </b>" +botUser.getStatement())
-                            .replyMarkup(Keyboards.linkToMenuKeyboard())
-                    .build());
+            messageSender.sendMessage(
+                    setInfoAboutBotUser(botUser,Keyboards.linkToMenuKeyboard())
+            );
         }
 
 
     }
 
-    public void sendInfoAboutUserFromCache(BotUser user) {
-        messageSender.sendMessage(SendMessage.builder()
+
+
+    public SendMessage setInfoAboutBotUser(BotUser botUser){
+        return SendMessage.builder()
                 .parseMode("HTML")
-                .chatId(String.valueOf(user.getTelegramId()))
-                .text("<b>ПІБ: </b> " + user.getFullName() + "\n" +
-                        "<b>Група: </b>" + user.getGroupe() + "\n" +
-                        "<b>Рік набору: </b>" + user.getYearEntry() + "\n" +
-                        "<b>Номер телефону: </b>" + user.getPhoneNumber() + "\n" +
-                        "<b>Тип заявки: </b>" + user.getStatement())
-
-                .build());
-
+                .chatId(String.valueOf(botUser.getTelegramId()))
+                .text("<b>ПІБ: </b> " + botUser.getFullName() + "\n" +
+                        "<b>Група: </b>" + botUser.getGroupe() + "\n" +
+                        "<b>Рік набору: </b>" + botUser.getYearEntry() + "\n" +
+                        "<b>Номер телефону: </b>" + botUser.getPhoneNumber() + "\n" +
+                        "<b>Тип заявки: </b>" +botUser.getStatement())
+                .build();
     }
+    public SendMessage setInfoAboutBotUser(BotUser botUser,InlineKeyboardMarkup inlineKeyboardMarkup){
+        SendMessage sendMessage =setInfoAboutBotUser(botUser);
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return sendMessage;
+    }
+
+
 
 
 }
