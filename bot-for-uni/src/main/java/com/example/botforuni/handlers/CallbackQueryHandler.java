@@ -88,7 +88,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                 BotUserDataService.putUserInDataBase(user);
                 sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                sendMessageService.sendInfoAboutUserFromCache(user);
+                sendMessageService.sendInfoAboutUserFromDataBasa(message,user.getStatement());
                 break;
 
             case "cancel":
