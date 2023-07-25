@@ -1,5 +1,4 @@
 package com.example.botforuni.handlers;
-
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
@@ -10,13 +9,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import com.example.botforuni.services.SendMessageService;
+
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
     private SendMessageService sendMessageService;
     private final Cache<BotUser> cache;
-
 
 
     @Autowired
@@ -31,8 +30,8 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
     @Override
     public void choose(CallbackQuery callbackQuery) {
-        Message message =callbackQuery.getMessage();
-        switch (callbackQuery.getData()){
+        Message message = callbackQuery.getMessage();
+        switch (callbackQuery.getData()) {
             case "/menu":
                 sendMessageService.sendMessage(
                         message,
@@ -42,15 +41,14 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
             case "choose_statement":
                 sendMessageService.choose_statement(message);
-
                 break;
             case "statements":
-                sendMessageService.sendMessage(message,"Ваші довідки:");
+                sendMessageService.sendMessage(message, "Ваші довідки:");
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
                 break;
 
             case "statementForMilitaryOfficer":
-                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+                sendMessageService.sendMessage(message, "Введіть своє повне імя");
                 //генерує користувача з меседжа  та записує в кеш
                 cache.add(
                         BotUserCache.generateUserFromMessage(
@@ -64,7 +62,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 //                sendMessageService.sendMessage(message,"Реєстрація студента");
 //                sendMessageService.sendRegMenu(message);
 
-                sendMessageService.sendMessage(message,"Введіть своє повне імя");
+                sendMessageService.sendMessage(message, "Введіть своє повне імя");
                 //генерує користувача з меседжа  та записує в кеш
                 cache.add(
                         BotUserCache.generateUserFromMessage(
@@ -74,6 +72,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 break;
         }
 
-        }
     }
+}
 

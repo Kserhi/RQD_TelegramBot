@@ -61,13 +61,21 @@ public class MessageHandler implements Handler<Message> {
                     user.setYearEntry(message.getText());
                     user.setPosition(Position.INPUT_USER_PHONE);
                     sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
-                    sendMessageService.phoneNum(message);
+                    sendMessageService.sendMessage(
+                            message,
+                            "Нажміть, щоб поділитися контактом",
+                            Keyboards.phoneKeyboard()
+                    );
                     break;
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
                     sendMessageService.sendInfoAboutUserFromCache(message, user);
-                    sendMessageService.sendConfirmationMenu(message);
+                    sendMessageService.sendMessage(
+                            message,
+                            "Нажміть, щоб підтвердити дані",
+                            Keyboards.confirmationKeyboard()
+                    );
                     break;
                 case CONFIMATION:
                     switch (message.getText()) {

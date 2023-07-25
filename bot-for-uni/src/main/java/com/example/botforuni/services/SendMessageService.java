@@ -159,26 +159,4 @@ public class SendMessageService {
 
     }
 
-
-
-    public void sendConfirmationMenu(Message message) {
-
-        SendMessage ms1 = SendMessage.builder()
-                .text("Нажміть, щоб підтвердити дані")
-                .chatId(String.valueOf(message.getChatId()))
-                .replyMarkup(Keyboards.confirmationKeyboard())
-                .build();
-        messageSender.sendMessage(ms1);
-    }
-
-    public void phoneNum(Message message) {
-        SendMessage ms1 = SendMessage.builder()
-                .text("Нажміть, щоб поділитися контактом")
-                .chatId(String.valueOf(message.getChatId()))
-                .replyMarkup(Keyboards.phoneKeyboard())
-                .build();
-        messageSender.sendMessage(ms1);
-    }
-
-
 }
