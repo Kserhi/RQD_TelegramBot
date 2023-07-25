@@ -137,7 +137,25 @@ public class Keyboards {
                 .build();
         return inlineKeyboardMarkup;
 
+    }public static InlineKeyboardMarkup linkToMenuKeyboard() {
+
+
+        InlineKeyboardMarkup inlineKeyboardMarkup= InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Повернутись до головного меню")
+                                        .callbackData("/menu").build()
+
+
+                        )
+
+                )
+                .build();
+        return inlineKeyboardMarkup;
+
     }
+
     public static InlineKeyboardMarkup helpMenu() {
 
 
