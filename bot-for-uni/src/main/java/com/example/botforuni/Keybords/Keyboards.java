@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Keyboards {
-    //переніс сюда менюшки шоб тягнути їх без проблем
+
 
     public static InlineKeyboardMarkup menuKeyboard() {
         //менюшка вибору запиту
@@ -111,6 +111,23 @@ public class Keyboards {
                         )
 
                 )
+                .build();
+        return inlineKeyboardMarkup;
+
+    }
+    public static InlineKeyboardMarkup helpMenu() {
+
+
+        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Посилання")
+                                        .url("https://telegra.ph/P" +
+                                                "OS%D0%86BNIK-KORISTUVACHA-TELEGRAM-" +
+                                                "BOTA-LDU-BZHD-05-22")
+                                        .build()
+                        ))
                 .build();
         return inlineKeyboardMarkup;
 

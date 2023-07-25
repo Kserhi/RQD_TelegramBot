@@ -1,5 +1,6 @@
 package com.example.botforuni.handlers;
 
+import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
@@ -33,7 +34,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         Message message =callbackQuery.getMessage();
         switch (callbackQuery.getData()){
             case "/menu":
-                sendMessageService.sendMenu(message);
+                sendMessageService.sendMessage(
+                        message,
+                        "Виберіть необхідну послугу ⤵ ",
+                        Keyboards.menuKeyboard()
+                );
                 break;
             case "choose_statement":
                 sendMessageService.choose_statement(message);
@@ -46,9 +51,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             case "statementForMilitaryOfficer":
                 sendMessageService.sendMessage(message,"Введіть своє повне імя");
-
-                cache.add(BotUserCache.generateUserFromMessage(message));
-                cache.findBy(message.getChatId()).setStatement(BotUserDataService.STATEMENTFORMILITARI);
+                //генерує користувача з меседжа  та записує в кеш
+                cache.add(
+                        BotUserCache.generateUserFromMessage(
+                                message,
+                                BotUserDataService.STATEMENTFORMILITARI));
 
                 break;
 

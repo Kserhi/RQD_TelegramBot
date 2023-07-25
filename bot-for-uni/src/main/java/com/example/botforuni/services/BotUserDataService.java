@@ -29,13 +29,11 @@ public class BotUserDataService {
     public static void getAllInfoAboutUser(Long telegramId, String typeOfStatement) {
 
 //        написав метод який витягує список  користувачів із бази даних з необхідними
-//                телеграм id and statement
+//                телеграм id і statement
 //
         List<BotUser> botUsers=botUserRepository.findByTelegramIdAndStatement(
                 telegramId,
                 STATEMENTFORMILITARI);
-
-
 
         for (int i = 0; i < botUsers.size(); i++) {
            BotUser element = botUsers.get(i);

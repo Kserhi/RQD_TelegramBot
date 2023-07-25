@@ -1,5 +1,6 @@
 package com.example.botforuni.handlers;
 
+import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.domain.Position;
@@ -90,10 +91,18 @@ public class MessageHandler implements Handler<Message> {
         } else if (message.hasText()) {
             switch (message.getText()) {
                 case "/start":
-                    sendMessageService.sendStartMenu(message);
+                    sendMessageService.sendMessage(
+                            message,
+                            "\uD83D\uDC4BПривіт! За допомогою ц" +
+                                    "ього чат-бота ви зможете зробити запит до деканату!",
+                            Keyboards.starKeyboard());
                     break;
                 case "/help":
-                    sendMessageService.sendHelp(message);
+                    sendMessageService.sendMessage(
+                            message,
+                            "Довідник для бота",
+                            Keyboards.helpMenu()
+                    );
                     break;
 
             }
