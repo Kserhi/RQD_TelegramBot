@@ -40,7 +40,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 );
                 break;
             case "choose_statement":
-                sendMessageService.choose_statement(message);
+                sendMessageService.sendMessage(
+                        message,
+                        "Виберіть тип довідки⤵",
+                        Keyboards.chooseStatementKeyboard()
+                );
                 break;
             case "statements":
                 sendMessageService.sendMessage(message, "Ваші довідки:");

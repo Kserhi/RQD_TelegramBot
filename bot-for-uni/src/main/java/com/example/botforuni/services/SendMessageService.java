@@ -77,34 +77,6 @@ public class SendMessageService {
     }
 
 
-    public void choose_statement(Message message) {
-
-        SendMessage ms1 = SendMessage.builder()
-                .text("Виберіть тип довідки⤵")
-
-                .chatId(String.valueOf(message.getChatId()))
-                .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboardRow(
-                                Collections.singletonList(
-                                        InlineKeyboardButton.builder()
-                                                .text("Замовити довідку з місця навчання")
-                                                .callbackData("statementForStudy")
-                                                .build()
-                                ))
-                        .keyboardRow(
-                                Collections.singletonList(
-                                        InlineKeyboardButton.builder()
-                                                .text("Замовити довідку для військомату")
-                                                .callbackData("statementForMilitaryOfficer")
-                                                .build()
-                                )
-                        )
-                        .build())
-                .build();
-
-        messageSender.sendMessage(ms1);
-    }
-
     public void sendRegMenu(Message message) {
 
         SendMessage ms1 = SendMessage.builder()

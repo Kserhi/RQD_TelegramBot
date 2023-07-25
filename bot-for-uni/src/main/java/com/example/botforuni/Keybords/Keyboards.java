@@ -13,6 +13,29 @@ import java.util.List;
 public class Keyboards {
 
 
+    public static InlineKeyboardMarkup chooseStatementKeyboard() {
+        //менюшка вибору запиту
+        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Замовити довідку з місця навчання")
+                                        .callbackData("statementForStudy")
+                                        .build()
+                        ))
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Замовити довідку для військомату")
+                                        .callbackData("statementForMilitaryOfficer")
+                                        .build()
+                        )
+                )
+                .build();
+
+        return inlineKeyboardMarkup;
+
+    }
     public static InlineKeyboardMarkup menuKeyboard() {
         //менюшка вибору запиту
         InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
