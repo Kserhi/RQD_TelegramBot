@@ -15,7 +15,7 @@ public class Keyboards {
 
     public static InlineKeyboardMarkup chooseStatementKeyboard() {
         //менюшка вибору запиту
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
@@ -31,14 +31,24 @@ public class Keyboards {
                                         .build()
                         )
                 )
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("Головне меню")
+                                        .callbackData("/menu").build()
+
+
+                        )
+                )
                 .build();
 
         return inlineKeyboardMarkup;
 
     }
+
     public static InlineKeyboardMarkup menuKeyboard() {
         //менюшка вибору запиту
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
@@ -80,37 +90,37 @@ public class Keyboards {
 //
 //
 //        replyKeyboardMarkup.setKeyboard(keyboardRows);
-//        return replyKeyboardMarkup;
+////        return replyKeyboardMarkup;
+////
+////    }
+//
+//    public static InlineKeyboardMarkup regKeyboard() {
+//        //менюшка вибору запиту
+//        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+//                .keyboardRow(
+//                        Collections.singletonList(
+//                                InlineKeyboardButton.builder()
+//                                        .text("Реєстрація")
+//                                        .callbackData("choose_statement")
+//                                        .build()
+//                        ))
+//                .keyboardRow(
+//                        Collections.singletonList(
+//                                InlineKeyboardButton.builder()
+//                                        .text("❌ Скасувати")
+//                                        .callbackData("statements")
+//                                        .build()
+//                        )
+//                )
+//                .build();
+//        return inlineKeyboardMarkup;
 //
 //    }
-
-    public static InlineKeyboardMarkup regKeyboard() {
-        //менюшка вибору запиту
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
-                .keyboardRow(
-                        Collections.singletonList(
-                                InlineKeyboardButton.builder()
-                                        .text("Реєстрація")
-                                        .callbackData("choose_statement")
-                                        .build()
-                        ))
-                .keyboardRow(
-                        Collections.singletonList(
-                                InlineKeyboardButton.builder()
-                                        .text("❌ Скасувати")
-                                        .callbackData("statements")
-                                        .build()
-                        )
-                )
-                .build();
-        return inlineKeyboardMarkup;
-
-    }
 
     public static InlineKeyboardMarkup starKeyboard() {
         ///менюшка після старту ❗Потрібна послуга деканату
 
-        InlineKeyboardMarkup inlineKeyboardMarkup= InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
@@ -124,14 +134,17 @@ public class Keyboards {
                 .build();
         return inlineKeyboardMarkup;
 
-    }public static InlineKeyboardMarkup linkToMenuKeyboard() {
+
+    }
+
+    public static InlineKeyboardMarkup linkToMenuKeyboard() {
 
 
-        InlineKeyboardMarkup inlineKeyboardMarkup= InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
-                                        .text("Повернутись до головного меню")
+                                        .text("Головне меню")
                                         .callbackData("/menu").build()
 
 
@@ -146,7 +159,7 @@ public class Keyboards {
     public static InlineKeyboardMarkup helpMenu() {
 
 
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
@@ -162,7 +175,7 @@ public class Keyboards {
     }
 
     public static InlineKeyboardMarkup confirmationKeyboard() {
-        InlineKeyboardMarkup inlineKeyboardMarkup=InlineKeyboardMarkup.builder()
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
@@ -184,7 +197,7 @@ public class Keyboards {
 
     }
 
-    public static ReplyKeyboardMarkup phoneKeyboard(){
+    public static ReplyKeyboardMarkup phoneKeyboard() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
         replyKeyboardMarkup.setSelective(true);

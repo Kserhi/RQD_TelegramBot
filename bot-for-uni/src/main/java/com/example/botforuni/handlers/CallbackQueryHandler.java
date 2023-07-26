@@ -71,8 +71,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             case "statementForStudy":
 
-//                sendMessageService.sendMessage(message,"Реєстрація студента");
-//                sendMessageService.sendRegMenu(message);
 
                 sendMessageService.sendMessage(message, "Введіть своє повне імя");
                 //генерує користувача з меседжа  та записує в кеш

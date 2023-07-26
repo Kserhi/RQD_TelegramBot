@@ -30,7 +30,6 @@ public class BotUser {
     private String statement;
     private String phoneNumber;
     private String groupe;
-
     public Long getTelegramId() {
         return telegramId;
     }
