@@ -8,6 +8,8 @@ public class BotForUniApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BotForUniApplication.class, args);
+
+
 	}
 
 }

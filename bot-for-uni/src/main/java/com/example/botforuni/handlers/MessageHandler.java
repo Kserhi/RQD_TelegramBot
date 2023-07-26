@@ -1,9 +1,11 @@
 package com.example.botforuni.handlers;
 
+import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
-import com.example.botforuni.jdbc.UserData;
 import com.example.botforuni.domain.BotUser;
+import com.example.botforuni.domain.MenuText;
 import com.example.botforuni.domain.Position;
+import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,29 +16,36 @@ public class MessageHandler implements Handler<Message> {
 
 
     private SendMessageService sendMessageService;
+    private MessageSender messageSender;
+
+
     private final Cache<BotUser> cache;
+
     @Autowired
     public void setSendMessageService(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
     }
 
-    public MessageHandler( Cache<BotUser> cache) {
+    @Autowired
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
+    }
+
+    public MessageHandler(Cache<BotUser> cache) {
         this.cache = cache;
 
     }
 
-    private static BotUser generateUserFromMessage(Message message) {
-        BotUser user = new BotUser();
-        user.setId(message.getChatId());
-        user.setPosition(Position.INPUT_USER_NAME);
-        return user;
-    }
+
 
     @Override
     public void choose(Message message) {
         BotUser user = cache.findBy(message.getChatId());
 
         if (user != null && user.getPosition() != Position.NONE) {
+            //нагадування для себе тут буде перевірка чи юзер має довідку для навчання чи для війська
+            // в залежності від того який тип заявки така і реєстрація
+
             switch (user.getPosition()) {
                 case INPUT_USER_NAME:
                     user.setFullName(message.getText());
@@ -52,61 +61,42 @@ public class MessageHandler implements Handler<Message> {
                     user.setYearEntry(message.getText());
                     user.setPosition(Position.INPUT_USER_PHONE);
                     sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
-                    sendMessageService.phoneNum(message);
+                    sendMessageService.sendMessage(
+                            message,
+                            "Нажміть, щоб поділитися контактом",
+                            Keyboards.phoneKeyboard()
+                    );
                     break;
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
-                    sendMessageService.sendInfoAboutUserFromCache(message, user);
-                    sendMessageService.sendConfirmationMenu(message);
-                    break;
-                case CONFIMATION:
-                    switch (message.getText()) {
-                        case "Підтвердити✔":
-                            user.setPosition(Position.NONE);
-                            sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                            user.setStatement("Довідка з місця навчання");
-                            UserData.putUserInDataBase(user);
-                            sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                            sendMessageService.sendInfoAboutUserFromDataBasa(message);
+                    messageSender.sendMessage(
+                            sendMessageService.setInfoAboutBotUser(user)
+                    );
 
-                            break;
-                        case "Скасувати❌":
-                            sendMessageService.sendMessage(message, "Введіть дані ще раз");
-                            sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
-                            user.setPosition(Position.INPUT_USER_NAME);
-                            break;
-                    }
+                    sendMessageService.sendMessage(
+                            message,
+                            "Нажміть, щоб підтвердити дані",
+                            Keyboards.confirmationKeyboard()
+                    );
                     break;
             }
         } else if (message.hasText()) {
-            String textFromUser = message.getText();
-            switch (textFromUser) {
+            switch (message.getText()) {
                 case "/start":
-                    sendMessageService.sendStartMenu(message);
-                    sendMessageService.sendMessage(message, "Обирайте з меню нижче ⤵️");
-                    break;
-                case "❗Потрібна послуга деканату":
-                case "❌ Скасувати":
-                case "/menu":
-                    sendMessageService.sendMenu(message);
-                    break;
-                case "Створити довідку з місця навчання":
-                    sendMessageService.sendRegMenu(message);
-                    break;
-                case "Реєстрація":
-                    cache.add(generateUserFromMessage(message));
-                    sendMessageService.sendMessage(message, "Введіть ваш ПІБ(Наприклад: Барабах Павло Романович)⤵");
-                    break;
-                case "/reset":
-                    cache.remove(user);
-                    sendMessageService.deleteUser(message);
-                    sendMessageService.sendMessage(message, "Вашу заявку скасовано❗");
+                    sendMessageService.sendMessage(
+                            message,
+                            MenuText.START,
+                            Keyboards.starKeyboard());
                     break;
                 case "/help":
-                    sendMessageService.sendMessage(message, "https://telegra.ph/POS%D0%86BNIK-KORISTUVACHA-TELEGRAM-BOTA-LDU-BZHD-05-22");
-
+                    sendMessageService.sendMessage(
+                            message,
+                            MenuText.HELP,
+                            Keyboards.helpMenu()
+                    );
                     break;
+
             }
         }
     }
