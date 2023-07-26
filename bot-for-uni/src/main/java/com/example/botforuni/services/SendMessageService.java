@@ -28,18 +28,18 @@ public class SendMessageService {
     /**
      * Надсилає просте текстове повідомлення до чату з вказаним текстом.
      *
-     * @param message Об'єкт, що представляє отримане повідомлення від користувача.
+     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
      * @param text    Текст повідомлення для надсилання.
      */
-    public void sendMessage(Message message, String text) {
+    public void sendMessage(Message messageFromUser, String text) {
         // Створення об'єкту SendMessage для надсилання текстового повідомлення
-        SendMessage ms1 = SendMessage.builder()
+        SendMessage message = SendMessage.builder()
                 .text(text)
-                .chatId(String.valueOf(message.getChatId()))
+                .chatId(String.valueOf(messageFromUser.getChatId()))
                 .build();
 
         // Надсилання повідомлення за допомогою messageSender.sendMessage()
-        messageSender.sendMessage(ms1);
+        messageSender.sendMessage(message);
     }
 
     /**
@@ -92,9 +92,11 @@ public class SendMessageService {
 
 
         if (botUser.getTelegramId()!=null){
-            messageSender.sendMessage(
-                    setInfoAboutBotUser(botUser)
+            sendMessage(
+                    message,
+                    botUser.toString()
             );
+
         }else {
             sendMessage(
                     message,
@@ -108,9 +110,8 @@ public class SendMessageService {
 
 
         if (botUser.getTelegramId()!=null){
-            messageSender.sendMessage(
-                    setInfoAboutBotUser(botUser,Keyboards.linkToMenuKeyboard())
-            );
+            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
+
         }else {
             sendMessage(
                     message,
@@ -132,34 +133,11 @@ public class SendMessageService {
                     Keyboards.linkToMenuKeyboard()
             );
         }else {
-            messageSender.sendMessage(
-                    setInfoAboutBotUser(botUser,Keyboards.linkToMenuKeyboard())
-            );
+            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
+
         }
 
 
     }
-
-
-
-    public SendMessage setInfoAboutBotUser(BotUser botUser){
-        return SendMessage.builder()
-                .parseMode("HTML")
-                .chatId(String.valueOf(botUser.getTelegramId()))
-                .text("<b>ПІБ: </b> " + botUser.getFullName() + "\n" +
-                        "<b>Група: </b>" + botUser.getGroupe() + "\n" +
-                        "<b>Рік набору: </b>" + botUser.getYearEntry() + "\n" +
-                        "<b>Номер телефону: </b>" + botUser.getPhoneNumber() + "\n" +
-                        "<b>Тип заявки: </b>" +botUser.getStatement())
-                .build();
-    }
-    public SendMessage setInfoAboutBotUser(BotUser botUser,InlineKeyboardMarkup inlineKeyboardMarkup){
-        SendMessage sendMessage =setInfoAboutBotUser(botUser);
-        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        return sendMessage;
-    }
-
-
-
 
 }

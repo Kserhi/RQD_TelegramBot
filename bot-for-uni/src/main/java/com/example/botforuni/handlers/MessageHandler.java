@@ -70,10 +70,10 @@ public class MessageHandler implements Handler<Message> {
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
                     user.setPosition(Position.CONFIMATION);
-                    messageSender.sendMessage(
-                            sendMessageService.setInfoAboutBotUser(user)
+                    sendMessageService.sendMessage(
+                            message,
+                            user.toString()
                     );
-
                     sendMessageService.sendMessage(
                             message,
                             "Нажміть, щоб підтвердити дані",
