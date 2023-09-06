@@ -16,10 +16,6 @@ public class BotUserDataService {
         this.botUserRepository = botUserRepository;
     }
 
-    public static final String STATEMENTFORMILITARI = "Довідка для військомату";
-    public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
-
-
     public static void putUserInDataBase(BotUser botUser) {
         botUserRepository.save(botUser);
 

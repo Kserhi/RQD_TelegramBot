@@ -1,5 +1,4 @@
 package com.example.botforuni.Keybords;
-
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -116,7 +115,6 @@ public class Keyboards {
 //        return inlineKeyboardMarkup;
 //
 //    }
-
     public static InlineKeyboardMarkup starKeyboard() {
         ///менюшка після старту ❗Потрібна послуга деканату
 

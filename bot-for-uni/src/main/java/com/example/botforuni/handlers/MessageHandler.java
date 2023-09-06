@@ -40,6 +40,7 @@ public class MessageHandler implements Handler<Message> {
 
     @Override
     public void choose(Message message) {
+        
         BotUser user = cache.findBy(message.getChatId());
 
         if (user != null && user.getPosition() != Position.NONE) {

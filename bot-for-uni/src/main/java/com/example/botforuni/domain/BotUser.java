@@ -43,10 +43,14 @@ public class BotUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-
-    private Long telegramId;
     @Transient
     private Position position;
+    @Transient
+    public static final String STATEMENTFORMILITARI = "Довідка для військомату";
+    @Transient
+    public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
+
+    private Long telegramId;
     private String fullName;
     private String yearEntry;
     private String statement;
@@ -109,6 +113,7 @@ public class BotUser {
     public void setGroupe(String groupe) {
         this.groupe = groupe;
     }
+
     public String toString(){
         return  "ПІБ:  " +getFullName() + "\n" +
                 "Група:  " +getGroupe() + "\n" +

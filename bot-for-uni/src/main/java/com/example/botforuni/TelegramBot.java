@@ -23,6 +23,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.processor = processor;
     }
 
+
     @Override
     public void onUpdateReceived(Update update) {
         processor.process(update);

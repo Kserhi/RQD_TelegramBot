@@ -65,7 +65,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                BotUserDataService.STATEMENTFORMILITARI));
+                                BotUser.STATEMENTFORMILITARI));
 
                 break;
 
@@ -77,7 +77,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                BotUserDataService.STATEMENTFORSTUDY));
+                                BotUser.STATEMENTFORSTUDY));
 
                 break;
 

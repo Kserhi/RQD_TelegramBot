@@ -88,7 +88,7 @@ public class SendMessageService {
     public void sendAllInfoAboutUserFromDataBasa(Message message) {
         BotUser botUser=BotUserDataService.getAllInfoAboutUser(
                 message.getChatId(),
-                BotUserDataService.STATEMENTFORSTUDY);
+                BotUser.STATEMENTFORSTUDY);
 
 
         if (botUser.getTelegramId()!=null){
@@ -100,13 +100,13 @@ public class SendMessageService {
         }else {
             sendMessage(
                     message,
-                    "Інформації про "+BotUserDataService.STATEMENTFORSTUDY +" незнайдено");
+                    "Інформації про "+BotUser.STATEMENTFORSTUDY +" незнайдено");
         }
 
 
         botUser=BotUserDataService.getAllInfoAboutUser(
                 message.getChatId(),
-                BotUserDataService.STATEMENTFORMILITARI);
+                BotUser.STATEMENTFORMILITARI);
 
 
         if (botUser.getTelegramId()!=null){
@@ -115,7 +115,7 @@ public class SendMessageService {
         }else {
             sendMessage(
                     message,
-                    "Інформації про "+BotUserDataService.STATEMENTFORMILITARI
+                    "Інформації про "+BotUser.STATEMENTFORMILITARI
                             +" незнайдено",
                     Keyboards.linkToMenuKeyboard());
         }
