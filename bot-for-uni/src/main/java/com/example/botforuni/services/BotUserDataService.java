@@ -10,7 +10,8 @@ import java.util.List;
 
 @Service
 public class BotUserDataService {
-    private static  BotUserRepository botUserRepository;
+
+    private static BotUserRepository botUserRepository;
     @Autowired
     public BotUserDataService(BotUserRepository botUserRepository) {
         this.botUserRepository = botUserRepository;
