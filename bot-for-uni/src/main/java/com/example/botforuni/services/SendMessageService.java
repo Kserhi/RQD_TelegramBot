@@ -41,6 +41,16 @@ public class SendMessageService {
         // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
     }
+    public void sendMessage(Long chatId, String text) {
+        // Створення об'єкту SendMessage для надсилання текстового повідомлення
+        SendMessage message = SendMessage.builder()
+                .text(text)
+                .chatId(String.valueOf(chatId))
+                .build();
+
+        // Надсилання повідомлення за допомогою messageSender.sendMessage()
+        messageSender.sendMessage(message);
+    }
 
     /**
      * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.

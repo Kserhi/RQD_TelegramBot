@@ -35,6 +35,7 @@ public class BotUser {
     private String groupe;
     private boolean status = false;
 
+
     public String toString(){
         return  "ПІБ:  " +getFullName() + "\n" +
                 "Група:  " +getGroupe() + "\n" +
@@ -43,4 +44,6 @@ public class BotUser {
                 "Тип заявки:  " + getStatement();
 
     }
+
+
 }

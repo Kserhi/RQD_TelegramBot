@@ -81,6 +81,8 @@ public class MessageHandler implements Handler<Message> {
                             Keyboards.confirmationKeyboard()
                     );
                     break;
+
+
             }
         } else if (message.hasText()) {
             switch (message.getText()) {
@@ -97,6 +99,7 @@ public class MessageHandler implements Handler<Message> {
                             Keyboards.helpMenu()
                     );
                     break;
+
 
             }
         }
