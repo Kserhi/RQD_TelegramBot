@@ -33,6 +33,7 @@ public class BotUser {
     private String statement;
     private String phoneNumber;
     private String groupe;
+    private boolean status = false;
 
     public String toString(){
         return  "ПІБ:  " +getFullName() + "\n" +
