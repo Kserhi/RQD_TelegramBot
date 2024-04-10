@@ -2,13 +2,16 @@ package com.example.botforuni.testDemo;
 
 
 
+import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.services.BotUserDataService;
 import com.example.botforuni.services.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class UpdateUserStatus{
+public class UpdateUserStatus {
     SendMessageService sendMessageService;
 
     public UpdateUserStatus(SendMessageService sendMessageService) {
@@ -19,8 +22,16 @@ public class UpdateUserStatus{
         while (true){
             try {
                 Thread.sleep(3000);
-//                BotUserDataService.getTrueUsers().forEach(botUser -> System.out.println(botUser.getFullName()));
-                BotUserDataService.getTrueUsers().forEach(botUser -> sendMessageService.sendMessage(botUser.getTelegramId(),"Ваша довідка готова"));
+                List<BotUser> botUserList= BotUserDataService.getTrueUsers();
+                botUserList.forEach(botUser ->
+                        sendMessageService.
+                                sendMessage(botUser.getTelegramId(),
+                                        botUser.getStatement()+ " готова.\n" +
+                                                "Зверніться,будь-ласка,в деканат."
+
+                                ));
+                BotUserDataService.updateIsRedy(botUserList);
+
 
             } catch (Exception e) {
                 System.out.println("Exception " + e);

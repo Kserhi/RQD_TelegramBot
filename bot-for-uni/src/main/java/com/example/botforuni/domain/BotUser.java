@@ -23,7 +23,7 @@ public class BotUser {
     @Transient
     private Position position;
     @Transient
-    public static final String STATEMENTFORMILITARI = "Довідка для військомату";
+    public static final String STATEMENTFORMILITARI = "Довідка для військкомату";
     @Transient
     public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
 
@@ -34,6 +34,7 @@ public class BotUser {
     private String phoneNumber;
     private String groupe;
     private boolean status = false;
+    private boolean isReady = false;
 
 
     public String toString(){

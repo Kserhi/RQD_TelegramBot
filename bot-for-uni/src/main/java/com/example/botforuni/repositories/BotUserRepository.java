@@ -11,4 +11,7 @@ public interface BotUserRepository extends JpaRepository<BotUser,Long> {
     List<BotUser> findByTelegramIdAndStatement(Long telegramId,String statement);
 
 
+
+
+
 }
