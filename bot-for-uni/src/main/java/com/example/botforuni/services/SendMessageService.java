@@ -1,7 +1,6 @@
 package com.example.botforuni.services;
 
 import com.example.botforuni.Keybords.Keyboards;
-import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
 import com.example.botforuni.messagesender.MessageSender;
 import org.springframework.stereotype.Service;
@@ -14,16 +13,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class SendMessageService {
     private final MessageSender messageSender;
 
-    private final Cache<BotUser> cache;
-
-    public SendMessageService(MessageSender messageSender,Cache<BotUser> cache) {
-        this.cache=cache;
+    public SendMessageService(MessageSender messageSender) {
         this.messageSender = messageSender;
     }
-
-
-
-
 
     /**
      * Надсилає просте текстове повідомлення до чату з вказаним текстом.
