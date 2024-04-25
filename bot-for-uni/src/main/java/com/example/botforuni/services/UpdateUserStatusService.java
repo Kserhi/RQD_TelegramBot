@@ -1,18 +1,18 @@
-package com.example.botforuni.utils;
+package com.example.botforuni.services;
 
 import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.services.BotUserDataService;
-import com.example.botforuni.services.SendMessageService;
+import com.example.botforuni.utils.Constans;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Component
-public class UpdateUserStatus {
+@Service
+public class UpdateUserStatusService {
     @Autowired
     private SendMessageService sendMessageService;
 

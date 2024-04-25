@@ -1,4 +1,4 @@
-package com.example.botforuni.utils;
+package com.example.botforuni.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
