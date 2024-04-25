@@ -14,22 +14,14 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class MessageHandler implements Handler<Message> {
 
-
+    @Autowired
     private SendMessageService sendMessageService;
+    @Autowired
     private MessageSender messageSender;
 
 
     private final Cache<BotUser> cache;
 
-    @Autowired
-    public void setSendMessageService(SendMessageService sendMessageService) {
-        this.sendMessageService = sendMessageService;
-    }
-
-    @Autowired
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
-    }
 
     public MessageHandler(Cache<BotUser> cache) {
         this.cache = cache;
@@ -70,7 +62,7 @@ public class MessageHandler implements Handler<Message> {
                     break;
                 case INPUT_USER_PHONE:
                     user.setPhoneNumber(message.getContact().getPhoneNumber());
-                    user.setPosition(Position.CONFIMATION);
+                    user.setPosition(Position.CONFIRMATION);
                     sendMessageService.sendMessage(
                             message,
                             user.toString()

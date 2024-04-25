@@ -22,10 +22,7 @@ public class BotUser {
 
     @Transient
     private Position position;
-    @Transient
-    public static final String STATEMENTFORMILITARI = "Довідка для військкомату";
-    @Transient
-    public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
+
 
     private Long telegramId;
     private String fullName;

@@ -1,5 +1,7 @@
 package com.botforuni.utils;
 
+import javax.persistence.Transient;
+
 public class Constans {
     public static final String MENU ="Виберіть необхідну послугу ⤵";
     public static final String CHOOSESTATEMENT="Виберіть тип довідки⤵";
@@ -10,4 +12,7 @@ public class Constans {
 
     public static final String STATUSOFSTATEMENT =" готова.\nЗверніться,будь-ласка,в деканат.";
 
+
+    public static final String STATEMENTFORMILITARI = "Довідка для військкомату";
+    public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
 }

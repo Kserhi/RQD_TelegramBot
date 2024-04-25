@@ -16,15 +16,11 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
-
+    @Autowired
     private SendMessageService sendMessageService;
     private final Cache<BotUser> cache;
 
 
-    @Autowired
-    public void setSendMessageService(SendMessageService sendMessageService) {
-        this.sendMessageService = sendMessageService;
-    }
 
 
     public CallbackQueryHandler(Cache<BotUser> cache) {
@@ -65,7 +61,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                BotUser.STATEMENTFORMILITARI));
+                                Constans.STATEMENTFORMILITARI));
 
                 break;
 
@@ -77,7 +73,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                BotUser.STATEMENTFORSTUDY));
+                                Constans.STATEMENTFORSTUDY));
 
                 break;
 

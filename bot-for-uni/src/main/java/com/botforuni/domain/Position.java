@@ -5,6 +5,6 @@ public enum Position {
     INPUT_USER_GROUP,
     INPUT_USER_YEAR,
     INPUT_USER_PHONE,
-    CONFIMATION,
+    CONFIRMATION,
     NONE
 }

@@ -3,6 +3,7 @@ package com.botforuni.services;
 import com.botforuni.Keybords.Keyboards;
 import com.botforuni.domain.BotUser;
 import com.botforuni.messageSender.MessageSender;
+import com.botforuni.utils.Constans;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -90,7 +91,7 @@ public class SendMessageService {
     public void sendAllInfoAboutUserFromDataBasa(Message message) {
         BotUser botUser=BotUserDataService.getAllInfoAboutUser(
                 message.getChatId(),
-                BotUser.STATEMENTFORSTUDY);
+                Constans.STATEMENTFORSTUDY);
 
 
         if (botUser.getTelegramId()!=null){
@@ -102,13 +103,13 @@ public class SendMessageService {
         }else {
             sendMessage(
                     message,
-                    "Інформації про "+BotUser.STATEMENTFORSTUDY +" незнайдено");
+                    "Інформації про "+Constans.STATEMENTFORSTUDY +" незнайдено");
         }
 
 
         botUser=BotUserDataService.getAllInfoAboutUser(
                 message.getChatId(),
-                BotUser.STATEMENTFORMILITARI);
+                Constans.STATEMENTFORMILITARI);
 
 
         if (botUser.getTelegramId()!=null){
@@ -117,7 +118,7 @@ public class SendMessageService {
         }else {
             sendMessage(
                     message,
-                    "Інформації про "+BotUser.STATEMENTFORMILITARI
+                    "Інформації про "+Constans.STATEMENTFORMILITARI
                             +" незнайдено",
                     Keyboards.linkToMenuKeyboard());
         }
