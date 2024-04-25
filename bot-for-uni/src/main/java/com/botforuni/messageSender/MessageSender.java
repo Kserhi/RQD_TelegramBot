@@ -1,4 +1,4 @@
-package com.example.botforuni.messagesender;
+package com.botforuni.messageSender;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 

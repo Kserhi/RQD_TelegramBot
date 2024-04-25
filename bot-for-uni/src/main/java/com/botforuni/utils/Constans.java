@@ -1,4 +1,4 @@
-package com.example.botforuni.utils;
+package com.botforuni.utils;
 
 public class Constans {
     public static final String MENU ="Виберіть необхідну послугу ⤵";

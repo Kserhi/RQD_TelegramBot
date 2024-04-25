@@ -1,13 +1,13 @@
-package com.example.botforuni.handlers;
+package com.botforuni.handlers;
 
-import com.example.botforuni.Keybords.Keyboards;
-import com.example.botforuni.cache.BotUserCache;
-import com.example.botforuni.cache.Cache;
-import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.utils.Constans;
-import com.example.botforuni.domain.Position;
-import com.example.botforuni.services.BotUserDataService;
-import com.example.botforuni.services.SendMessageService;
+import com.botforuni.Keybords.Keyboards;
+import com.botforuni.services.BotUserDataService;
+import com.botforuni.services.SendMessageService;
+import com.botforuni.cache.BotUserCache;
+import com.botforuni.cache.Cache;
+import com.botforuni.domain.BotUser;
+import com.botforuni.utils.Constans;
+import com.botforuni.domain.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

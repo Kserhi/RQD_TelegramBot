@@ -1,4 +1,4 @@
-package com.example.botforuni.domain;
+package com.botforuni.domain;
 
 import lombok.*;
 

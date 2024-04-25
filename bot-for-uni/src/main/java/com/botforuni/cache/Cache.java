@@ -1,4 +1,4 @@
-package com.example.botforuni.cache;
+package com.botforuni.cache;
 
 import org.springframework.stereotype.Component;
 

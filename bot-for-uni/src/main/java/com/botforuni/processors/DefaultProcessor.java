@@ -1,7 +1,7 @@
-package com.example.botforuni.processors;
+package com.botforuni.processors;
 
-import com.example.botforuni.handlers.CallbackQueryHandler;
-import com.example.botforuni.handlers.MessageHandler;
+import com.botforuni.handlers.CallbackQueryHandler;
+import com.botforuni.handlers.MessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;

@@ -1,4 +1,4 @@
-package com.example.botforuni;
+package com.botforuni;
 
 
 import org.springframework.boot.SpringApplication;

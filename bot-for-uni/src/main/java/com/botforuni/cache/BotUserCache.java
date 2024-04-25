@@ -1,7 +1,7 @@
-package com.example.botforuni.cache;
+package com.botforuni.cache;
 
-import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.domain.Position;
+import com.botforuni.domain.BotUser;
+import com.botforuni.domain.Position;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 

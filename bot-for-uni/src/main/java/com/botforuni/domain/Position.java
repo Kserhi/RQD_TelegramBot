@@ -1,4 +1,4 @@
-package com.example.botforuni.domain;
+package com.botforuni.domain;
 
 public enum Position {
     INPUT_USER_NAME,

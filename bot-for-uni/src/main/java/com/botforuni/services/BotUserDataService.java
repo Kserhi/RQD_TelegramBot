@@ -1,8 +1,8 @@
 
-package com.example.botforuni.services;
+package com.botforuni.services;
 
-import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.repositories.BotUserRepository;
+import com.botforuni.domain.BotUser;
+import com.botforuni.repositories.BotUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class BotUserDataService {
 
     @Autowired
     public BotUserDataService(BotUserRepository botUserRepository) {
-        this.botUserRepository = botUserRepository;
+        BotUserDataService.botUserRepository = botUserRepository;
     }
 
     public static void putUserInDataBase(BotUser botUser) {
@@ -74,12 +74,6 @@ public class BotUserDataService {
                 // Виконуємо збереження змін
                 botUserRepository.save(entityToUpdate);
             }
-//            else {
-//
-//
-//                // Обробка випадку, коли об'єкт не знайдено
-//                // Можна кинути виняток або здійснити інші дії
-//            }
         });
 
 

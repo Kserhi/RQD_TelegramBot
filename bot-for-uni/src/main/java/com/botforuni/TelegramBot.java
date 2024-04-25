@@ -1,6 +1,6 @@
-package com.example.botforuni;
+package com.botforuni;
 
-import com.example.botforuni.processors.Processor;
+import com.botforuni.processors.Processor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,20 +15,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${telegram.bot.username}")
     private String botUsername;
 
-   @Value("${telegram.bot.token}")
+    @Value("${telegram.bot.token}")
     private String botToken;
 
-    private Processor processor;
-
     @Autowired
-    public void setProcessor(Processor processor) {
-        this.processor = processor;
-    }
+    private Processor processor;
 
 
     @Override
     public void onUpdateReceived(Update update) {
         processor.process(update);
     }
-    
+
 }

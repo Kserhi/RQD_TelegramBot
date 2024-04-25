@@ -1,4 +1,4 @@
-package com.example.botforuni.processors;
+package com.botforuni.processors;
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;

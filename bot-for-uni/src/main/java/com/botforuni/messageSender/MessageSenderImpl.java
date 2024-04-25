@@ -1,6 +1,6 @@
-package com.example.botforuni.messagesender;
+package com.botforuni.messageSender;
 
-import com.example.botforuni.TelegramBot;
+import com.botforuni.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
