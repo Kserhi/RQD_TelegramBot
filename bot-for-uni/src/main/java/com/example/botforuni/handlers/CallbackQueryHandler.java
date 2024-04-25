@@ -4,7 +4,7 @@ import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.BotUserCache;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.domain.MenuText;
+import com.example.botforuni.utils.Constans;
 import com.example.botforuni.domain.Position;
 import com.example.botforuni.services.BotUserDataService;
 import com.example.botforuni.services.SendMessageService;
@@ -39,21 +39,21 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "/menu":
                 sendMessageService.sendMessage(
                         message,
-                        MenuText.MENU,
+                        Constans.MENU,
                         Keyboards.menuKeyboard()
                 );
                 break;
             case "choose_statement":
                 sendMessageService.sendMessage(
                         message,
-                        MenuText.CHOOSESTATEMENT,
+                        Constans.CHOOSESTATEMENT,
                         Keyboards.chooseStatementKeyboard()
                 );
                 break;
             case "statements":
                 sendMessageService.sendMessage(
                         message,
-                        MenuText.STATEMENTS);
+                        Constans.STATEMENTS);
 
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
 
@@ -92,7 +92,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "cancel":
                 sendMessageService.sendMessage(
                         message,
-                        MenuText.MENU,
+                        Constans.MENU,
                         Keyboards.menuKeyboard()
                 );
                 user.setPosition(Position.NONE);

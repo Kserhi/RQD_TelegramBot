@@ -3,7 +3,7 @@ package com.example.botforuni.handlers;
 import com.example.botforuni.Keybords.Keyboards;
 import com.example.botforuni.cache.Cache;
 import com.example.botforuni.domain.BotUser;
-import com.example.botforuni.domain.MenuText;
+import com.example.botforuni.utils.Constans;
 import com.example.botforuni.domain.Position;
 import com.example.botforuni.messagesender.MessageSender;
 import com.example.botforuni.services.SendMessageService;
@@ -89,13 +89,13 @@ public class MessageHandler implements Handler<Message> {
                 case "/start":
                     sendMessageService.sendMessage(
                             message,
-                            MenuText.START,
+                            Constans.START,
                             Keyboards.starKeyboard());
                     break;
                 case "/help":
                     sendMessageService.sendMessage(
                             message,
-                            MenuText.HELP,
+                            Constans.HELP,
                             Keyboards.helpMenu()
                     );
                     break;
