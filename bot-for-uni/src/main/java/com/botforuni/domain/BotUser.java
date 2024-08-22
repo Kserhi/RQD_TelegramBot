@@ -23,7 +23,6 @@ public class BotUser {
     @Transient
     private Position position;
 
-
     private Long telegramId;
     private String fullName;
     private String yearEntry;
