@@ -3,8 +3,6 @@ package com.botforuni.handlers;
 import com.botforuni.Keybords.Keyboards;
 import com.botforuni.cache.Cache;
 import com.botforuni.domain.BotUser;
-import com.botforuni.domain.BotUserDemo;
-import com.botforuni.services.BotUserDataService;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.utils.Constans;
 import com.botforuni.domain.Position;
@@ -36,22 +34,6 @@ public class MessageHandler implements Handler<Message> {
     public void choose(Message message) {
 
         BotUser user = cache.findBy(message.getChatId());
-
-/*        тут треба перивіряти чи є телеграм юзер вже в кеші
-          і чи не стартова в него позиція
-
-
-          якшо так то юзера перекидає до менюшки з якої він може
-          залогінитись автоматично в систему або переглянути help
-
-          BotUserDemo botUserDemo= BotUserDemoDataService
-                                    .findBy(message.getChatId());
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-*/
-
-
-
 
 
 
