@@ -5,6 +5,7 @@ import com.botforuni.cache.Cache;
 import com.botforuni.domain.BotUser;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
+import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constans;
 import com.botforuni.domain.Position;
@@ -56,6 +57,33 @@ public class MessageHandler implements Handler<Message> {
                     PositionInTelegramChat.NONE);
             TelegramUserService.add(telegramUser);
         }
+
+
+        if (!telegramUser.getPosition().equals(PositionInTelegramChat.NONE)){
+            switch (telegramUser.getPosition()){
+                case PositionInTelegramChat.INPUTUSERNAME -> {
+
+                }
+
+
+            }
+
+
+
+        }else if (message.hasText()) {
+            switch (message.getText()) {
+                case "/start" -> sendMessageService.sendMessage(
+                        message,
+                        Constans.START,
+                        Keyboards.starKeyboard());
+                case "/help" -> sendMessageService.sendMessage(
+                        message,
+                        Constans.HELP,
+                        Keyboards.helpMenu()
+                );
+            }
+        }
+
 
         BotUser user = cache.findBy(message.getChatId());
 
