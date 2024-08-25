@@ -30,36 +30,43 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     @Override
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
-
         BotUser user = cache.findBy(message.getChatId());
 
         switch (callbackQuery.getData()) {
-            case "/menu" -> sendMessageService.sendMessage(
-                    message,
-                    Constans.MENU,
-                    Keyboards.menuKeyboard()
-            );
-            case "choose_statement" -> sendMessageService.sendMessage(
-                    message,
-                    Constans.CHOOSESTATEMENT,
-                    Keyboards.chooseStatementKeyboard()
-            );
-            case "statements" -> {
+            case "/menu":
+                sendMessageService.sendMessage(
+                        message,
+                        Constans.MENU,
+                        Keyboards.menuKeyboard()
+                );
+                break;
+            case "choose_statement":
+                sendMessageService.sendMessage(
+                        message,
+                        Constans.CHOOSESTATEMENT,
+                        Keyboards.chooseStatementKeyboard()
+                );
+                break;
+            case "statements":
                 sendMessageService.sendMessage(
                         message,
                         Constans.STATEMENTS);
 
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
-            }
-            case "statementForMilitaryOfficer" -> {
+
+                break;
+
+            case "statementForMilitaryOfficer":
                 sendMessageService.sendMessage(message, "Введіть своє повне імя");
                 //генерує користувача з меседжа  та записує в кеш
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
                                 Constans.STATEMENTFORMILITARI));
-            }
-            case "statementForStudy" -> {
+
+                break;
+
+            case "statementForStudy":
 
 
                 sendMessageService.sendMessage(message, "Введіть своє повне імя");
@@ -68,22 +75,27 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         BotUserCache.generateUserFromMessage(
                                 message,
                                 Constans.STATEMENTFORSTUDY));
-            }
-            case "confirm" -> {
+
+                break;
+
+            case "confirm":
                 user.setPosition(Position.NONE);
                 sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                 BotUserDataService.putUserInDataBase(user);
                 sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                sendMessageService.sendInfoAboutUserFromDataBasa(message, user.getStatement());
-            }
-            case "cancel" -> {
+                sendMessageService.sendInfoAboutUserFromDataBasa(message,user.getStatement());
+                break;
+
+            case "cancel":
                 sendMessageService.sendMessage(
                         message,
                         Constans.MENU,
                         Keyboards.menuKeyboard()
                 );
                 user.setPosition(Position.NONE);
-            }
+                break;
+
+
         }
     }
 }
