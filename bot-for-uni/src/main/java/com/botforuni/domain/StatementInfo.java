@@ -20,6 +20,7 @@ public class StatementInfo {
 //            allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY,
 //            generator = "statementInfo_sequence")
+    @Id
     private Long Id;
     private Long statementId;
     private boolean isReady;

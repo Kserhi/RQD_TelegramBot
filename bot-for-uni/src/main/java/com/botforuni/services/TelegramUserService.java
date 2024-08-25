@@ -5,23 +5,27 @@ import com.botforuni.repositories.TelegramUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TelegramUserService {
-    @Autowired
     private static TelegramUserRepository telegramUserRepository;
 
-    public void add(TelegramUser telegramUser){
+    @Autowired
+    public TelegramUserService(TelegramUserRepository telegramUserRepository) {
+        TelegramUserService.telegramUserRepository = telegramUserRepository;
+    }
+
+    public static void add(TelegramUser telegramUser) {
         telegramUserRepository.save(telegramUser);
     }
-    public void remove(TelegramUser telegramUser){
-       telegramUserRepository.deleteById(telegramUser.getTelegramId());
+
+    public static void remove(TelegramUser telegramUser) {
+        telegramUserRepository.deleteById(telegramUser.getTelegramId());
     }
 
-    public TelegramUser findBy(Long id) {
-
-
-        ///має бути перевірка на присутність обєкта
-        return telegramUserRepository.findById(id).get();
+    public static Optional<TelegramUser> findBy(Long id) {
+        return telegramUserRepository.findById(id);
     }
 
 }

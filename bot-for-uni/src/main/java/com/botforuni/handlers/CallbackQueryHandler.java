@@ -30,6 +30,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     @Override
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
+
         BotUser user = cache.findBy(message.getChatId());
 
         switch (callbackQuery.getData()) {
