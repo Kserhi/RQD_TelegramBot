@@ -6,7 +6,7 @@ import com.botforuni.services.SendMessageService;
 import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
-import com.botforuni.utils.PositionInTelegramChat;
+import com.botforuni.domain.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

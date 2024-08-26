@@ -1,4 +1,4 @@
-package com.botforuni.utils;
+package com.botforuni.domain;
 
 public class PositionInTelegramChat {
     public static final String INPUTUSERNAME="INPUT USER NAME";

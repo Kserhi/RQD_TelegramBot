@@ -2,7 +2,7 @@ package com.botforuni.services;
 
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.repositories.TelegramUserRepository;
-import com.botforuni.utils.PositionInTelegramChat;
+import com.botforuni.domain.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
