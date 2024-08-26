@@ -44,7 +44,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         message,
                         Constants.STATEMENTS);
 
-                sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
+//                sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
             }
 
 

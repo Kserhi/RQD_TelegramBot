@@ -1,7 +1,6 @@
 package com.botforuni.services;
 
 import com.botforuni.Keybords.Keyboards;
-import com.botforuni.domain.BotUser;
 import com.botforuni.messageSender.MessageSender;
 import com.botforuni.utils.Constants;
 import org.springframework.stereotype.Service;
@@ -88,59 +87,59 @@ public class SendMessageService {
 
 
 
-    public void sendAllInfoAboutUserFromDataBasa(Message message) {
-        BotUser botUser=BotUserDataService.getAllInfoAboutUser(
-                message.getChatId(),
-                Constants.STATEMENTFORSTUDY);
+//    public void sendAllInfoAboutUserFromDataBasa(Message message) {
+//        BotUser botUser=BotUserDataService.getAllInfoAboutUser(
+//                message.getChatId(),
+//                Constants.STATEMENTFORSTUDY);
+//
+//
+//        if (botUser.getTelegramId()!=null){
+//            sendMessage(
+//                    message,
+//                    botUser.toString()
+//            );
+//
+//        }else {
+//            sendMessage(
+//                    message,
+//                    "Інформації про "+ Constants.STATEMENTFORSTUDY +" незнайдено");
+//        }
+//
+//
+//        botUser=BotUserDataService.getAllInfoAboutUser(
+//                message.getChatId(),
+//                Constants.STATEMENTFORMILITARI);
+//
+//
+//        if (botUser.getTelegramId()!=null){
+//            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
+//
+//        }else {
+//            sendMessage(
+//                    message,
+//                    "Інформації про "+ Constants.STATEMENTFORMILITARI
+//                            +" незнайдено",
+//                    Keyboards.linkToMenuKeyboard());
+//        }
+//
+//
+//    }
 
-
-        if (botUser.getTelegramId()!=null){
-            sendMessage(
-                    message,
-                    botUser.toString()
-            );
-
-        }else {
-            sendMessage(
-                    message,
-                    "Інформації про "+ Constants.STATEMENTFORSTUDY +" незнайдено");
-        }
-
-
-        botUser=BotUserDataService.getAllInfoAboutUser(
-                message.getChatId(),
-                Constants.STATEMENTFORMILITARI);
-
-
-        if (botUser.getTelegramId()!=null){
-            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
-
-        }else {
-            sendMessage(
-                    message,
-                    "Інформації про "+ Constants.STATEMENTFORMILITARI
-                            +" незнайдено",
-                    Keyboards.linkToMenuKeyboard());
-        }
-
-
-    }
-
-    public void sendInfoAboutUserFromDataBasa(Message message,String statement){
-        BotUser botUser=BotUserDataService.getAllInfoAboutUser(message.getChatId(),statement);
-
-        if(botUser.getTelegramId()==null){
-            sendMessage(
-                    message,
-                    "Інформації незнайдено",
-                    Keyboards.linkToMenuKeyboard()
-            );
-        }else {
-            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
-
-        }
-
-
-    }
+//    public void sendInfoAboutUserFromDataBasa(Message message,String statement){
+////        BotUser botUser=BotUserDataService.getAllInfoAboutUser(message.getChatId(),statement);
+////
+////        if(botUser.getTelegramId()==null){
+////            sendMessage(
+////                    message,
+////                    "Інформації незнайдено",
+////                    Keyboards.linkToMenuKeyboard()
+////            );
+////        }else {
+////            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
+////
+////        }
+////
+//
+//    }
 
 }
