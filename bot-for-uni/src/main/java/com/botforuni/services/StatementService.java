@@ -5,6 +5,8 @@ import com.botforuni.repositories.StatementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatementService {
 
@@ -36,6 +38,16 @@ public class StatementService {
 
     public static void deleteById(Long id){
         statementRepository.deleteById(id);
+    }
+
+    public static List<Statement> getAllUserStatements(Long telegramId){
+
+        return statementRepository.findAllByTelegramId(telegramId);
+
+    }
+
+    public static boolean userHaveStatement(Long telegrmaId){
+        return statementRepository.countByTelegramId(telegrmaId) > 0;
     }
 
 }

@@ -40,11 +40,27 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statements" -> {
+                if (StatementService.userHaveStatement(telegramUser.getTelegramId())){
+                    sendMessageService.sendMessage(
+                            message,
+                            Constants.STATEMENTS);
+
+                    StatementService.getAllUserStatements(telegramUser.getTelegramId()).forEach(
+                            statement -> sendMessageService.sendMessage(message,statement.toString())
+                    );
+                }else {
+                    sendMessageService.sendMessage(
+                            message,
+                            "У вас немає жодної зареєстрованої заявки");
+                }
+
                 sendMessageService.sendMessage(
                         message,
-                        Constants.STATEMENTS);
+                        Constants.MENU,
+                        Keyboards.menuKeyboard());
 
-//                sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
+
+
             }
 
 
