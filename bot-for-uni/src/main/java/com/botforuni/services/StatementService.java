@@ -23,7 +23,19 @@ public class StatementService {
 
             statementRepository.save(statement);
 
-            return statementRepository.count();
+            return statementRepository.findMaxId();
+    }
+
+    public  static Statement findById(Long id){
+        return statementRepository.findById(id).get();
+    }
+
+    public static void  save(Statement statement){
+        statementRepository.save(statement);
+    }
+
+    public static void deleteById(Long id){
+        statementRepository.deleteById(id);
     }
 
 }

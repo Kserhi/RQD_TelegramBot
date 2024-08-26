@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class TelegramUserService {
     private static TelegramUserRepository telegramUserRepository;
@@ -19,7 +17,7 @@ public class TelegramUserService {
         TelegramUserService.telegramUserRepository = telegramUserRepository;
     }
 
-    public static void add(TelegramUser telegramUser) {
+    public static void save(TelegramUser telegramUser) {
         telegramUserRepository.save(telegramUser);
     }
 
@@ -45,7 +43,7 @@ public class TelegramUserService {
                     telegramId,
                     PositionInTelegramChat.NONE,
                     (long)-1 );
-            TelegramUserService.add(telegramUser);
+            TelegramUserService.save(telegramUser);
         }
         return telegramUser;
     }

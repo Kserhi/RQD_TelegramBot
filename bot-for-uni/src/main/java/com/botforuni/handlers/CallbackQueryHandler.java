@@ -69,7 +69,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
                 telegramUser.setIdOfStatement(idOfStatement);
-                TelegramUserService.add(telegramUser);
+                TelegramUserService.save(telegramUser);
 
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
@@ -90,7 +90,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
                 telegramUser.setIdOfStatement(idOfStatement);
-                TelegramUserService.add(telegramUser);
+                TelegramUserService.save(telegramUser);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
                 //генерує користувача з меседжа  та записує в кеш
@@ -102,19 +102,36 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "confirm" -> {
-                user.setPosition(Position.NONE);
+                telegramUser.setPosition(PositionInTelegramChat.NONE);
+                telegramUser.setIdOfStatement((long) -1);
+                TelegramUserService.save(telegramUser);
                 sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
-                BotUserDataService.putUserInDataBase(user);
-                sendMessageService.sendMessage(message, "Ваша заявка⤵");
-                sendMessageService.sendInfoAboutUserFromDataBasa(message, user.getStatement());
-            }
-            case "cancel" -> {
                 sendMessageService.sendMessage(
                         message,
                         Constants.MENU,
                         Keyboards.menuKeyboard()
                 );
-                user.setPosition(Position.NONE);
+
+            }
+
+
+
+            case "cancel" -> {
+                if (PositionInTelegramChat.CONFIRMATION.equals(telegramUser.getPosition())){
+                    StatementService.deleteById(telegramUser.getIdOfStatement());
+                    telegramUser.setPosition(PositionInTelegramChat.NONE);
+                    telegramUser.setIdOfStatement((long) -1);
+                    TelegramUserService.save(telegramUser);
+
+
+                    sendMessageService.sendMessage(
+                            message,
+                            Constants.MENU,
+                            Keyboards.menuKeyboard()
+                    );
+
+                }
+
             }
         }
     }
