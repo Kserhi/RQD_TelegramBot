@@ -7,7 +7,7 @@ import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
-import com.botforuni.utils.Constans;
+import com.botforuni.utils.Constants;
 import com.botforuni.domain.Position;
 import com.botforuni.messageSender.MessageSender;
 import com.botforuni.utils.PositionInTelegramChat;
@@ -74,11 +74,11 @@ public class MessageHandler implements Handler<Message> {
             switch (message.getText()) {
                 case "/start" -> sendMessageService.sendMessage(
                         message,
-                        Constans.START,
+                        Constants.START,
                         Keyboards.starKeyboard());
                 case "/help" -> sendMessageService.sendMessage(
                         message,
-                        Constans.HELP,
+                        Constants.HELP,
                         Keyboards.helpMenu()
                 );
             }
@@ -136,13 +136,13 @@ public class MessageHandler implements Handler<Message> {
                 case "/start":
                     sendMessageService.sendMessage(
                             message,
-                            Constans.START,
+                            Constants.START,
                             Keyboards.starKeyboard());
                     break;
                 case "/help":
                     sendMessageService.sendMessage(
                             message,
-                            Constans.HELP,
+                            Constants.HELP,
                             Keyboards.helpMenu()
                     );
                     break;
