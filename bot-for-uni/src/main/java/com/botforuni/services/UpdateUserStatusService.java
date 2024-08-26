@@ -45,7 +45,7 @@ public class UpdateUserStatusService {
         botUserList.forEach(botUser ->
                 sendMessageService.
                         sendMessage(botUser.getTelegramId(),
-                                botUser.getStatement()+ Constans.STATUSOFSTATEMENT
+                                botUser.getStatement()+ Constants.STATUSOFSTATEMENT
                         ));
         BotUserDataService.updateIsRedy(botUserList);
     }
