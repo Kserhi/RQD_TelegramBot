@@ -5,17 +5,14 @@ import com.botforuni.cache.Cache;
 import com.botforuni.domain.BotUser;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
-import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
-import com.botforuni.utils.Constans;
+import com.botforuni.utils.Constants;
 import com.botforuni.domain.Position;
 import com.botforuni.messageSender.MessageSender;
 import com.botforuni.utils.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
-import java.util.Optional;
 
 @Component
 public class MessageHandler implements Handler<Message> {
@@ -40,26 +37,15 @@ public class MessageHandler implements Handler<Message> {
     @Override
     public void choose(Message message) {
 
-//        витягуємо телеграм користувача з бази даних
-//        якшо запису неіснує генеруємо його
-
-        TelegramUser telegramUser;
-        Optional<TelegramUser> telegramUserOptional = TelegramUserService
-                .findBy(message.getChatId());
 
 
-        if (telegramUserOptional.isPresent()){
 
-            telegramUser =telegramUserOptional.get();
-        }else {
-            telegramUser= new TelegramUser(
-                    message.getChatId(),
-                    PositionInTelegramChat.NONE);
-            TelegramUserService.add(telegramUser);
-        }
+        TelegramUser telegramUser= TelegramUserService.get(message.getChatId());
 
 
         if (!telegramUser.getPosition().equals(PositionInTelegramChat.NONE)){
+
+
             switch (telegramUser.getPosition()){
                 case PositionInTelegramChat.INPUTUSERNAME -> {
 
@@ -74,11 +60,11 @@ public class MessageHandler implements Handler<Message> {
             switch (message.getText()) {
                 case "/start" -> sendMessageService.sendMessage(
                         message,
-                        Constans.START,
+                        Constants.START,
                         Keyboards.starKeyboard());
                 case "/help" -> sendMessageService.sendMessage(
                         message,
-                        Constans.HELP,
+                        Constants.HELP,
                         Keyboards.helpMenu()
                 );
             }
@@ -136,13 +122,13 @@ public class MessageHandler implements Handler<Message> {
                 case "/start":
                     sendMessageService.sendMessage(
                             message,
-                            Constans.START,
+                            Constants.START,
                             Keyboards.starKeyboard());
                     break;
                 case "/help":
                     sendMessageService.sendMessage(
                             message,
-                            Constans.HELP,
+                            Constants.HELP,
                             Keyboards.helpMenu()
                     );
                     break;
