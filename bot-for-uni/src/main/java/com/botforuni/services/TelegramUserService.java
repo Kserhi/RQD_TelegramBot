@@ -43,7 +43,8 @@ public class TelegramUserService {
         }else {
             telegramUser= new TelegramUser(
                     telegramId,
-                    PositionInTelegramChat.NONE);
+                    PositionInTelegramChat.NONE,
+                    (long)-1 );
             TelegramUserService.add(telegramUser);
         }
         return telegramUser;

@@ -17,5 +17,6 @@ public class TelegramUser {
     @Id
     private Long telegramId;
     private String position;
+    private Long idOfStatement;
 
 }

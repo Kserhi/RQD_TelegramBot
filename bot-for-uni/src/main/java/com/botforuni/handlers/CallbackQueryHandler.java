@@ -25,8 +25,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     private final Cache<BotUser> cache;
 
 
-
-
     public CallbackQueryHandler(Cache<BotUser> cache) {
         this.cache = cache;
     }
@@ -38,7 +36,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         BotUser user = cache.findBy(message.getChatId());
 
         TelegramUser telegramUser = TelegramUserService.get(message.getChatId());
-
 
 
         switch (callbackQuery.getData()) {
@@ -76,9 +73,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
 
-
-
-
                 //генерує користувача з меседжа  та записує в кеш
                 cache.add(
                         BotUserCache.generateUserFromMessage(
@@ -86,20 +80,15 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                                 Constants.STATEMENTFORMILITARI));
             }
             case "statementForStudy" -> {
-                StatementService.generateStatement(
+                Long idOfStatement=StatementService.generateStatement(
                         telegramUser.getTelegramId(),
                         Constants.STATEMENTFORSTUDY);
 
                 /// змінили позицію користувача
 
                 telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
+                telegramUser.setIdOfStatement(idOfStatement);
                 TelegramUserService.add(telegramUser);
-
-
-
-
-
-
 
 
                 sendMessageService.sendMessage(message, "Введіть своє повне імя");
@@ -109,8 +98,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                                 message,
                                 Constants.STATEMENTFORSTUDY));
             }
-
-
 
 
             case "confirm" -> {
