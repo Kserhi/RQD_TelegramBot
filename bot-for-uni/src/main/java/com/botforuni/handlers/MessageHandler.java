@@ -1,8 +1,6 @@
 package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
-import com.botforuni.cache.Cache;
-import com.botforuni.domain.BotUser;
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
@@ -19,19 +17,6 @@ public class MessageHandler implements Handler<Message> {
 
     @Autowired
     private SendMessageService sendMessageService;
-
-
-
-
-    private final Cache<BotUser> cache;
-
-
-    public MessageHandler(Cache<BotUser> cache) {
-        this.cache = cache;
-
-    }
-
-
 
     @Override
     public void choose(Message message) {

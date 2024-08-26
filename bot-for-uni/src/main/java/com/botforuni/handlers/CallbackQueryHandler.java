@@ -2,15 +2,10 @@ package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
 import com.botforuni.domain.TelegramUser;
-import com.botforuni.services.BotUserDataService;
 import com.botforuni.services.SendMessageService;
-import com.botforuni.cache.BotUserCache;
-import com.botforuni.cache.Cache;
-import com.botforuni.domain.BotUser;
 import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
-import com.botforuni.domain.Position;
 import com.botforuni.utils.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,18 +17,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
     @Autowired
     private SendMessageService sendMessageService;
-    private final Cache<BotUser> cache;
 
-
-    public CallbackQueryHandler(Cache<BotUser> cache) {
-        this.cache = cache;
-    }
 
     @Override
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
-
-        BotUser user = cache.findBy(message.getChatId());
 
         TelegramUser telegramUser = TelegramUserService.get(message.getChatId());
 
@@ -74,12 +62,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
-
-                //генерує користувача з меседжа  та записує в кеш
-                cache.add(
-                        BotUserCache.generateUserFromMessage(
-                                message,
-                                Constants.STATEMENTFORMILITARI));
             }
             case "statementForStudy" -> {
                 Long idOfStatement=StatementService.generateStatement(
@@ -93,11 +75,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 TelegramUserService.save(telegramUser);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
-                //генерує користувача з меседжа  та записує в кеш
-                cache.add(
-                        BotUserCache.generateUserFromMessage(
-                                message,
-                                Constants.STATEMENTFORSTUDY));
+
             }
 
 

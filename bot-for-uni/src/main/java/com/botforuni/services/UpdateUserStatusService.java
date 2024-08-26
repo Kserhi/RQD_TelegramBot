@@ -1,13 +1,10 @@
 package com.botforuni.services;
 
-import com.botforuni.domain.BotUser;
-import com.botforuni.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -41,12 +38,12 @@ public class UpdateUserStatusService {
     }
 
     private void sendInfoAboutStatusUserStatement() {
-        List<BotUser> botUserList= BotUserDataService.getTrueUsers();
-        botUserList.forEach(botUser ->
-                sendMessageService.
-                        sendMessage(botUser.getTelegramId(),
-                                botUser.getStatement()+ Constants.STATUSOFSTATEMENT
-                        ));
-        BotUserDataService.updateIsRedy(botUserList);
+//        List<BotUser> botUserList= BotUserDataService.getTrueUsers();
+//        botUserList.forEach(botUser ->
+//                sendMessageService.
+//                        sendMessage(botUser.getTelegramId(),
+//                                botUser.getStatement()+ Constants.STATUSOFSTATEMENT
+//                        ));
+//        BotUserDataService.updateIsRedy(botUserList);
     }
 }
