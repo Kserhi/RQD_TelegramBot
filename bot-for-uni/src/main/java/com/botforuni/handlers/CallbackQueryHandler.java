@@ -61,14 +61,16 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statementForMilitaryOfficer" -> {
-                StatementService.generateStatement(
+                Long idOfStatement=StatementService.generateStatement(
                         telegramUser.getTelegramId(),
                         Constants.STATEMENTFORMILITARI);
 
                 /// змінили позицію користувача
 
                 telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
+                telegramUser.setIdOfStatement(idOfStatement);
                 TelegramUserService.add(telegramUser);
+
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
@@ -90,8 +92,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUser.setIdOfStatement(idOfStatement);
                 TelegramUserService.add(telegramUser);
 
-
-                sendMessageService.sendMessage(message, "Введіть своє повне імя");
+                sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
                 //генерує користувача з меседжа  та записує в кеш
                 cache.add(
                         BotUserCache.generateUserFromMessage(
