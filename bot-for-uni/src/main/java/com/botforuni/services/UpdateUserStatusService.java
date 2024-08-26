@@ -1,7 +1,7 @@
 package com.botforuni.services;
 
 import com.botforuni.domain.BotUser;
-import com.botforuni.utils.Constans;
+import com.botforuni.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

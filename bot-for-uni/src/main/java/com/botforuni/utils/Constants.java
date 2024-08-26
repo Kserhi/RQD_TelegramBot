@@ -1,8 +1,7 @@
 package com.botforuni.utils;
 
-import javax.persistence.Transient;
 
-public class Constans {
+public class Constants {
     public static final String MENU ="Виберіть необхідну послугу ⤵";
     public static final String CHOOSESTATEMENT="Виберіть тип довідки⤵";
     public static final String STATEMENTS="Ваші довідки:";

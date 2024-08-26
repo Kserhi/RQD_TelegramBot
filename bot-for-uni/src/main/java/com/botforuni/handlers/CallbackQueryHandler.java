@@ -6,7 +6,9 @@ import com.botforuni.services.SendMessageService;
 import com.botforuni.cache.BotUserCache;
 import com.botforuni.cache.Cache;
 import com.botforuni.domain.BotUser;
-import com.botforuni.utils.Constans;
+import com.botforuni.services.StatementService;
+import com.botforuni.services.TelegramUserService;
+import com.botforuni.utils.Constants;
 import com.botforuni.domain.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,18 +38,18 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         switch (callbackQuery.getData()) {
             case "/menu" -> sendMessageService.sendMessage(
                     message,
-                    Constans.MENU,
+                    Constants.MENU,
                     Keyboards.menuKeyboard()
             );
             case "choose_statement" -> sendMessageService.sendMessage(
                     message,
-                    Constans.CHOOSESTATEMENT,
+                    Constants.CHOOSESTATEMENT,
                     Keyboards.chooseStatementKeyboard()
             );
             case "statements" -> {
                 sendMessageService.sendMessage(
                         message,
-                        Constans.STATEMENTS);
+                        Constants.STATEMENTS);
 
                 sendMessageService.sendAllInfoAboutUserFromDataBasa(message);
             }
@@ -57,7 +59,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                Constans.STATEMENTFORMILITARI));
+                                Constants.STATEMENTFORMILITARI));
             }
             case "statementForStudy" -> {
 
@@ -67,7 +69,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 cache.add(
                         BotUserCache.generateUserFromMessage(
                                 message,
-                                Constans.STATEMENTFORSTUDY));
+                                Constants.STATEMENTFORSTUDY));
             }
             case "confirm" -> {
                 user.setPosition(Position.NONE);
@@ -79,7 +81,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "cancel" -> {
                 sendMessageService.sendMessage(
                         message,
-                        Constans.MENU,
+                        Constants.MENU,
                         Keyboards.menuKeyboard()
                 );
                 user.setPosition(Position.NONE);
