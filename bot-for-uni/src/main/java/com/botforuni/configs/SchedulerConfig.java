@@ -10,6 +10,6 @@ public class SchedulerConfig {
 
     @Bean(destroyMethod="shutdown")
     public ScheduledExecutorService taskScheduler() {
-        return Executors.newScheduledThreadPool(1); // Вказуйте кількість потоків, яка вам потрібна
+        return Executors.newScheduledThreadPool(1); // Вказуйєте кількість потоків, яка вам потрібна
     }
 }

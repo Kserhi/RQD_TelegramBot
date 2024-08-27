@@ -38,7 +38,7 @@ public class MessageHandler implements Handler<Message> {
                     TelegramUserService.save(telegramUser);
                     StatementService.save(statement);
 
-                    sendMessageService.sendMessage(message, "Введіть вашу групу(Наприклад: КН23c)⤵");
+                    sendMessageService.sendMessage(message, "Введіть вашу групу (Наприклад: КН23c)⤵");
 
                 }
 
