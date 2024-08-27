@@ -22,6 +22,7 @@ public class StatementService {
             Statement statement =new Statement();
             statement.setTelegramId(telegramId);
             statement.setTypeOfStatement(typeOfStatement);
+            StatementInfoService.save(StatementInfoService.generate(statement));
 
             statementRepository.save(statement);
 

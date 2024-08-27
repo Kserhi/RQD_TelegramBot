@@ -25,6 +25,13 @@ public class Statement {
     private String faculty;
     private String typeOfStatement;
     private Long telegramId;
+
+    @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private StatementInfo statementInfo;
+
+
+
     public String toString() {
         return "ПІБ:  " + getFullName() + "\n" +
                 "Група:  " + getGroupe() + "\n" +

@@ -15,4 +15,9 @@ public interface StatementRepository extends JpaRepository<Statement,Long> {
 
 
     Long countByTelegramId(Long telegramId);
+
+    @Query("SELECT s FROM Statement s WHERE s.statementInfo.status = true")
+    List<Statement> findWhereStatusIsTrue();
+
+
 }

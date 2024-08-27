@@ -14,9 +14,17 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Data
 public class StatementInfo {
+
     @Id
-    private Long Id;
+    @Column(name = "id")
     private Long statementId;
     private boolean isReady;
     private  boolean status;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private Statement statement;
+
+
 }
