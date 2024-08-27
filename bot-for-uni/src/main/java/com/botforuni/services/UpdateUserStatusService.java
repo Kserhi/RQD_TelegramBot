@@ -45,5 +45,6 @@ public class UpdateUserStatusService {
 //                                botUser.getStatement()+ Constants.STATUSOFSTATEMENT
 //                        ));
 //        BotUserDataService.updateIsRedy(botUserList);
+
     }
 }
