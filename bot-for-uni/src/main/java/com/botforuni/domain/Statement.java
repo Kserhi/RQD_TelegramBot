@@ -15,13 +15,8 @@ import javax.persistence.*;
 @Data
 public class Statement {
 
-    @javax.persistence.Id
-    @SequenceGenerator(name = "statement_sequence",
-            sequenceName = "statement_sequence",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY,
-            generator = "statement_sequence")
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
     private String fullName;
     private String yearEntry;
