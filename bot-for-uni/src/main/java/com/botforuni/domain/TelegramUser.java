@@ -16,7 +16,11 @@ import javax.persistence.*;
 public class TelegramUser {
     @Id
     private Long telegramId;
-    private String position;
+
+    @Enumerated(EnumType.STRING)
+    private Position position;
+
     private Long idOfStatement;
+
 
 }

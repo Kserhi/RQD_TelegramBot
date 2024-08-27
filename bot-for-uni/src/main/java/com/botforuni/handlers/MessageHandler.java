@@ -1,13 +1,13 @@
 package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
+import com.botforuni.domain.Position;
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
-import com.botforuni.domain.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -27,13 +27,13 @@ public class MessageHandler implements Handler<Message> {
         TelegramUser telegramUser= TelegramUserService.get(message.getChatId());
 
 
-        if (!telegramUser.getPosition().equals(PositionInTelegramChat.NONE)){
+        if (telegramUser.getPosition()!=Position.NONE){
             Statement statement = StatementService.findById(telegramUser.getIdOfStatement());
 
             switch (telegramUser.getPosition()){
-                case PositionInTelegramChat.INPUTUSERNAME -> {
+                case INPUT_USER_NAME -> {
                     statement.setFullName(message.getText());
-                    telegramUser.setPosition(PositionInTelegramChat.INPUTUSERGROUP);
+                    telegramUser.setPosition(Position.INPUT_USER_GROUP);
 
                     TelegramUserService.save(telegramUser);
                     StatementService.save(statement);
@@ -42,9 +42,9 @@ public class MessageHandler implements Handler<Message> {
 
                 }
 
-                case PositionInTelegramChat.INPUTUSERGROUP -> {
+                case INPUT_USER_GROUP -> {
                     statement.setGroupe(message.getText());
-                    telegramUser.setPosition(PositionInTelegramChat.INPUTUSERYEAR);
+                    telegramUser.setPosition(Position.INPUT_USER_YEAR);
 
                     TelegramUserService.save(telegramUser);
                     StatementService.save(statement);
@@ -54,9 +54,9 @@ public class MessageHandler implements Handler<Message> {
 
 
                 }
-                case PositionInTelegramChat.INPUTUSERYEAR -> {
+                case INPUT_USER_YEAR -> {
                     statement.setYearEntry(message.getText());
-                    telegramUser.setPosition(PositionInTelegramChat.INPUTUSERFACULTY);
+                    telegramUser.setPosition(Position.INPUT_USER_FACULTY);
 
                     TelegramUserService.save(telegramUser);
                     StatementService.save(statement);
@@ -73,9 +73,9 @@ public class MessageHandler implements Handler<Message> {
 
 
 
-                case PositionInTelegramChat.INPUTUSERFACULTY -> {
+                case INPUT_USER_FACULTY -> {
                     statement.setFaculty(message.getText());
-                    telegramUser.setPosition(PositionInTelegramChat.INPUTUSERPHONE);
+                    telegramUser.setPosition(Position.INPUT_USER_PHONE);
 
                     TelegramUserService.save(telegramUser);
                     StatementService.save(statement);
@@ -90,9 +90,9 @@ public class MessageHandler implements Handler<Message> {
 
                 }
 
-                case PositionInTelegramChat.INPUTUSERPHONE -> {
+                case INPUT_USER_PHONE -> {
                         statement.setPhoneNumber(message.getContact().getPhoneNumber());
-                        telegramUser.setPosition(PositionInTelegramChat.CONFIRMATION);
+                        telegramUser.setPosition(Position.CONFIRMATION);
 
                         TelegramUserService.save(telegramUser);
                         StatementService.save(statement);

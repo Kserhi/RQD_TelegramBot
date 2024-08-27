@@ -38,13 +38,7 @@ public class UpdateUserStatusService {
     }
 
     private void sendInfoAboutStatusUserStatement() {
-//        List<BotUser> botUserList= BotUserDataService.getTrueUsers();
-//        botUserList.forEach(botUser ->
-//                sendMessageService.
-//                        sendMessage(botUser.getTelegramId(),
-//                                botUser.getStatement()+ Constants.STATUSOFSTATEMENT
-//                        ));
-//        BotUserDataService.updateIsRedy(botUserList);
+
 
     }
 }

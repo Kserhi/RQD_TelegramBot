@@ -1,8 +1,8 @@
 package com.botforuni.services;
 
+import com.botforuni.domain.Position;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.repositories.TelegramUserRepository;
-import com.botforuni.domain.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class TelegramUserService {
         }else {
             telegramUser= new TelegramUser(
                     telegramId,
-                    PositionInTelegramChat.NONE,
+                    Position.NONE,
                     (long)-1 );
             TelegramUserService.save(telegramUser);
         }

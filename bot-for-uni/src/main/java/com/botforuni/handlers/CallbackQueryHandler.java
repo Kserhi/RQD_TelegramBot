@@ -1,12 +1,12 @@
 package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
+import com.botforuni.domain.Position;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
-import com.botforuni.domain.PositionInTelegramChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -71,7 +71,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 /// змінили позицію користувача
 
-                telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
+                telegramUser.setPosition(Position.INPUT_USER_NAME);
                 telegramUser.setIdOfStatement(idOfStatement);
                 TelegramUserService.save(telegramUser);
 
@@ -86,7 +86,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 /// змінили позицію користувача
 
-                telegramUser.setPosition(PositionInTelegramChat.INPUTUSERNAME);
+                telegramUser.setPosition(Position.INPUT_USER_NAME);
                 telegramUser.setIdOfStatement(idOfStatement);
                 TelegramUserService.save(telegramUser);
 
@@ -96,7 +96,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "confirm" -> {
-                telegramUser.setPosition(PositionInTelegramChat.NONE);
+                telegramUser.setPosition(Position.NONE);
                 telegramUser.setIdOfStatement((long) -1);
                 TelegramUserService.save(telegramUser);
                 sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
@@ -111,9 +111,9 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "cancel" -> {
-                if (PositionInTelegramChat.CONFIRMATION.equals(telegramUser.getPosition())){
+                if (Position.CONFIRMATION==telegramUser.getPosition()){
                     StatementService.deleteById(telegramUser.getIdOfStatement());
-                    telegramUser.setPosition(PositionInTelegramChat.NONE);
+                    telegramUser.setPosition(Position.NONE);
                     telegramUser.setIdOfStatement((long) -1);
                     TelegramUserService.save(telegramUser);
 
