@@ -170,10 +170,18 @@ public class Keyboards {
         replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(KeyboardButton.builder().text("ЦЗ")
-                .build());
-        keyboardRows.add(keyboardRow);
+
+        List<String> list=new ArrayList<>();
+        list.add("Факультет цивільного захисту");
+        list.add("Факультет пожежної та техногенної безпеки");
+        list.add("Факультет психології і соціального захисту");
+
+        list.forEach(string -> {
+            KeyboardRow keyboardRow = new KeyboardRow();
+            keyboardRow.add(new KeyboardButton(string));
+            keyboardRows.add(keyboardRow);
+        });
+
         replyKeyboardMarkup.setKeyboard(keyboardRows);
         return replyKeyboardMarkup;
     }
