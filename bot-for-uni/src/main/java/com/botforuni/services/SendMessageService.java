@@ -1,8 +1,6 @@
 package com.botforuni.services;
 
-import com.botforuni.Keybords.Keyboards;
 import com.botforuni.messageSender.MessageSender;
-import com.botforuni.utils.Constants;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -17,22 +15,14 @@ public class SendMessageService {
         this.messageSender = messageSender;
     }
 
+
+
     /**
      * Надсилає просте текстове повідомлення до чату з вказаним текстом.
      *
-     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
+     * @param chatId Телеграм id для надсиланняи повідомлення до користувача .
      * @param text    Текст повідомлення для надсилання.
      */
-    public void sendMessage(Message messageFromUser, String text) {
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення
-        SendMessage message = SendMessage.builder()
-                .text(text)
-                .chatId(String.valueOf(messageFromUser.getChatId()))
-                .build();
-
-        // Надсилання повідомлення за допомогою messageSender.sendMessage()
-        messageSender.sendMessage(message);
-    }
     public void sendMessage(Long chatId, String text) {
         // Створення об'єкту SendMessage для надсилання текстового повідомлення
         SendMessage message = SendMessage.builder()
@@ -40,8 +30,17 @@ public class SendMessageService {
                 .chatId(String.valueOf(chatId))
                 .build();
 
-        // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
+    }
+
+    /**
+     * Надсилає просте текстове повідомлення до чату з вказаним текстом.
+     *
+     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
+     * @param text    Текст повідомлення для надсилання.
+     */
+    public void sendMessage(Message messageFromUser, String text) {
+        sendMessage(messageFromUser.getChatId(),text);
     }
 
     /**
@@ -81,65 +80,5 @@ public class SendMessageService {
         // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
     }
-
-
-
-
-
-
-//    public void sendAllInfoAboutUserFromDataBasa(Message message) {
-//        BotUser botUser=BotUserDataService.getAllInfoAboutUser(
-//                message.getChatId(),
-//                Constants.STATEMENTFORSTUDY);
-//
-//
-//        if (botUser.getTelegramId()!=null){
-//            sendMessage(
-//                    message,
-//                    botUser.toString()
-//            );
-//
-//        }else {
-//            sendMessage(
-//                    message,
-//                    "Інформації про "+ Constants.STATEMENTFORSTUDY +" незнайдено");
-//        }
-//
-//
-//        botUser=BotUserDataService.getAllInfoAboutUser(
-//                message.getChatId(),
-//                Constants.STATEMENTFORMILITARI);
-//
-//
-//        if (botUser.getTelegramId()!=null){
-//            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
-//
-//        }else {
-//            sendMessage(
-//                    message,
-//                    "Інформації про "+ Constants.STATEMENTFORMILITARI
-//                            +" незнайдено",
-//                    Keyboards.linkToMenuKeyboard());
-//        }
-//
-//
-//    }
-
-//    public void sendInfoAboutUserFromDataBasa(Message message,String statement){
-////        BotUser botUser=BotUserDataService.getAllInfoAboutUser(message.getChatId(),statement);
-////
-////        if(botUser.getTelegramId()==null){
-////            sendMessage(
-////                    message,
-////                    "Інформації незнайдено",
-////                    Keyboards.linkToMenuKeyboard()
-////            );
-////        }else {
-////            sendMessage(message,botUser.toString(),Keyboards.linkToMenuKeyboard());
-////
-////        }
-////
-//
-//    }
 
 }
