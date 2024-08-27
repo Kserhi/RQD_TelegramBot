@@ -91,23 +91,33 @@ public class MessageHandler implements Handler<Message> {
                 }
 
                 case INPUT_USER_PHONE -> {
-                        statement.setPhoneNumber(message.getContact().getPhoneNumber());
-                        telegramUser.setPosition(Position.CONFIRMATION);
+                        if (message.hasContact()){
+                            statement.setPhoneNumber(message.getContact().getPhoneNumber());
+                            telegramUser.setPosition(Position.CONFIRMATION);
 
-                        TelegramUserService.save(telegramUser);
-                        StatementService.save(statement);
+                            TelegramUserService.save(telegramUser);
+                            StatementService.save(statement);
 
 
-                        sendMessageService.sendMessage(
-                                message,
-                                statement.toString()
-                        );
+                            sendMessageService.sendMessage(
+                                    message,
+                                    statement.toString()
+                            );
 
-                    sendMessageService.sendMessage(
-                            message,
-                            "Нажміть, щоб підтвердити дані",
-                            Keyboards.confirmationKeyboard()
-                    );
+                            sendMessageService.sendMessage(
+                                    message,
+                                    "Нажміть, щоб підтвердити дані",
+                                    Keyboards.confirmationKeyboard()
+                            );
+                        }else {
+                            sendMessageService.sendMessage(
+                                    message,
+                                    "Нажміть кнопку щоб поділитись контактом"
+                            );
+                        }
+
+
+
 
                 }
 
