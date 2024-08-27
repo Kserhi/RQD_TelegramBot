@@ -1,6 +1,7 @@
 package com.botforuni.services;
 
 import com.botforuni.domain.Statement;
+import com.botforuni.domain.StatementInfo;
 import com.botforuni.repositories.StatementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,27 @@ public class StatementService {
     }
 
 
-    public static Long generateStatement(Long telegramId,String typeOfStatement){
-            Statement statement =new Statement();
-            statement.setTelegramId(telegramId);
-            statement.setTypeOfStatement(typeOfStatement);
-            StatementInfoService.save(StatementInfoService.generate(statement));
+    /**
+     * Generates a new {@link Statement} based on the provided Telegram ID and type of statement.
+     * It also initializes the associated {@link StatementInfo}, saves the statement to the database,
+     * and returns the ID of the newly created statement.
+     *
+     * @param telegramId      the unique Telegram ID of the user to whom the statement belongs
+     * @param typeOfStatement the type of the statement being generated
+     * @return the ID of the newly created {@link Statement}
+     */
+    public static Long generateStatement(Long telegramId, String typeOfStatement) {
 
-            statementRepository.save(statement);
+        Statement statement = new Statement();
+        statement.setTelegramId(telegramId);
+        statement.setTypeOfStatement(typeOfStatement);
+        statement.setStatementInfo(StatementInfoService.generate(statement));
 
-            return statementRepository.findMaxId();
+        statementRepository.save(statement);
+
+        return statementRepository.findMaxId();
     }
+
 
     public  static Statement findById(Long id){
         return statementRepository.findById(id).get();
