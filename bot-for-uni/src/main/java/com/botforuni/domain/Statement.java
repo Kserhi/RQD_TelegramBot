@@ -31,15 +31,19 @@ public class Statement {
     private StatementInfo statementInfo;
 
 
-
+    @Override
     public String toString() {
-        return "ПІБ:  " + getFullName() + "\n" +
-                "Група:  " + getGroupe() + "\n" +
-                "Рік набору:  " + getYearEntry() + "\n" +
-                "Факультет:  " + getFaculty() + "\n" +
-                "Номер телефону:  " + getPhoneNumber() + "\n" +
-                "Тип заявки:  " + getTypeOfStatement();
+        String status = statementInfo.isStatus() ? "Готова" : "В обробці";
 
+        return new StringBuilder()
+                .append("ПІБ:  ").append(getFullName()).append("\n")
+                .append("Група:  ").append(getGroupe()).append("\n")
+                .append("Рік набору:  ").append(getYearEntry()).append("\n")
+                .append("Факультет:  ").append(getFaculty()).append("\n")
+                .append("Номер телефону:  ").append(getPhoneNumber()).append("\n")
+                .append("Тип заявки:  ").append(getTypeOfStatement()).append("\n")
+                .append("Статус заявки:  ").append(status)
+                .toString();
     }
 
 
