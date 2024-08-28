@@ -95,7 +95,7 @@ public class Keyboards {
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
-                                        .text("Головне меню")
+                                        .text("На головну❗")
                                         .callbackData("/menu").build()
 
 

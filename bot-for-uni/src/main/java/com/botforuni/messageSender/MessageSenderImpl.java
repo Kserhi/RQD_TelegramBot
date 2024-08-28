@@ -17,7 +17,10 @@ public class MessageSenderImpl implements MessageSender {
         try {
             telegramBot.execute(sendMessage);
         } catch (TelegramApiException e) {
+
+            //// може бути помилка інтернету і повідомлення не надіслеться
             throw new RuntimeException(e);
+
         }
     }
     @Autowired
