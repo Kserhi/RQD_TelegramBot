@@ -26,7 +26,9 @@ public class TelegramUserService {
     }
 
 
-    public static TelegramUser get(Long telegramId){
+
+
+    public static TelegramUser getOrGenerate(Long telegramId){
 //        витягуємо телеграм користувача з бази даних
 //        якшо запису неіснує генеруємо його
 
@@ -46,6 +48,11 @@ public class TelegramUserService {
             TelegramUserService.save(telegramUser);
         }
         return telegramUser;
+    }
+
+    public static TelegramUser findById(Long telegramId){
+        return telegramUserRepository.findById(telegramId).get();
+
     }
 
 }

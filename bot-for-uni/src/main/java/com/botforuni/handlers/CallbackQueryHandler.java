@@ -23,7 +23,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
 
-        TelegramUser telegramUser = TelegramUserService.get(message.getChatId());
+        TelegramUser telegramUser = TelegramUserService.getOrGenerate(message.getChatId());
 
 
         switch (callbackQuery.getData()) {

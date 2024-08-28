@@ -24,7 +24,7 @@ public class MessageHandler implements Handler<Message> {
 
 
 
-        TelegramUser telegramUser= TelegramUserService.get(message.getChatId());
+        TelegramUser telegramUser= TelegramUserService.getOrGenerate(message.getChatId());
 
 
         if (telegramUser.getPosition()!=Position.NONE){
