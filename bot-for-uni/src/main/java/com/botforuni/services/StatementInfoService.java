@@ -6,6 +6,8 @@ import com.botforuni.repositories.StatementInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatementInfoService {
 
@@ -21,5 +23,17 @@ public class StatementInfoService {
 
     public static StatementInfo generate( Statement statement) {
         return new StatementInfo(statement.getId(), false,false,statement);
+    }
+
+
+    public static List<StatementInfo> getReadyStatement(){
+
+        return statementInfoRepository.findTrueStatusAndFalseIsReady();
+    }
+
+
+    public static void saveAll(List<StatementInfo> infoList){
+        statementInfoRepository.saveAll(infoList);
+
     }
 }
