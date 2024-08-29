@@ -12,6 +12,8 @@ import java.util.Optional;
 
 @Service
 public class StatementService {
+    @Autowired
+    private StatementInfoService statementInfoService;
 
     private final StatementRepository statementRepository;
 
@@ -34,7 +36,7 @@ public class StatementService {
         Statement statement = new Statement();
         statement.setTelegramId(telegramId);
         statement.setTypeOfStatement(typeOfStatement);
-        statement.setStatementInfo(StatementInfoService.generate(statement));
+        statement.setStatementInfo(statementInfoService.generate(statement));
 
         statementRepository.save(statement);
 

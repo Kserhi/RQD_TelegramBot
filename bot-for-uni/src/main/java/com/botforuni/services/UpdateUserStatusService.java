@@ -22,6 +22,9 @@ public class UpdateUserStatusService {
     private SendMessageService sendMessageService;
 
     @Autowired
+    private StatementInfoService statementInfoService;
+
+    @Autowired
     private ScheduledExecutorService scheduler;
 
 
@@ -47,7 +50,7 @@ public class UpdateUserStatusService {
 
     private void sendNotificationAboutStatementStatus() {
 
-        List<StatementInfo>infoList=StatementInfoService.getReadyStatement();
+        List<StatementInfo>infoList=statementInfoService.getReadyStatement();
         List<StatementInfo>readyInfoList=new ArrayList<>();
 
         if (!infoList.isEmpty()) {
@@ -66,7 +69,7 @@ public class UpdateUserStatusService {
                 readyInfoList.forEach(statementInfo ->statementInfo.setReady(true));
             }
 
-            StatementInfoService.saveAll(readyInfoList);
+            statementInfoService.saveAll(readyInfoList);
 
         }
 

@@ -11,28 +11,28 @@ import java.util.List;
 @Service
 public class StatementInfoService {
 
-    private static StatementInfoRepository statementInfoRepository;
+    private final StatementInfoRepository statementInfoRepository;
     @Autowired
     public StatementInfoService(StatementInfoRepository statementInfoRepository) {
-        StatementInfoService.statementInfoRepository = statementInfoRepository;
+        this.statementInfoRepository = statementInfoRepository;
     }
 
-    public static void save(StatementInfo statementInfo) {
+    public  void save(StatementInfo statementInfo) {
         statementInfoRepository.save(statementInfo);
     }
 
-    public static StatementInfo generate( Statement statement) {
+    public  StatementInfo generate( Statement statement) {
         return new StatementInfo(statement.getId(), false,false,statement);
     }
 
 
-    public static List<StatementInfo> getReadyStatement(){
+    public  List<StatementInfo> getReadyStatement(){
 
         return statementInfoRepository.findTrueStatusAndFalseIsReady();
     }
 
 
-    public static void saveAll(List<StatementInfo> infoList){
+    public  void saveAll(List<StatementInfo> infoList){
         statementInfoRepository.saveAll(infoList);
 
     }
