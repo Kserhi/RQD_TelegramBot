@@ -67,8 +67,4 @@ public class StatementService {
 
     }
 
-    public  boolean userHaveStatement(Long telegramId){
-        return statementRepository.countByTelegramId(telegramId) > 0;
-    }
-
 }

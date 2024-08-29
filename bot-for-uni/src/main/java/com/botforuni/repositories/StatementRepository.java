@@ -14,7 +14,6 @@ public interface StatementRepository extends JpaRepository<Statement,Long> {
     List<Statement> findAllByTelegramId(Long telegramId);
 
 
-    Long countByTelegramId(Long telegramId);
 
 
 

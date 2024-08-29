@@ -5,15 +5,15 @@ SELECT *FROM statement;
 SELECT * FROM statement_info;
 
 UPDATE statement_info
-SET status=false
-WHERE id=22;
+SET status=true,is_ready=false
+WHERE id=29;
 
--- DELETE FROM statement_info;
+DELETE FROM statement_info;
 -- DROP TABLE statement_info;
 
--- DELETE FROM telegram_user ;
+DELETE FROM telegram_user ;
 
--- DELETE FROM statement;
+DELETE FROM statement;
 
 -- DROP TABLE telegram_user;
 

@@ -2,6 +2,7 @@ package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
 import com.botforuni.domain.Position;
+import com.botforuni.domain.Statement;
 import com.botforuni.domain.TelegramUser;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.StatementService;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.List;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
@@ -43,30 +46,17 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statements" -> {
-                if (statementService.userHaveStatement(telegramUser.getTelegramId())){
-                    sendMessageService.sendMessage(
-                            message,
-                            Constants.STATEMENTS);
+                List<Statement> statements = statementService.getAllUserStatements(telegramUser.getTelegramId());
 
-                    statementService.getAllUserStatements(telegramUser.getTelegramId()).forEach(
-                            statement -> sendMessageService.sendMessage(message,statement.toString())
-                    );
-                }else {
-                    sendMessageService.sendMessage(
-                            message,
-                            "У вас немає жодної зареєстрованої заявки");
+                if (statements.isEmpty()) {
+                    sendMessageService.sendMessage(message, "У вас немає жодної зареєстрованої заявки", Keyboards.linkToMenuKeyboard());
+                } else {
+                    Statement lastStatement = statements.remove(0);
+                    statements.forEach(statement -> sendMessageService.sendMessage(message, statement.toString()));
+                    sendMessageService.sendMessage(message, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
                 }
 
-                sendMessageService.sendMessage(
-                        message,
-                        Constants.MENU,
-                        Keyboards.menuKeyboard());
-
-
-
             }
-
-
             case "statementForMilitaryOfficer" -> {
                 Long idOfStatement=statementService.generateStatement(
                         telegramUser.getTelegramId(),
