@@ -92,12 +92,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUser.setPosition(Position.NONE);
                 telegramUser.setIdOfStatement((long) -1);
                 telegramUserService.save(telegramUser);
-                sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                 sendMessageService.sendMessage(
                         message,
-                        Constants.MENU,
-                        Keyboards.menuKeyboard()
-                );
+                        "Реєстрація пройшла успішно❗",
+                        Keyboards.linkToMenuKeyboard());
+
 
             }
 
