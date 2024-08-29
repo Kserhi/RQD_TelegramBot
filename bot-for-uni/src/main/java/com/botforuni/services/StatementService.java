@@ -13,13 +13,12 @@ import java.util.Optional;
 @Service
 public class StatementService {
 
-    private static StatementRepository statementRepository;
+    private final StatementRepository statementRepository;
 
     @Autowired
     public StatementService(StatementRepository statementRepository) {
-        StatementService.statementRepository = statementRepository;
+        this.statementRepository = statementRepository;
     }
-
 
     /**
      * Generates a new {@link Statement} based on the provided Telegram ID and type of statement.
@@ -30,7 +29,7 @@ public class StatementService {
      * @param typeOfStatement the type of the statement being generated
      * @return the ID of the newly created {@link Statement}
      */
-    public static Long generateStatement(Long telegramId, String typeOfStatement) {
+    public  Long generateStatement(Long telegramId, String typeOfStatement) {
 
         Statement statement = new Statement();
         statement.setTelegramId(telegramId);
@@ -43,7 +42,7 @@ public class StatementService {
     }
 
 
-    public  static Statement findById(Long id)throws NoSuchElementException {
+    public   Statement findById(Long id)throws NoSuchElementException {
         Optional<Statement> statementOptional=statementRepository.findById(id);
 
         if (statementOptional.isEmpty()){
@@ -52,21 +51,21 @@ public class StatementService {
         return statementOptional.get();
     }
 
-    public static void  save(Statement statement){
+    public  void  save(Statement statement){
         statementRepository.save(statement);
     }
 
-    public static void deleteById(Long id){
+    public  void deleteById(Long id){
         statementRepository.deleteById(id);
     }
 
-    public static List<Statement> getAllUserStatements(Long telegramId){
+    public  List<Statement> getAllUserStatements(Long telegramId){
 
         return statementRepository.findAllByTelegramId(telegramId);
 
     }
 
-    public static boolean userHaveStatement(Long telegramId){
+    public  boolean userHaveStatement(Long telegramId){
         return statementRepository.countByTelegramId(telegramId) > 0;
     }
 

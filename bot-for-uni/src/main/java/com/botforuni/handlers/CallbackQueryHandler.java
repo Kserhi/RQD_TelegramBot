@@ -17,6 +17,8 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     @Autowired
     private TelegramUserService telegramUserService;
     @Autowired
+    private StatementService statementService;
+    @Autowired
     private SendMessageService sendMessageService;
 
 
@@ -41,12 +43,12 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statements" -> {
-                if (StatementService.userHaveStatement(telegramUser.getTelegramId())){
+                if (statementService.userHaveStatement(telegramUser.getTelegramId())){
                     sendMessageService.sendMessage(
                             message,
                             Constants.STATEMENTS);
 
-                    StatementService.getAllUserStatements(telegramUser.getTelegramId()).forEach(
+                    statementService.getAllUserStatements(telegramUser.getTelegramId()).forEach(
                             statement -> sendMessageService.sendMessage(message,statement.toString())
                     );
                 }else {
@@ -66,7 +68,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statementForMilitaryOfficer" -> {
-                Long idOfStatement=StatementService.generateStatement(
+                Long idOfStatement=statementService.generateStatement(
                         telegramUser.getTelegramId(),
                         Constants.STATEMENTFORMILITARI);
 
@@ -81,7 +83,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             }
             case "statementForStudy" -> {
-                Long idOfStatement=StatementService.generateStatement(
+                Long idOfStatement=statementService.generateStatement(
                         telegramUser.getTelegramId(),
                         Constants.STATEMENTFORSTUDY);
 
@@ -113,7 +115,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             case "cancel" -> {
                 if (Position.CONFIRMATION==telegramUser.getPosition()){
-                    StatementService.deleteById(telegramUser.getIdOfStatement());
+                    statementService.deleteById(telegramUser.getIdOfStatement());
                     telegramUser.setPosition(Position.NONE);
                     telegramUser.setIdOfStatement((long) -1);
                     telegramUserService.save(telegramUser);
