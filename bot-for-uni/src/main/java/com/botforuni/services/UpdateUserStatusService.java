@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class UpdateUserStatusService {
     @Autowired
+    private TelegramUserService telegramUserService;
+    @Autowired
     private SendMessageService sendMessageService;
 
     @Autowired
@@ -35,7 +37,7 @@ public class UpdateUserStatusService {
                 System.out.println("Проблеми із сповіщення про статус заявки" + e);
             }
         };
-        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.HOURS); // Планування завдання кожні 12 годин
+        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.SECONDS); // Планування завдання кожні 12 годин
     }
 
     @PreDestroy
@@ -51,7 +53,7 @@ public class UpdateUserStatusService {
         if (!infoList.isEmpty()) {
             infoList.forEach(statementInfo -> {
                 Statement st=statementInfo.getStatement();
-                TelegramUser tgUser=TelegramUserService.findById(st.getTelegramId());
+                TelegramUser tgUser=telegramUserService.findById(st.getTelegramId());
 
                 if (tgUser.getPosition()== Position.NONE){
                     sendMessageService.sendInfoAboutReadyStatement(st);

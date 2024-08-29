@@ -14,7 +14,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 public class MessageHandler implements Handler<Message> {
-
+    @Autowired
+    private TelegramUserService telegramUserService;
     @Autowired
     private SendMessageService sendMessageService;
 
@@ -24,7 +25,7 @@ public class MessageHandler implements Handler<Message> {
 
 
 
-        TelegramUser telegramUser= TelegramUserService.getOrGenerate(message.getChatId());
+        TelegramUser telegramUser= telegramUserService.getOrGenerate(message.getChatId());
 
 
         if (telegramUser.getPosition()!=Position.NONE){
@@ -35,7 +36,7 @@ public class MessageHandler implements Handler<Message> {
                     statement.setFullName(message.getText());
                     telegramUser.setPosition(Position.INPUT_USER_GROUP);
 
-                    TelegramUserService.save(telegramUser);
+                    telegramUserService.save(telegramUser);
                     StatementService.save(statement);
 
                     sendMessageService.sendMessage(message, "Введіть вашу групу (Наприклад: КН23c)⤵");
@@ -46,7 +47,7 @@ public class MessageHandler implements Handler<Message> {
                     statement.setGroupe(message.getText());
                     telegramUser.setPosition(Position.INPUT_USER_YEAR);
 
-                    TelegramUserService.save(telegramUser);
+                    telegramUserService.save(telegramUser);
                     StatementService.save(statement);
 
                     sendMessageService.sendMessage(message, "Введіть ваш рік набору(Наприклад: 2021)⤵");
@@ -58,7 +59,7 @@ public class MessageHandler implements Handler<Message> {
                     statement.setYearEntry(message.getText());
                     telegramUser.setPosition(Position.INPUT_USER_FACULTY);
 
-                    TelegramUserService.save(telegramUser);
+                    telegramUserService.save(telegramUser);
                     StatementService.save(statement);
 
                     sendMessageService.sendMessage(
@@ -77,7 +78,7 @@ public class MessageHandler implements Handler<Message> {
                     statement.setFaculty(message.getText());
                     telegramUser.setPosition(Position.INPUT_USER_PHONE);
 
-                    TelegramUserService.save(telegramUser);
+                    telegramUserService.save(telegramUser);
                     StatementService.save(statement);
 
                     sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
@@ -95,7 +96,7 @@ public class MessageHandler implements Handler<Message> {
                             statement.setPhoneNumber(message.getContact().getPhoneNumber());
                             telegramUser.setPosition(Position.CONFIRMATION);
 
-                            TelegramUserService.save(telegramUser);
+                            telegramUserService.save(telegramUser);
                             StatementService.save(statement);
 
 

@@ -7,55 +7,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
 @Service
 public class TelegramUserService {
-    private static TelegramUserRepository telegramUserRepository;
+
+    private final TelegramUserRepository telegramUserRepository;
 
     @Autowired
     public TelegramUserService(TelegramUserRepository telegramUserRepository) {
-        TelegramUserService.telegramUserRepository = telegramUserRepository;
+        this.telegramUserRepository = telegramUserRepository;
     }
 
-    public static void save(TelegramUser telegramUser) {
+    public void save(TelegramUser telegramUser) {
         telegramUserRepository.save(telegramUser);
     }
 
-    public static void remove(TelegramUser telegramUser) {
+    public void remove(TelegramUser telegramUser) {
         telegramUserRepository.deleteById(telegramUser.getTelegramId());
     }
 
+    public TelegramUser getOrGenerate(Long telegramId) {
+        // Витягуємо телеграм користувача з бази даних
+        // Якщо запису не існує, генеруємо його
 
+        Optional<TelegramUser> telegramUserOptional = telegramUserRepository.findById(telegramId);
 
-
-    public static TelegramUser getOrGenerate(Long telegramId){
-//        витягуємо телеграм користувача з бази даних
-//        якшо запису неіснує генеруємо його
-
-        TelegramUser telegramUser;
-
-        Optional<TelegramUser> telegramUserOptional = telegramUserRepository
-                .findById(telegramId);
-
-        if (telegramUserOptional.isPresent()){
-
-            telegramUser =telegramUserOptional.get();
-        }else {
-            telegramUser= new TelegramUser(
+        if (telegramUserOptional.isPresent()) {
+            return telegramUserOptional.get();
+        } else {
+            TelegramUser telegramUser = new TelegramUser(
                     telegramId,
                     Position.NONE,
-                    (long)-1 );
-            TelegramUserService.save(telegramUser);
+                    (long) -1
+            );
+            save(telegramUser);
+            return telegramUser;
         }
-        return telegramUser;
     }
 
-    public static TelegramUser findById(Long telegramId){
-        Optional<TelegramUser> telegramUserOptional=telegramUserRepository.findById(telegramId);
-        if (telegramUserOptional.isEmpty()){
-             throw new RuntimeException("Відсутній телеграм користувач id: "+telegramId );
-        }
-        return telegramUserOptional.get();
+    public TelegramUser findById(Long telegramId) {
+        return telegramUserRepository.findById(telegramId)
+                .orElseThrow(() -> new RuntimeException("Відсутній телеграм користувач id: " + telegramId));
     }
-
 }
+

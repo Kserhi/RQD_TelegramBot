@@ -14,7 +14,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
-
+    @Autowired
+    private TelegramUserService telegramUserService;
     @Autowired
     private SendMessageService sendMessageService;
 
@@ -23,7 +24,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
 
-        TelegramUser telegramUser = TelegramUserService.getOrGenerate(message.getChatId());
+        TelegramUser telegramUser = telegramUserService.getOrGenerate(message.getChatId());
 
 
         switch (callbackQuery.getData()) {
@@ -73,7 +74,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 telegramUser.setPosition(Position.INPUT_USER_NAME);
                 telegramUser.setIdOfStatement(idOfStatement);
-                TelegramUserService.save(telegramUser);
+                telegramUserService.save(telegramUser);
 
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
@@ -88,7 +89,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
                 telegramUser.setPosition(Position.INPUT_USER_NAME);
                 telegramUser.setIdOfStatement(idOfStatement);
-                TelegramUserService.save(telegramUser);
+                telegramUserService.save(telegramUser);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
@@ -98,7 +99,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "confirm" -> {
                 telegramUser.setPosition(Position.NONE);
                 telegramUser.setIdOfStatement((long) -1);
-                TelegramUserService.save(telegramUser);
+                telegramUserService.save(telegramUser);
                 sendMessageService.sendMessage(message, "Реєстрація пройшла успішно❗");
                 sendMessageService.sendMessage(
                         message,
@@ -115,7 +116,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     StatementService.deleteById(telegramUser.getIdOfStatement());
                     telegramUser.setPosition(Position.NONE);
                     telegramUser.setIdOfStatement((long) -1);
-                    TelegramUserService.save(telegramUser);
+                    telegramUserService.save(telegramUser);
 
 
                     sendMessageService.sendMessage(
