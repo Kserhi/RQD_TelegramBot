@@ -17,7 +17,7 @@ public class Statement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long id;
     private String fullName;
     private String yearEntry;
     private String groupe;
@@ -33,16 +33,16 @@ public class Statement {
 
     @Override
     public String toString() {
-        String status = statementInfo.isStatus() ? "Готова" : "В обробці";
+        String status = (statementInfo != null && statementInfo.isStatus()) ? "Готова" : "В обробці";
 
         return new StringBuilder()
-                .append("ПІБ:  ").append(getFullName()).append("\n")
-                .append("Група:  ").append(getGroupe()).append("\n")
-                .append("Рік набору:  ").append(getYearEntry()).append("\n")
-                .append("Факультет:  ").append(getFaculty()).append("\n")
-                .append("Номер телефону:  ").append(getPhoneNumber()).append("\n")
-                .append("Тип заявки:  ").append(getTypeOfStatement()).append("\n")
-                .append("Статус заявки:  ").append(status)
+                .append("ПІБ: ").append(fullName).append("\n")
+                .append("Група: ").append(groupe).append("\n")
+                .append("Рік набору: ").append(yearEntry).append("\n")
+                .append("Факультет: ").append(faculty).append("\n")
+                .append("Номер телефону: ").append(phoneNumber).append("\n")
+                .append("Тип заявки: ").append(typeOfStatement).append("\n")
+                .append("Статус заявки: ").append(status)
                 .toString();
     }
 
