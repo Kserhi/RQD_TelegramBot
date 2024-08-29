@@ -4,6 +4,10 @@ SELECT *FROM statement;
 
 SELECT * FROM statement_info;
 
+UPDATE statement_info
+SET status=false
+WHERE id=22;
+
 -- DELETE FROM statement_info;
 -- DROP TABLE statement_info;
 

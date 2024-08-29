@@ -1,5 +1,6 @@
 package com.botforuni.services;
 
+import com.botforuni.domain.Statement;
 import com.botforuni.messageSender.MessageSender;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -80,6 +81,10 @@ public class SendMessageService {
 
         // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
+    }
+
+    public void sendInfoAboutReadyStatement(Statement statement){
+
     }
 
 }

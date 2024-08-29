@@ -30,12 +30,12 @@ public class UpdateUserStatusService {
     public void init() {
         task = () -> {
             try {
-                sendInfoAboutStatusUserStatement();
+                sendNotificationAboutStatementStatus();
             } catch (Exception e) {
-                System.out.println("Exception " + e);
+                System.out.println("Проблеми із сповіщення про статус заявки" + e);
             }
         };
-        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.SECONDS); // Планування завдання кожні 12 годин
+        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.HOURS); // Планування завдання кожні 12 годин
     }
 
     @PreDestroy
@@ -43,11 +43,10 @@ public class UpdateUserStatusService {
         scheduler.shutdown();
     }
 
-    private void sendInfoAboutStatusUserStatement() {
+    private void sendNotificationAboutStatementStatus() {
 
         List<StatementInfo>infoList=StatementInfoService.getReadyStatement();
         List<StatementInfo>readyInfoList=new ArrayList<>();
-
 
         if (!infoList.isEmpty()) {
             infoList.forEach(statementInfo -> {
@@ -55,7 +54,7 @@ public class UpdateUserStatusService {
                 TelegramUser tgUser=TelegramUserService.findById(st.getTelegramId());
 
                 if (tgUser.getPosition()== Position.NONE){
-                    sendMessageService.sendMessage(st.getId(),st.getTypeOfStatement() +" готова!");
+                    sendMessageService.sendInfoAboutReadyStatement(st);
                     readyInfoList.add(statementInfo);
                 }
 
@@ -63,7 +62,6 @@ public class UpdateUserStatusService {
 
             if (!readyInfoList.isEmpty()){
                 readyInfoList.forEach(statementInfo ->statementInfo.setReady(true));
-
             }
 
             StatementInfoService.saveAll(readyInfoList);
