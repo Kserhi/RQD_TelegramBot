@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class StatementService {
@@ -41,8 +43,13 @@ public class StatementService {
     }
 
 
-    public  static Statement findById(Long id){
-        return statementRepository.findById(id).get();
+    public  static Statement findById(Long id)throws NoSuchElementException {
+        Optional<Statement> statementOptional=statementRepository.findById(id);
+
+        if (statementOptional.isEmpty()){
+            throw new NoSuchElementException("Вудсутня довідка за telegramId: "+id);
+        }
+        return statementOptional.get();
     }
 
     public static void  save(Statement statement){

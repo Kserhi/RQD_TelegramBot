@@ -51,8 +51,11 @@ public class TelegramUserService {
     }
 
     public static TelegramUser findById(Long telegramId){
-        return telegramUserRepository.findById(telegramId).get();
-
+        Optional<TelegramUser> telegramUserOptional=telegramUserRepository.findById(telegramId);
+        if (telegramUserOptional.isEmpty()){
+             throw new RuntimeException("Відсутній телеграм користувач id: "+telegramId );
+        }
+        return telegramUserOptional.get();
     }
 
 }
