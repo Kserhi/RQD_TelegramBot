@@ -14,7 +14,7 @@ public class StatementInfoService {
     private static StatementInfoRepository statementInfoRepository;
     @Autowired
     public StatementInfoService(StatementInfoRepository statementInfoRepository) {
-        this.statementInfoRepository = statementInfoRepository;
+        StatementInfoService.statementInfoRepository = statementInfoRepository;
     }
 
     public static void save(StatementInfo statementInfo) {
