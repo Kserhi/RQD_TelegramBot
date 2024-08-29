@@ -110,17 +110,10 @@ public class SendMessageService {
     }
 
     private String formatStatement(Statement statement) {
-        String status = statement.getStatementInfo() != null && statement.getStatementInfo().isStatus() ? "Готова" : "В обробці";
 
         return new StringBuilder()
                 .append("📄 Ваша довідка готова:\n\n")
-                .append("ПІБ: ").append(statement.getFullName()).append("\n")
-                .append("Група: ").append(statement.getGroupe()).append("\n")
-                .append("Рік набору: ").append(statement.getYearEntry()).append("\n")
-                .append("Факультет: ").append(statement.getFaculty()).append("\n")
-                .append("Номер телефону: ").append(statement.getPhoneNumber()).append("\n")
-                .append("Тип заявки: ").append(statement.getTypeOfStatement()).append("\n")
-                .append("Статус заявки: ").append(status)
+                .append(statement.toString())
                 .toString();
 
 
