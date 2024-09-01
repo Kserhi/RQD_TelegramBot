@@ -13,28 +13,28 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-public class Statement {
+public class StatementCache {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+
     private String fullName;
     private String yearEntry;
-
     private String groupe;
     private String phoneNumber;
     private String faculty;
     private String typeOfStatement;
-    private Long telegramId;
 
-    @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private StatementInfo statementInfo;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private TelegramUserCache telegramUserCache;
 
 
     @Override
     public String toString() {
-        String status = (statementInfo != null && statementInfo.isStatus()) ? "Готова" : "В обробці";
 
         return new StringBuilder()
                 .append("ПІБ: ").append(fullName).append("\n")
@@ -43,9 +43,7 @@ public class Statement {
                 .append("Факультет: ").append(faculty).append("\n")
                 .append("Номер телефону: ").append(phoneNumber).append("\n")
                 .append("Тип заявки: ").append(typeOfStatement).append("\n")
-                .append("Статус заявки: ").append(status)
                 .toString();
     }
-
 
 }

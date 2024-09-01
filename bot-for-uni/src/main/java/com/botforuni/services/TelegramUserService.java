@@ -1,8 +1,8 @@
 package com.botforuni.services;
 
 import com.botforuni.domain.Position;
-import com.botforuni.domain.TelegramUser;
-import com.botforuni.repositories.TelegramUserRepository;
+import com.botforuni.domain.TelegramUserCache;
+import com.botforuni.repositories.TelegramUserCacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,42 +10,41 @@ import java.util.Optional;
 @Service
 public class TelegramUserService {
 
-    private final TelegramUserRepository telegramUserRepository;
+    private final TelegramUserCacheRepository telegramUserCacheRepository;
 
     @Autowired
-    public TelegramUserService(TelegramUserRepository telegramUserRepository) {
-        this.telegramUserRepository = telegramUserRepository;
+    public TelegramUserService(TelegramUserCacheRepository telegramUserCacheRepository) {
+        this.telegramUserCacheRepository = telegramUserCacheRepository;
     }
 
-    public void save(TelegramUser telegramUser) {
-        telegramUserRepository.save(telegramUser);
+    public void save(TelegramUserCache telegramUserCache) {
+        telegramUserCacheRepository.save(telegramUserCache);
     }
 
-    public void remove(TelegramUser telegramUser) {
-        telegramUserRepository.deleteById(telegramUser.getTelegramId());
+    public void remove(TelegramUserCache telegramUserCache) {
+        telegramUserCacheRepository.deleteById(telegramUserCache.getTelegramId());
     }
 
-    public TelegramUser getOrGenerate(Long telegramId) {
+    public TelegramUserCache getOrGenerate(Long telegramId) {
         // Витягуємо телеграм користувача з бази даних
         // Якщо запису не існує, генеруємо його
 
-        Optional<TelegramUser> telegramUserOptional = telegramUserRepository.findById(telegramId);
+        Optional<TelegramUserCache> telegramUserOptional = telegramUserCacheRepository.findById(telegramId);
 
         if (telegramUserOptional.isPresent()) {
             return telegramUserOptional.get();
         } else {
-            TelegramUser telegramUser = new TelegramUser(
-                    telegramId,
-                    Position.NONE,
-                    (long) -1
-            );
-            save(telegramUser);
-            return telegramUser;
+            TelegramUserCache telegramUserCache = new TelegramUserCache();
+            telegramUserCache.setTelegramId(telegramId);
+            telegramUserCache.setPosition(Position.NONE);
+
+            save(telegramUserCache);
+            return telegramUserCache;
         }
     }
 
-    public TelegramUser findById(Long telegramId) {
-        return telegramUserRepository.findById(telegramId)
+    public TelegramUserCache findById(Long telegramId) {
+        return telegramUserCacheRepository.findById(telegramId)
                 .orElseThrow(() -> new RuntimeException("Відсутній телеграм користувач id: " + telegramId));
     }
 }

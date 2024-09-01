@@ -13,14 +13,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-public class TelegramUser {
+public class TelegramUserCache {
     @Id
     private Long telegramId;
 
     @Enumerated(EnumType.STRING)
     private Position position;
 
-    private Long idOfStatement;
+    @OneToOne(mappedBy = "telegramUserCache", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private StatementCache statementCache;
+
 
 
 }

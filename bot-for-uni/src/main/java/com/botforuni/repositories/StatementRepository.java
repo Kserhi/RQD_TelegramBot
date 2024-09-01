@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface StatementRepository extends JpaRepository<Statement,Long> {
 
-    @Query("SELECT MAX(s.id) FROM Statement s")
-    Long findMaxId();
-
     List<Statement> findAllByTelegramId(Long telegramId);
 
 

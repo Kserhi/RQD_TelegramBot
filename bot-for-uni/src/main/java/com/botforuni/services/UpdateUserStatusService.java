@@ -3,7 +3,7 @@ package com.botforuni.services;
 import com.botforuni.domain.Position;
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.StatementInfo;
-import com.botforuni.domain.TelegramUser;
+import com.botforuni.domain.TelegramUserCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +56,7 @@ public class UpdateUserStatusService {
         if (!infoList.isEmpty()) {
             infoList.forEach(statementInfo -> {
                 Statement st=statementInfo.getStatement();
-                TelegramUser tgUser=telegramUserService.findById(st.getTelegramId());
+                TelegramUserCache tgUser=telegramUserService.findById(st.getTelegramId());
 
                 if (tgUser.getPosition()== Position.NONE){
                     sendMessageService.sendInfoAboutReadyStatement(st);

@@ -1,7 +1,7 @@
 package com.botforuni.services;
 
 import com.botforuni.domain.Statement;
-import com.botforuni.domain.StatementInfo;
+import com.botforuni.domain.StatementCache;
 import com.botforuni.repositories.StatementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,6 @@ import java.util.Optional;
 
 @Service
 public class StatementService {
-    @Autowired
-    private StatementInfoService statementInfoService;
 
     private final StatementRepository statementRepository;
 
@@ -22,26 +20,7 @@ public class StatementService {
         this.statementRepository = statementRepository;
     }
 
-    /**
-     * Generates a new {@link Statement} based on the provided Telegram ID and type of statement.
-     * It also initializes the associated {@link StatementInfo}, saves the statement to the database,
-     * and returns the ID of the newly created statement.
-     *
-     * @param telegramId      the unique Telegram ID of the user to whom the statement belongs
-     * @param typeOfStatement the type of the statement being generated
-     * @return the ID of the newly created {@link Statement}
-     */
-    public  Long generateStatement(Long telegramId, String typeOfStatement) {
 
-        Statement statement = new Statement();
-        statement.setTelegramId(telegramId);
-        statement.setTypeOfStatement(typeOfStatement);
-        statement.setStatementInfo(statementInfoService.generate(statement));
-
-        statementRepository.save(statement);
-
-        return statementRepository.findMaxId();
-    }
 
 
     public   Statement findById(Long id)throws NoSuchElementException {
@@ -65,6 +44,21 @@ public class StatementService {
 
         return statementRepository.findAllByTelegramId(telegramId);
 
+    }
+
+
+    public Statement mapStatement(StatementCache statementCache){
+
+        Statement statement =new Statement();
+
+        statement.setFullName(statementCache.getFullName());
+        statement.setYearEntry(statementCache.getYearEntry());
+        statement.setGroupe(statementCache.getGroupe());
+        statement.setPhoneNumber(statementCache.getPhoneNumber());
+        statement.setFaculty(statementCache.getFaculty());
+        statement.setTypeOfStatement(statementCache.getTypeOfStatement());
+        statement.setTelegramId(statementCache.getId());
+        return statement;
     }
 
 }

@@ -2,10 +2,9 @@ package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
 import com.botforuni.domain.Position;
-import com.botforuni.domain.Statement;
-import com.botforuni.domain.TelegramUser;
+import com.botforuni.domain.StatementCache;
+import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.services.SendMessageService;
-import com.botforuni.services.StatementService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class MessageHandler implements Handler<Message> {
     @Autowired
     private TelegramUserService telegramUserService;
-    @Autowired
-    private StatementService statementService;
+
     @Autowired
     private SendMessageService sendMessageService;
 
@@ -27,30 +25,29 @@ public class MessageHandler implements Handler<Message> {
 
 
 
-        TelegramUser telegramUser= telegramUserService.getOrGenerate(message.getChatId());
+        TelegramUserCache telegramUserCache = telegramUserService.getOrGenerate(message.getChatId());
 
 
-        if (telegramUser.getPosition()!=Position.NONE){
-            Statement statement = statementService.findById(telegramUser.getIdOfStatement());
+        if (telegramUserCache.getPosition()!=Position.NONE){
+            StatementCache statementCache =telegramUserCache.getStatementCache();
 
-            switch (telegramUser.getPosition()){
+            switch (telegramUserCache.getPosition()){
                 case INPUT_USER_NAME -> {
-                    statement.setFullName(message.getText());
-                    telegramUser.setPosition(Position.INPUT_USER_GROUP);
+                    statementCache.setFullName(message.getText());
+                    telegramUserCache.setPosition(Position.INPUT_USER_GROUP);
+                    telegramUserCache.setStatementCache(statementCache);
+                    telegramUserService.save(telegramUserCache);
 
-                    telegramUserService.save(telegramUser);
-                    statementService.save(statement);
 
                     sendMessageService.sendMessage(message, "Введіть вашу групу (Наприклад: КН23c)⤵");
 
                 }
 
                 case INPUT_USER_GROUP -> {
-                    statement.setGroupe(message.getText());
-                    telegramUser.setPosition(Position.INPUT_USER_YEAR);
-
-                    telegramUserService.save(telegramUser);
-                    statementService.save(statement);
+                    statementCache.setGroupe(message.getText());
+                    telegramUserCache.setPosition(Position.INPUT_USER_YEAR);
+                    telegramUserCache.setStatementCache(statementCache);
+                    telegramUserService.save(telegramUserCache);
 
                     sendMessageService.sendMessage(message, "Введіть ваш рік набору(Наприклад: 2021)⤵");
 
@@ -58,11 +55,12 @@ public class MessageHandler implements Handler<Message> {
 
                 }
                 case INPUT_USER_YEAR -> {
-                    statement.setYearEntry(message.getText());
-                    telegramUser.setPosition(Position.INPUT_USER_FACULTY);
+                    statementCache.setYearEntry(message.getText());
+                    telegramUserCache.setPosition(Position.INPUT_USER_FACULTY);
 
-                    telegramUserService.save(telegramUser);
-                    statementService.save(statement);
+                    telegramUserCache.setStatementCache(statementCache);
+                    telegramUserService.save(telegramUserCache);
+
 
                     sendMessageService.sendMessage(
                             message,
@@ -77,11 +75,12 @@ public class MessageHandler implements Handler<Message> {
 
 
                 case INPUT_USER_FACULTY -> {
-                    statement.setFaculty(message.getText());
-                    telegramUser.setPosition(Position.INPUT_USER_PHONE);
+                    statementCache.setFaculty(message.getText());
+                    telegramUserCache.setPosition(Position.INPUT_USER_PHONE);
 
-                    telegramUserService.save(telegramUser);
-                    statementService.save(statement);
+                    telegramUserCache.setStatementCache(statementCache);
+                    telegramUserService.save(telegramUserCache);
+
 
                     sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
                     sendMessageService.sendMessage(
@@ -95,16 +94,16 @@ public class MessageHandler implements Handler<Message> {
 
                 case INPUT_USER_PHONE -> {
                         if (message.hasContact()){
-                            statement.setPhoneNumber(message.getContact().getPhoneNumber());
-                            telegramUser.setPosition(Position.CONFIRMATION);
+                            statementCache.setPhoneNumber(message.getContact().getPhoneNumber());
+                            telegramUserCache.setPosition(Position.CONFIRMATION);
 
-                            telegramUserService.save(telegramUser);
-                            statementService.save(statement);
+                            telegramUserCache.setStatementCache(statementCache);
+                            telegramUserService.save(telegramUserCache);
 
 
                             sendMessageService.sendMessage(
                                     message,
-                                    statement.toString()
+                                    statementCache.toString()
                             );
 
                             sendMessageService.sendMessage(
@@ -115,7 +114,8 @@ public class MessageHandler implements Handler<Message> {
                         }else {
                             sendMessageService.sendMessage(
                                     message,
-                                    "Нажміть кнопку щоб поділитись контактом"
+                                    "Нажміть кнопку щоб поділитись контактом",
+                                    Keyboards.phoneKeyboard()
                             );
                         }
 

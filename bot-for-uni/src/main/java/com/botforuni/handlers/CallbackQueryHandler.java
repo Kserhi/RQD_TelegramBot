@@ -1,12 +1,8 @@
 package com.botforuni.handlers;
 
 import com.botforuni.Keybords.Keyboards;
-import com.botforuni.domain.Position;
-import com.botforuni.domain.Statement;
-import com.botforuni.domain.TelegramUser;
-import com.botforuni.services.SendMessageService;
-import com.botforuni.services.StatementService;
-import com.botforuni.services.TelegramUserService;
+import com.botforuni.domain.*;
+import com.botforuni.services.*;
 import com.botforuni.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,14 +18,18 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     @Autowired
     private StatementService statementService;
     @Autowired
+    private StatementCacheService statementCacheService;
+    @Autowired
     private SendMessageService sendMessageService;
+    @Autowired
+    private StatementInfoService statementInfoService;
 
 
     @Override
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
 
-        TelegramUser telegramUser = telegramUserService.getOrGenerate(message.getChatId());
+        TelegramUserCache telegramUserCache = telegramUserService.getOrGenerate(message.getChatId());
 
 
         switch (callbackQuery.getData()) {
@@ -46,7 +46,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "statements" -> {
-                List<Statement> statements = statementService.getAllUserStatements(telegramUser.getTelegramId());
+                List<Statement> statements = statementService.getAllUserStatements(telegramUserCache.getTelegramId());
 
                 if (statements.isEmpty()) {
                     sendMessageService.sendMessage(message, "У вас немає жодної зареєстрованої заявки", Keyboards.linkToMenuKeyboard());
@@ -58,30 +58,29 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
             }
             case "statementForMilitaryOfficer" -> {
-                Long idOfStatement=statementService.generateStatement(
-                        telegramUser.getTelegramId(),
-                        Constants.STATEMENTFORMILITARI);
+                StatementCache statementCache= statementCacheService
+                        .generateStatement(
+                                telegramUserCache,
+                                Constants.STATEMENTFORMILITARI);
 
-                /// змінили позицію користувача
+                telegramUserCache.setPosition(Position.INPUT_USER_NAME);
+                telegramUserCache.setStatementCache(statementCache);
+                telegramUserService.save(telegramUserCache);
 
-                telegramUser.setPosition(Position.INPUT_USER_NAME);
-                telegramUser.setIdOfStatement(idOfStatement);
-                telegramUserService.save(telegramUser);
 
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
             }
             case "statementForStudy" -> {
-                Long idOfStatement=statementService.generateStatement(
-                        telegramUser.getTelegramId(),
-                        Constants.STATEMENTFORSTUDY);
+                StatementCache statementCache= statementCacheService
+                        .generateStatement(
+                                telegramUserCache,
+                                Constants.STATEMENTFORSTUDY);
 
-                /// змінили позицію користувача
-
-                telegramUser.setPosition(Position.INPUT_USER_NAME);
-                telegramUser.setIdOfStatement(idOfStatement);
-                telegramUserService.save(telegramUser);
+                telegramUserCache.setPosition(Position.INPUT_USER_NAME);
+                telegramUserCache.setStatementCache(statementCache);
+                telegramUserService.save(telegramUserCache);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
 
@@ -89,9 +88,27 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "confirm" -> {
-                telegramUser.setPosition(Position.NONE);
-                telegramUser.setIdOfStatement((long) -1);
-                telegramUserService.save(telegramUser);
+                Statement statement=statementService.mapStatement(telegramUserCache.getStatementCache());
+
+                StatementInfo statementInfo=statementInfoService.generate(statement);
+
+                statement.setStatementInfo(statementInfo);
+
+                statementService.save(statement);
+
+
+
+
+                statementCacheService.removeAll(telegramUserCache.getTelegramId());
+
+
+                telegramUserCache.setStatementCache(null);
+                telegramUserCache.setPosition(Position.NONE);
+                telegramUserService.save(telegramUserCache);
+
+
+
+
                 sendMessageService.sendMessage(
                         message,
                         "Реєстрація пройшла успішно❗",
@@ -103,17 +120,20 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
             case "cancel" -> {
-                if (Position.CONFIRMATION==telegramUser.getPosition()){
-                    statementService.deleteById(telegramUser.getIdOfStatement());
-                    telegramUser.setPosition(Position.NONE);
-                    telegramUser.setIdOfStatement((long) -1);
-                    telegramUserService.save(telegramUser);
+                if (Position.CONFIRMATION== telegramUserCache.getPosition()){
+
+                    statementCacheService.removeAll(telegramUserCache.getTelegramId());
+
+
+                    telegramUserCache.setStatementCache(null);
+                    telegramUserCache.setPosition(Position.NONE);
+                    telegramUserService.save(telegramUserCache);
 
 
                     sendMessageService.sendMessage(
                             message,
-                            Constants.MENU,
-                            Keyboards.menuKeyboard()
+                            "Реєстрацію довідки скасовано",
+                            Keyboards.linkToMenuKeyboard()
                     );
 
                 }
