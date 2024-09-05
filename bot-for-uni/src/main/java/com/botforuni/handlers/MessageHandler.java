@@ -1,6 +1,6 @@
 package com.botforuni.handlers;
 
-import com.botforuni.Keybords.Keyboards;
+import com.botforuni.keybords.Keyboards;
 import com.botforuni.domain.Position;
 import com.botforuni.domain.StatementCache;
 import com.botforuni.domain.TelegramUserCache;
@@ -37,8 +37,6 @@ public class MessageHandler implements Handler<Message> {
                     telegramUserCache.setPosition(Position.INPUT_USER_GROUP);
                     telegramUserCache.setStatementCache(statementCache);
                     telegramUserService.save(telegramUserCache);
-
-
                     sendMessageService.sendMessage(message, "Введіть вашу групу (Наприклад: КН23c)⤵");
 
                 }
@@ -82,7 +80,9 @@ public class MessageHandler implements Handler<Message> {
                     telegramUserService.save(telegramUserCache);
 
 
-                    sendMessageService.sendMessage(message, "Введіть ваш номер телефону⤵");
+                    sendMessageService.sendMessage(message,
+                            "Введіть ваш номер телефону⤵",
+                            Keyboards.keyboardRemove());
                     sendMessageService.sendMessage(
                             message,
                             "Нажміть, щоб поділитися контактом",
@@ -103,7 +103,9 @@ public class MessageHandler implements Handler<Message> {
 
                             sendMessageService.sendMessage(
                                     message,
-                                    statementCache.toString()
+                                    statementCache.toString(),
+                                    Keyboards.keyboardRemove()
+
                             );
 
                             sendMessageService.sendMessage(

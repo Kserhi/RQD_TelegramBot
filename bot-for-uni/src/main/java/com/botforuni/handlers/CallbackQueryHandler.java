@@ -1,6 +1,6 @@
 package com.botforuni.handlers;
 
-import com.botforuni.Keybords.Keyboards;
+import com.botforuni.keybords.Keyboards;
 import com.botforuni.domain.*;
 import com.botforuni.services.*;
 import com.botforuni.utils.Constants;
