@@ -32,9 +32,13 @@ public class SendMessageService {
                 .text(text)
                 .chatId(String.valueOf(chatId))
                 .build();
-
         messageSender.sendMessage(message);
     }
+
+
+
+
+
 
     /**
      * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.
@@ -55,6 +59,17 @@ public class SendMessageService {
     }
 
     /**
+     * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.
+     *
+     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
+     * @param text            Текст повідомлення для надсилання.
+     * @param inlineKeyboard  Об'єкт з інлайн клавіатурою (кнопки для взаємодії).
+     */
+    public void sendMessage(Message messageFromUser, String text, InlineKeyboardMarkup inlineKeyboard) {
+        sendMessage(messageFromUser.getChatId(),text, inlineKeyboard);
+    }
+
+    /**
      * Надсилає просте текстове повідомлення до чату з вказаним текстом.
      *
      * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
@@ -64,25 +79,7 @@ public class SendMessageService {
         sendMessage(messageFromUser.getChatId(),text);
     }
 
-    /**
-     * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.
-     *
-     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
-     * @param text            Текст повідомлення для надсилання.
-     * @param inlineKeyboard  Об'єкт з інлайн клавіатурою (кнопки для взаємодії).
-     */
-    public void sendMessage(Message messageFromUser, String text, InlineKeyboardMarkup inlineKeyboard) {
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення з інлайн клавіатурою
-        SendMessage message = SendMessage.builder()
-                .text(text)
-                .chatId(String.valueOf(messageFromUser.getChatId()))
-                .replyMarkup(inlineKeyboard)
-                .build();
 
-
-        // Надсилання повідомлення за допомогою messageSender.sendMessage()
-        messageSender.sendMessage(message);
-    }
 
     /**
      * Надсилає текстове повідомлення до чату з клавіатурою відповіді.
@@ -105,8 +102,10 @@ public class SendMessageService {
 
 
     public void sendInfoAboutReadyStatement(Statement statement) {
-        String formattedMessage = formatStatement(statement);
-        sendMessage(statement.getTelegramId(), formattedMessage, Keyboards.linkToMenuKeyboard());
+        sendMessage(
+                statement.getTelegramId(),
+                formatStatement(statement),
+                Keyboards.linkToMenuKeyboard());
     }
 
     private String formatStatement(Statement statement) {
@@ -118,29 +117,27 @@ public class SendMessageService {
     }
 
     public void sendMessage(Message messageFromUser,String text, ReplyKeyboardRemove replyKeyboardRemove){
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення з клавіатурою відповіді
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(messageFromUser.getChatId()))
                 .replyMarkup(replyKeyboardRemove)
                 .build();
-        // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
     }
 
 
-    public void deleteInlineKeyboard(Long telegramId,int msId){
+    public void deleteInlineKeyboard(Message message){
 
 
         EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
-                .chatId(String.valueOf(telegramId))
-                .messageId(msId)  // Вказуємо ID повідомлення, яке редагуємо
+                .chatId(String.valueOf(message.getChatId()))
+                .messageId(message.getMessageId())  // Вказуємо ID повідомлення, яке редагуємо
                 .replyMarkup(null)  // Видаляємо клавіатуру, встановивши replyMarkup як null
                 .build();
 
         // Надсилаємо запит на редагування повідомлення для видалення клавіатури
 
-            messageSender.sendEdit(editMessageReplyMarkup);
+            messageSender.sendEditMessage(editMessageReplyMarkup);
     }
 
 

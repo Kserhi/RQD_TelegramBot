@@ -17,9 +17,9 @@ public class StatementInfoService {
         this.statementInfoRepository = statementInfoRepository;
     }
 
-    public  void save(StatementInfo statementInfo) {
-        statementInfoRepository.save(statementInfo);
-    }
+//    public  void save(StatementInfo statementInfo) {
+//        statementInfoRepository.save(statementInfo);
+//    }
 
     public  StatementInfo generate( Statement statement) {
         return new StatementInfo(statement.getId(), false,false,statement);

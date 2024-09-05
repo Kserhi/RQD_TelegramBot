@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Optional;
+
 @Component
 public class MessageHandler implements Handler<Message> {
     @Autowired
@@ -22,10 +24,7 @@ public class MessageHandler implements Handler<Message> {
     @Override
     public void choose(Message message) {
 
-
-
-
-        TelegramUserCache telegramUserCache = telegramUserService.getOrGenerate(message.getChatId());
+        TelegramUserCache telegramUserCache=telegramUserService.getOrGenerate(message.getChatId());
 
 
         if (telegramUserCache.getPosition()!=Position.NONE){
@@ -142,6 +141,8 @@ public class MessageHandler implements Handler<Message> {
                         Constants.HELP,
                         Keyboards.helpMenu()
                 );
+
+
             }
         }
 

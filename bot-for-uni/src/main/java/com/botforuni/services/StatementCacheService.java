@@ -13,8 +13,6 @@ import java.util.Optional;
 public class StatementCacheService {
 
     private final StatementCacheRepository statementCacheRepository;
-    @Autowired
-    private  TelegramUserService telegramUserService;
 
     @Autowired
     public StatementCacheService(StatementCacheRepository statementCacheRepository) {
@@ -22,13 +20,13 @@ public class StatementCacheService {
     }
 
 
-    public void save(StatementCache statement){
-        statementCacheRepository.save(statement);
-    }
-
-    public Optional<StatementCache> get(Long id){
-        return statementCacheRepository.findById(id);
-    }
+//    public void save(StatementCache statement){
+//        statementCacheRepository.save(statement);
+//    }
+//
+//    public Optional<StatementCache> get(Long id){
+//        return statementCacheRepository.findById(id);
+//    }
 
     public void removeAll(Long id){
         statementCacheRepository.removeAllById(id);

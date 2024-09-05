@@ -24,8 +24,8 @@ public class MessageSenderImpl implements MessageSender {
 
         }
     }
-
-    public void sendEdit(EditMessageReplyMarkup editMessageReplyMarkup){
+    @Override
+    public void sendEditMessage(EditMessageReplyMarkup editMessageReplyMarkup){
         try {
             telegramBot.execute(editMessageReplyMarkup);
         } catch (TelegramApiException e) {

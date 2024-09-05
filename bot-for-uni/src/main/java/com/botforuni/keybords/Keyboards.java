@@ -110,6 +110,8 @@ public class Keyboards {
     public static InlineKeyboardMarkup helpMenu() {
 
 
+
+
         return InlineKeyboardMarkup.builder()
                 .keyboardRow(
                         Collections.singletonList(
@@ -120,6 +122,16 @@ public class Keyboards {
                                                 "BOTA-LDU-BZHD-05-22")
                                         .build()
                         ))
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text("На головну❗")
+                                        .callbackData("/menu").build()
+
+
+                        )
+
+                )
                 .build();
 
     }

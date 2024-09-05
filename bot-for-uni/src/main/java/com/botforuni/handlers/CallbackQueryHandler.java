@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
@@ -29,24 +30,26 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
     public void choose(CallbackQuery callbackQuery) {
         Message message = callbackQuery.getMessage();
 
-        TelegramUserCache telegramUserCache = telegramUserService.getOrGenerate(message.getChatId());
+
+        TelegramUserCache telegramUserCache=telegramUserService.getOrGenerate(message.getChatId());
 
 
         switch (callbackQuery.getData()) {
-            case "/menu" ->{
+            case "/menu" -> {
                 sendMessageService.sendMessage(
                         message,
                         Constants.MENU,
                         Keyboards.menuKeyboard());
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
             }
 
-            case "choose_statement" ->{ sendMessageService.sendMessage(
-                    message,
-                    Constants.CHOOSESTATEMENT,
-                    Keyboards.chooseStatementKeyboard()
-            );
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+            case "choose_statement" -> {
+                sendMessageService.sendMessage(
+                        message,
+                        Constants.CHOOSESTATEMENT,
+                        Keyboards.chooseStatementKeyboard()
+                );
+//                sendMessageService.deleteInlineKeyboard(message);
             }
 
 
@@ -60,11 +63,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     statements.forEach(statement -> sendMessageService.sendMessage(message, statement.toString()));
                     sendMessageService.sendMessage(message, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
                 }
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
 
             }
             case "statementForMilitaryOfficer" -> {
-                StatementCache statementCache= statementCacheService
+                StatementCache statementCache = statementCacheService
                         .generateStatement(
                                 telegramUserCache,
                                 Constants.STATEMENTFORMILITARI);
@@ -74,13 +77,12 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUserService.save(telegramUserCache);
 
 
-
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
 
             }
             case "statementForStudy" -> {
-                StatementCache statementCache= statementCacheService
+                StatementCache statementCache = statementCacheService
                         .generateStatement(
                                 telegramUserCache,
                                 Constants.STATEMENTFORSTUDY);
@@ -90,21 +92,19 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUserService.save(telegramUserCache);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
 
             }
 
 
             case "confirm" -> {
-                Statement statement=statementService.mapStatement(telegramUserCache.getStatementCache());
+                Statement statement = statementService.mapStatement(telegramUserCache.getStatementCache());
 
-                StatementInfo statementInfo=statementInfoService.generate(statement);
+                StatementInfo statementInfo = statementInfoService.generate(statement);
 
                 statement.setStatementInfo(statementInfo);
 
                 statementService.save(statement);
-
-
 
 
                 statementCacheService.removeAll(telegramUserCache.getTelegramId());
@@ -115,21 +115,18 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUserService.save(telegramUserCache);
 
 
-
-
                 sendMessageService.sendMessage(
                         message,
                         "Реєстрація пройшла успішно❗",
                         Keyboards.linkToMenuKeyboard());
 
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
 
             }
 
 
-
             case "cancel" -> {
-                if (Position.CONFIRMATION== telegramUserCache.getPosition()){
+                if (Position.CONFIRMATION == telegramUserCache.getPosition()) {
 
                     statementCacheService.removeAll(telegramUserCache.getTelegramId());
 
@@ -146,7 +143,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     );
 
                 }
-                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+//                sendMessageService.deleteInlineKeyboard(message);
 
             }
         }

@@ -21,31 +21,31 @@ public class TelegramUserService {
         telegramUserCacheRepository.save(telegramUserCache);
     }
 
-    public void remove(TelegramUserCache telegramUserCache) {
-        telegramUserCacheRepository.deleteById(telegramUserCache.getTelegramId());
-    }
+//    public void remove(TelegramUserCache telegramUserCache) {
+//        telegramUserCacheRepository.deleteById(telegramUserCache.getTelegramId());
+//    }
 
     public TelegramUserCache getOrGenerate(Long telegramId) {
-        // Витягуємо телеграм користувача з бази даних
-        // Якщо запису не існує, генеруємо його
 
-        Optional<TelegramUserCache> telegramUserOptional = telegramUserCacheRepository.findById(telegramId);
+        return findById(telegramId)
+                .orElseGet(() -> {
+                    TelegramUserCache telegramUserCache = generateNewTelegramUser(telegramId);
+                    save(telegramUserCache);
+                    return telegramUserCache;
+                });
 
-        if (telegramUserOptional.isPresent()) {
-            return telegramUserOptional.get();
-        } else {
-            TelegramUserCache telegramUserCache = new TelegramUserCache();
-            telegramUserCache.setTelegramId(telegramId);
-            telegramUserCache.setPosition(Position.NONE);
-
-            save(telegramUserCache);
-            return telegramUserCache;
-        }
     }
 
-    public TelegramUserCache findById(Long telegramId) {
-        return telegramUserCacheRepository.findById(telegramId)
-                .orElseThrow(() -> new RuntimeException("Відсутній телеграм користувач id: " + telegramId));
+
+
+
+    public Optional<TelegramUserCache> findById(Long telegramId) {
+        return telegramUserCacheRepository.findById(telegramId);
+    }
+
+
+    private TelegramUserCache generateNewTelegramUser (Long telegramId){
+       return  new TelegramUserCache(telegramId,Position.NONE,null);
     }
 }
 

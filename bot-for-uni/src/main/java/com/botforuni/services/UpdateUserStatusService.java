@@ -55,11 +55,14 @@ public class UpdateUserStatusService {
 
         if (!infoList.isEmpty()) {
             infoList.forEach(statementInfo -> {
-                Statement st=statementInfo.getStatement();
-                TelegramUserCache tgUser=telegramUserService.findById(st.getTelegramId());
+                Statement statement=statementInfo.getStatement();
 
-                if (tgUser.getPosition()== Position.NONE){
-                    sendMessageService.sendInfoAboutReadyStatement(st);
+                TelegramUserCache telegramUser = telegramUserService
+                        .findById(statement.getTelegramId())
+                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+                if (telegramUser.getPosition()== Position.NONE){
+                    sendMessageService.sendInfoAboutReadyStatement(statement);
                     readyInfoList.add(statementInfo);
                 }
 

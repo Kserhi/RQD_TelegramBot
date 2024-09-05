@@ -6,5 +6,5 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageRe
 public interface MessageSender {
     void sendMessage(SendMessage sendMessage);
 
-    void sendEdit(EditMessageReplyMarkup editMessageReplyMarkup);
+    void sendEditMessage(EditMessageReplyMarkup editMessageReplyMarkup);
 }
