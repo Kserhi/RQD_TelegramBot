@@ -1,4 +1,6 @@
-SELECT * FROM telegram_user;
+SELECT * FROM telegram_user_cache;
+
+SELECT *FROM statement_cache;
 
 SELECT *FROM statement;
 
@@ -6,14 +8,16 @@ SELECT * FROM statement_info;
 
 UPDATE statement_info
 SET status=true,is_ready=false
-WHERE id=29;
+WHERE id=8;
 
 DELETE FROM statement_info;
 -- DROP TABLE statement_info;
 
-DELETE FROM telegram_user ;
+DELETE FROM telegram_user_cache ;
 
 DELETE FROM statement;
+
+DELETE FROM statement_cache;
 
 -- DROP TABLE telegram_user;
 
