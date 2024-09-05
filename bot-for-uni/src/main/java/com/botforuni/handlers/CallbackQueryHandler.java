@@ -33,16 +33,21 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
         switch (callbackQuery.getData()) {
-            case "/menu" -> sendMessageService.sendMessage(
-                    message,
-                    Constants.MENU,
-                    Keyboards.menuKeyboard()
-            );
-            case "choose_statement" -> sendMessageService.sendMessage(
+            case "/menu" ->{
+                sendMessageService.sendMessage(
+                        message,
+                        Constants.MENU,
+                        Keyboards.menuKeyboard());
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+            }
+
+            case "choose_statement" ->{ sendMessageService.sendMessage(
                     message,
                     Constants.CHOOSESTATEMENT,
                     Keyboards.chooseStatementKeyboard()
             );
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
+            }
 
 
             case "statements" -> {
@@ -55,6 +60,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     statements.forEach(statement -> sendMessageService.sendMessage(message, statement.toString()));
                     sendMessageService.sendMessage(message, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
                 }
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
 
             }
             case "statementForMilitaryOfficer" -> {
@@ -70,6 +76,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
 
             }
             case "statementForStudy" -> {
@@ -83,6 +90,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUserService.save(telegramUserCache);
 
                 sendMessageService.sendMessage(message, "Введіть свій ПІБ:");
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
 
             }
 
@@ -114,6 +122,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         "Реєстрація пройшла успішно❗",
                         Keyboards.linkToMenuKeyboard());
 
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
 
             }
 
@@ -137,6 +146,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     );
 
                 }
+                sendMessageService.deleteInlineKeyboard(telegramUserCache.getTelegramId(), callbackQuery.getMessage().getMessageId());
 
             }
         }

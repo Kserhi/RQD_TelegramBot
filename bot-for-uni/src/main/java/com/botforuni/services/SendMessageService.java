@@ -5,6 +5,7 @@ import com.botforuni.domain.Statement;
 import com.botforuni.messageSender.MessageSender;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -127,6 +128,20 @@ public class SendMessageService {
         messageSender.sendMessage(message);
     }
 
+
+    public void deleteInlineKeyboard(Long telegramId,int msId){
+
+
+        EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
+                .chatId(String.valueOf(telegramId))
+                .messageId(msId)  // Вказуємо ID повідомлення, яке редагуємо
+                .replyMarkup(null)  // Видаляємо клавіатуру, встановивши replyMarkup як null
+                .build();
+
+        // Надсилаємо запит на редагування повідомлення для видалення клавіатури
+
+            messageSender.sendEdit(editMessageReplyMarkup);
+    }
 
 
 }
