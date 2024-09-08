@@ -17,6 +17,9 @@ public class TelegramUserCache {
     @Id
     private Long telegramId;
 
+    private Integer massageId;
+
+
     @Enumerated(EnumType.STRING)
     private Position position;
 

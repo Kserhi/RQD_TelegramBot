@@ -19,7 +19,9 @@ DELETE FROM statement;
 
 DELETE FROM statement_cache;
 
--- DROP TABLE telegram_user;
+DROP TABLE telegram_user_cache ;
+DROP TABLE statement_cache ;
+
 
 -- INSERT INTO statement_info (id,is_ready,status)
 -- VALUES (9,false,true);

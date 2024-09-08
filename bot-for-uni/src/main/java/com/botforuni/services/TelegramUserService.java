@@ -45,7 +45,18 @@ public class TelegramUserService {
 
 
     private TelegramUserCache generateNewTelegramUser (Long telegramId){
-       return  new TelegramUserCache(telegramId,Position.NONE,null);
+       return  new TelegramUserCache(telegramId,null,Position.NONE,null);
+    }
+
+    public void saveMassageId(Long chatId,Integer massageId){
+        Optional<TelegramUserCache> telegramUserCacheOptional =findById(chatId);
+
+        if (telegramUserCacheOptional.isPresent()){
+            TelegramUserCache telegramUserCache=telegramUserCacheOptional.get();
+            telegramUserCache.setMassageId(massageId);
+            save(telegramUserCache);
+        }
+
     }
 }
 

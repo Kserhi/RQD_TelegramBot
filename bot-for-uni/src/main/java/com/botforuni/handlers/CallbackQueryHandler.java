@@ -35,22 +35,20 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
         switch (callbackQuery.getData()) {
-            case "/menu" -> {
+            case "/menu" ->
                 sendMessageService.sendMessage(
                         telegramId,
                         Constants.MENU,
                         Keyboards.menuKeyboard());
-//                sendMessageService.deleteInlineKeyboard(message);
-            }
 
-            case "choose_statement" -> {
+
+            case "choose_statement" ->
                 sendMessageService.sendMessage(
                         telegramId,
                         Constants.CHOOSESTATEMENT,
                         Keyboards.chooseStatementKeyboard()
                 );
-//                sendMessageService.deleteInlineKeyboard(message);
-            }
+
 
 
             case "statements" -> {
@@ -63,7 +61,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     statements.forEach(statement -> sendMessageService.sendMessage(telegramId, statement.toString()));
                     sendMessageService.sendMessage(telegramId, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
                 }
-//                sendMessageService.deleteInlineKeyboard(message);
 
             }
             case "statementForMilitaryOfficer" -> {
@@ -78,7 +75,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
 
                 sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
-//                sendMessageService.deleteInlineKeyboard(message);
 
             }
             case "statementForStudy" -> {
@@ -92,7 +88,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 telegramUserService.save(telegramUserCache);
 
                 sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
-//                sendMessageService.deleteInlineKeyboard(message);
 
             }
 
@@ -120,7 +115,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         "Реєстрація пройшла успішно❗",
                         Keyboards.linkToMenuKeyboard());
 
-//                sendMessageService.deleteInlineKeyboard(message);
 
             }
 
@@ -143,7 +137,6 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     );
 
                 }
-//                sendMessageService.deleteInlineKeyboard(message);
 
             }
         }
