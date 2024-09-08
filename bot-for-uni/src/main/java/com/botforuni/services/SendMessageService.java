@@ -58,42 +58,17 @@ public class SendMessageService {
         messageSender.sendMessage(message);
     }
 
-    /**
-     * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.
-     *
-     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
-     * @param text            Текст повідомлення для надсилання.
-     * @param inlineKeyboard  Об'єкт з інлайн клавіатурою (кнопки для взаємодії).
-     */
-    public void sendMessage(Message messageFromUser, String text, InlineKeyboardMarkup inlineKeyboard) {
-        sendMessage(messageFromUser.getChatId(),text, inlineKeyboard);
-    }
-
-    /**
-     * Надсилає просте текстове повідомлення до чату з вказаним текстом.
-     *
-     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
-     * @param text    Текст повідомлення для надсилання.
-     */
-    public void sendMessage(Message messageFromUser, String text) {
-        sendMessage(messageFromUser.getChatId(),text);
-    }
 
 
 
-    /**
-     * Надсилає текстове повідомлення до чату з клавіатурою відповіді.
-     *
-     * @param messageFromUser Об'єкт, що представляє отримане повідомлення від користувача.
-     * @param text            Текст повідомлення для надсилання.
-     * @param replyKeyboard   Об'єкт з клавіатурою відповіді (звичайна клавіатура з кнопками).
-     */
-    public void sendMessage(Message messageFromUser, String text, ReplyKeyboardMarkup replyKeyboard) {
+
+
+    public void sendMessage(Long tgId, String text, ReplyKeyboardMarkup replyKeyboard) {
 
         // Створення об'єкту SendMessage для надсилання текстового повідомлення з клавіатурою відповіді
         SendMessage message = SendMessage.builder()
                 .text(text)
-                .chatId(String.valueOf(messageFromUser.getChatId()))
+                .chatId(String.valueOf(tgId))
                 .replyMarkup(replyKeyboard)
                 .build();
         // Надсилання повідомлення за допомогою messageSender.sendMessage()
@@ -116,10 +91,10 @@ public class SendMessageService {
 
     }
 
-    public void sendMessage(Message messageFromUser,String text, ReplyKeyboardRemove replyKeyboardRemove){
+    public void sendMessage(Long chatId,String text, ReplyKeyboardRemove replyKeyboardRemove){
         SendMessage message = SendMessage.builder()
                 .text(text)
-                .chatId(String.valueOf(messageFromUser.getChatId()))
+                .chatId(String.valueOf(chatId))
                 .replyMarkup(replyKeyboardRemove)
                 .build();
         messageSender.sendMessage(message);

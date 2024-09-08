@@ -24,7 +24,9 @@ public class MessageHandler implements Handler<Message> {
     @Override
     public void choose(Message message) {
 
-        TelegramUserCache telegramUserCache=telegramUserService.getOrGenerate(message.getChatId());
+        Long telegramId= message.getChatId();
+
+        TelegramUserCache telegramUserCache=telegramUserService.getOrGenerate(telegramId);
 
 
         if (telegramUserCache.getPosition()!=Position.NONE){
@@ -36,7 +38,7 @@ public class MessageHandler implements Handler<Message> {
                     telegramUserCache.setPosition(Position.INPUT_USER_GROUP);
                     telegramUserCache.setStatementCache(statementCache);
                     telegramUserService.save(telegramUserCache);
-                    sendMessageService.sendMessage(message, "Введіть вашу групу (Наприклад: КН23c)⤵");
+                    sendMessageService.sendMessage(telegramId, "Введіть вашу групу (Наприклад: КН23c)⤵");
 
                 }
 
@@ -46,7 +48,7 @@ public class MessageHandler implements Handler<Message> {
                     telegramUserCache.setStatementCache(statementCache);
                     telegramUserService.save(telegramUserCache);
 
-                    sendMessageService.sendMessage(message, "Введіть ваш рік набору(Наприклад: 2021)⤵");
+                    sendMessageService.sendMessage(telegramId, "Введіть ваш рік набору(Наприклад: 2021)⤵");
 
 
 
@@ -60,7 +62,7 @@ public class MessageHandler implements Handler<Message> {
 
 
                     sendMessageService.sendMessage(
-                            message,
+                            telegramId,
                             "Виберіть ваш факультет",
                             Keyboards.chooseFaculty()
                     );
@@ -79,11 +81,11 @@ public class MessageHandler implements Handler<Message> {
                     telegramUserService.save(telegramUserCache);
 
 
-                    sendMessageService.sendMessage(message,
+                    sendMessageService.sendMessage(telegramId,
                             "Введіть ваш номер телефону⤵",
                             Keyboards.keyboardRemove());
                     sendMessageService.sendMessage(
-                            message,
+                            telegramId,
                             "Нажміть, щоб поділитися контактом",
                             Keyboards.phoneKeyboard()
                     );
@@ -101,20 +103,20 @@ public class MessageHandler implements Handler<Message> {
 
 
                             sendMessageService.sendMessage(
-                                    message,
+                                    telegramId,
                                     statementCache.toString(),
                                     Keyboards.keyboardRemove()
 
                             );
 
                             sendMessageService.sendMessage(
-                                    message,
+                                    telegramId,
                                     "Нажміть, щоб підтвердити дані",
                                     Keyboards.confirmationKeyboard()
                             );
                         }else {
                             sendMessageService.sendMessage(
-                                    message,
+                                    telegramId,
                                     "Нажміть кнопку щоб поділитись контактом",
                                     Keyboards.phoneKeyboard()
                             );
@@ -133,11 +135,11 @@ public class MessageHandler implements Handler<Message> {
         }else if (message.hasText()) {
             switch (message.getText()) {
                 case "/start" -> sendMessageService.sendMessage(
-                        message,
+                        telegramId,
                         Constants.START,
                         Keyboards.starKeyboard());
                 case "/help" -> sendMessageService.sendMessage(
-                        message,
+                        telegramId,
                         Constants.HELP,
                         Keyboards.helpMenu()
                 );
