@@ -53,26 +53,48 @@ public class SendMessageService {
      * @param inlineKeyboard Об'єкт з інлайн клавіатурою (кнопки для взаємодії).
      */
     public void sendMessage(Long chatId, String text, InlineKeyboardMarkup inlineKeyboard) {
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення
+        // Спочатку видаляємо попередню клавіатуру
+        removePreviousKeyboard(chatId);
+
+        // Створюємо та відправляємо нове повідомлення
+        Integer messageId = sendTextMessage(chatId, text, inlineKeyboard);
+
+        // Зберігаємо новий messageId для подальшого видалення клавіатури
+        telegramUserService.saveMassageId(chatId,messageId);
+    }
+
+    private Integer sendTextMessage(Long chatId, String text, InlineKeyboardMarkup inlineKeyboard) {
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(chatId))
                 .replyMarkup(inlineKeyboard)
                 .build();
 
-
-        editMassage(chatId);
-
-        Integer massageId=messageSender.sendMessage(message);
-
-        telegramUserService.saveMassageId(chatId,massageId);
-
+        // Відправляємо повідомлення і повертаємо його ID
+        return messageSender.sendMessage(message);
     }
 
+    private void removePreviousKeyboard(Long chatId) {
+        Optional<TelegramUserCache> telegramUserCacheOptional = telegramUserService.findById(chatId);
 
+        if (telegramUserCacheOptional.isPresent()) {
+            TelegramUserCache telegramUserCache = telegramUserCacheOptional.get();
+            if (telegramUserCache.getMassageId() != null) {
+                deleteInlineKeyboard(chatId, telegramUserCache.getMassageId());
+            }
+        }
+    }
 
+    private void deleteInlineKeyboard(Long chatId, Integer messageId) {
+        EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
+                .chatId(String.valueOf(chatId))
+                .messageId(messageId)  // Вказуємо ID повідомлення, яке редагуємо
+                .replyMarkup(null)     // Видаляємо клавіатуру, встановивши replyMarkup як null
+                .build();
 
-
+        // Надсилаємо запит на редагування повідомлення для видалення клавіатури
+        messageSender.sendMessage(editMessageReplyMarkup);
+    }
 
     public void sendMessage(Long tgId, String text, ReplyKeyboardMarkup replyKeyboard) {
 
@@ -114,33 +136,7 @@ public class SendMessageService {
 
 
 
-    private void deleteInlineKeyboard(Long chatId,Integer msId){
 
-
-        EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
-                .chatId(String.valueOf(chatId))
-                .messageId(msId)  // Вказуємо ID повідомлення, яке редагуємо
-                .replyMarkup(null)  // Видаляємо клавіатуру, встановивши replyMarkup як null
-                .build();
-
-        // Надсилаємо запит на редагування повідомлення для видалення клавіатури
-
-            messageSender.sendMessage(editMessageReplyMarkup);
-    }
-
-
-    private void  editMassage(Long chatId){
-        Optional<TelegramUserCache> telegramUserCacheOptional=telegramUserService.findById(chatId);
-
-        if (telegramUserCacheOptional.isPresent()){
-            TelegramUserCache telegramUserCache =telegramUserCacheOptional.get();
-            if (telegramUserCache.getMassageId()!=null){
-                deleteInlineKeyboard(chatId,telegramUserCache.getMassageId());
-            }
-        }
-
-
-    }
 
 
 }
