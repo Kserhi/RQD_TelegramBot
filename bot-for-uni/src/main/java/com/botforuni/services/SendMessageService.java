@@ -4,6 +4,7 @@ import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.keybords.Keyboards;
 import com.botforuni.domain.Statement;
 import com.botforuni.messageSender.MessageSender;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class SendMessageService {
     private final MessageSender messageSender;
@@ -24,15 +26,8 @@ public class SendMessageService {
         this.messageSender = messageSender;
     }
 
-
-    /**
-     * Надсилає просте текстове повідомлення до чату з вказаним текстом.
-     *
-     * @param chatId Телеграм id для надсиланняи повідомлення до користувача .
-     * @param text   Текст повідомлення для надсилання.
-     */
     public void sendMessage(Long chatId, String text) {
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення
+        log.info("Відправка простого повідомлення до чату з ID: {}", chatId);
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(chatId))
@@ -40,76 +35,55 @@ public class SendMessageService {
         messageSender.sendMessage(message);
     }
 
-
-
-
-
-
-    /**
-     * Надсилає текстове повідомлення до чату з можливістю додати інлайн клавіатуру.
-     *
-     * @param chatId         Телеграм id для надсиланняи повідомлення до користувача .
-     * @param text           Текст повідомлення для надсилання.
-     * @param inlineKeyboard Об'єкт з інлайн клавіатурою (кнопки для взаємодії).
-     */
     public void sendMessage(Long chatId, String text, InlineKeyboardMarkup inlineKeyboard) {
-        // Спочатку видаляємо попередню клавіатуру
+        log.info("Відправка повідомлення з інлайн клавіатурою до чату з ID: {}", chatId);
         removePreviousKeyboard(chatId);
-
-        // Створюємо та відправляємо нове повідомлення
         Integer messageId = sendTextMessage(chatId, text, inlineKeyboard);
-
-        // Зберігаємо новий messageId для подальшого видалення клавіатури
-        telegramUserService.saveMassageId(chatId,messageId);
+        telegramUserService.saveMassageId(chatId, messageId);
     }
 
     private Integer sendTextMessage(Long chatId, String text, InlineKeyboardMarkup inlineKeyboard) {
+        log.info("Створення повідомлення з текстом для чату з ID: {}", chatId);
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(chatId))
                 .replyMarkup(inlineKeyboard)
                 .build();
-
-        // Відправляємо повідомлення і повертаємо його ID
         return messageSender.sendMessage(message);
     }
 
     private void removePreviousKeyboard(Long chatId) {
         Optional<TelegramUserCache> telegramUserCacheOptional = telegramUserService.findById(chatId);
-
-        if (telegramUserCacheOptional.isPresent()) {
-            TelegramUserCache telegramUserCache = telegramUserCacheOptional.get();
+        telegramUserCacheOptional.ifPresent(telegramUserCache -> {
             if (telegramUserCache.getMassageId() != null) {
+                log.info("Видалення попередньої клавіатури для повідомлення з ID: {} у чаті з ID: {}", telegramUserCache.getMassageId(), chatId);
                 deleteInlineKeyboard(chatId, telegramUserCache.getMassageId());
             }
-        }
+        });
     }
 
     private void deleteInlineKeyboard(Long chatId, Integer messageId) {
+        log.info("Видалення інлайн клавіатури для повідомлення з ID: {} у чаті з ID: {}", messageId, chatId);
         EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
                 .chatId(String.valueOf(chatId))
-                .messageId(messageId)  // Вказуємо ID повідомлення, яке редагуємо
-                .replyMarkup(null)     // Видаляємо клавіатуру, встановивши replyMarkup як null
+                .messageId(messageId)
+                .replyMarkup(null)
                 .build();
-
-        // Надсилаємо запит на редагування повідомлення для видалення клавіатури
         messageSender.sendMessage(editMessageReplyMarkup);
     }
 
     public void sendMessage(Long tgId, String text, ReplyKeyboardMarkup replyKeyboard) {
-
-        // Створення об'єкту SendMessage для надсилання текстового повідомлення з клавіатурою відповіді
+        log.info("Відправка повідомлення з клавіатурою відповіді до чату з ID: {}", tgId);
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(tgId))
                 .replyMarkup(replyKeyboard)
                 .build();
-        // Надсилання повідомлення за допомогою messageSender.sendMessage()
         messageSender.sendMessage(message);
     }
 
-
     public void sendInfoAboutReadyStatement(Statement statement) {
+        log.info("Відправка інформації про готову довідку для користувача з ID: {}", statement.getTelegramId());
         sendMessage(
                 statement.getTelegramId(),
                 formatStatement(statement),
@@ -121,10 +95,10 @@ public class SendMessageService {
                 .append("📄 Ваша довідка готова:\n\n")
                 .append(statement.toString())
                 .toString();
-
     }
 
-    public void sendMessage(Long chatId,String text, ReplyKeyboardRemove replyKeyboardRemove){
+    public void sendMessage(Long chatId, String text, ReplyKeyboardRemove replyKeyboardRemove) {
+        log.info("Відправка повідомлення з видаленням клавіатури до чату з ID: {}", chatId);
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(chatId))
@@ -132,11 +106,4 @@ public class SendMessageService {
                 .build();
         messageSender.sendMessage(message);
     }
-
-
-
-
-
-
-
 }

@@ -4,6 +4,7 @@ import com.botforuni.domain.Position;
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.StatementInfo;
 import com.botforuni.domain.TelegramUserCache;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,13 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 public class UpdateUserStatusService {
+
     @Autowired
     private TelegramUserService telegramUserService;
+
     @Autowired
     private SendMessageService sendMessageService;
 
@@ -27,8 +31,6 @@ public class UpdateUserStatusService {
     @Autowired
     private ScheduledExecutorService scheduler;
 
-
-
     private Runnable task;
 
     @PostConstruct
@@ -37,45 +39,49 @@ public class UpdateUserStatusService {
             try {
                 sendNotificationAboutStatementStatus();
             } catch (Exception e) {
-                System.out.println("Проблеми із сповіщення про статус заявки" + e);
+                log.error("Проблеми із сповіщенням про статус заявки: ", e);
             }
         };
-        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.SECONDS); // Планування завдання кожні 12 годин
+        // Планування завдання кожні 12 годин
+        scheduler.scheduleAtFixedRate(task, 0, 12, TimeUnit.SECONDS);
     }
 
     @PreDestroy
     public void destroy() {
         scheduler.shutdown();
+        log.info("Планувальник завдань зупинено.");
     }
 
     private void sendNotificationAboutStatementStatus() {
-
-        List<StatementInfo>infoList=statementInfoService.getReadyStatement();
-        List<StatementInfo>readyInfoList=new ArrayList<>();
+        List<StatementInfo> infoList = statementInfoService.getReadyStatement();
+        List<StatementInfo> readyInfoList = new ArrayList<>();
 
         if (!infoList.isEmpty()) {
             infoList.forEach(statementInfo -> {
-                Statement statement=statementInfo.getStatement();
+                try {
+                    Statement statement = statementInfo.getStatement();
+                    TelegramUserCache telegramUser = telegramUserService
+                            .findById(statement.getTelegramId())
+                            .orElseThrow(() -> new IllegalArgumentException("Користувача не знайдено: " + statement.getTelegramId()));
 
-                TelegramUserCache telegramUser = telegramUserService
-                        .findById(statement.getTelegramId())
-                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-                if (telegramUser.getPosition()== Position.NONE){
-                    sendMessageService.sendInfoAboutReadyStatement(statement);
-                    readyInfoList.add(statementInfo);
+                    if (telegramUser.getPosition() == Position.NONE) {
+                        sendMessageService.sendInfoAboutReadyStatement(statement);
+                        readyInfoList.add(statementInfo);
+                    }
+                } catch (Exception e) {
+                    log.error("Помилка під час відправки повідомлення про готовність заяви для користувача", e);
                 }
-
             });
 
-            if (!readyInfoList.isEmpty()){
-                readyInfoList.forEach(statementInfo ->statementInfo.setReady(true));
+            // Оновлюємо статус для готових заявок
+            if (!readyInfoList.isEmpty()) {
+                readyInfoList.forEach(statementInfo -> statementInfo.setReady(true));
+                statementInfoService.saveAll(readyInfoList);
+                log.info("Статус готових заявок оновлено для {} заяв.", readyInfoList.size());
             }
 
-            statementInfoService.saveAll(readyInfoList);
-
+        } else {
+            log.info("Немає нових заявок для оновлення статусу.");
         }
-
-
     }
 }

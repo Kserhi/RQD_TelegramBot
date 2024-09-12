@@ -35,3 +35,6 @@ build/
 
 ### VS PostGres ###
 .data/
+
+.logs/
+
