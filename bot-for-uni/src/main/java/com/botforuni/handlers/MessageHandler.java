@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class MessageHandler implements Handler<Message> {
 
-
     private final TelegramUserService telegramUserService;
     private final SendMessageService sendMessageService;
 
@@ -64,7 +63,8 @@ public class MessageHandler implements Handler<Message> {
 
     private void handleNameInput(String name, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить своє ім'я: {}", telegramId, name);
-        if (Validator.validateName(name)) {
+        Validator.ValidationResult result = Validator.validateName(name);
+        if (result.isValid()) {
             statementCache.setFullName(name);
             userCache.setPosition(Position.INPUT_USER_GROUP);
             userCache.setStatementCache(statementCache);
@@ -73,13 +73,14 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Введіть вашу групу (Наприклад: КН23c)⤵");
         } else {
             log.warn("Невдала валідація імені для користувача з ID {}. Невірний формат імені: {}", telegramId, name);
-            sendValidationError(telegramId, "Ім'я некоректне. Будь ласка, введіть ім'я без чисел і символів.");
+            sendValidationError(telegramId, result.getMessage());
         }
     }
 
     private void handleGroupInput(String group, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить групу: {}", telegramId, group);
-        if (Validator.validateGroup(group)) {
+        Validator.ValidationResult result = Validator.validateGroup(group);
+        if (result.isValid()) {
             statementCache.setGroupe(group);
             userCache.setPosition(Position.INPUT_USER_YEAR);
             userCache.setStatementCache(statementCache);
@@ -88,13 +89,14 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Введіть ваш рік набору (Наприклад: 2021)⤵");
         } else {
             log.warn("Невдала валідація групи для користувача з ID {}. Невірний формат групи: {}", telegramId, group);
-            sendValidationError(telegramId, "Група некоректна. Приклад правильного формату: КН23c.");
+            sendValidationError(telegramId, result.getMessage());
         }
     }
 
     private void handleYearInput(String year, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить рік набору: {}", telegramId, year);
-        if (Validator.validateYear(year)) {
+        Validator.ValidationResult result = Validator.validateYear(year);
+        if (result.isValid()) {
             statementCache.setYearEntry(year);
             userCache.setPosition(Position.INPUT_USER_FACULTY);
             userCache.setStatementCache(statementCache);
@@ -103,7 +105,7 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Виберіть ваш факультет", Keyboards.chooseFaculty());
         } else {
             log.warn("Невдала валідація року для користувача з ID {}. Невірний формат року: {}", telegramId, year);
-            sendValidationError(telegramId, "Рік некоректний. Введіть 4 цифри (Наприклад: 2021).");
+            sendValidationError(telegramId, result.getMessage());
         }
     }
 

@@ -101,7 +101,7 @@ public class SendMessageService {
     }
 
     public void sendMessage(Long chatId, String text, ReplyKeyboardRemove replyKeyboardRemove) {
-        log.info("Відправка повідомлення з видаленням клавіатури до чату з ID: {}", chatId);
+        log.info("Відправка повідомлення з видаленням клавіатури replyKeyboard до чату з ID: {}", chatId);
         SendMessage message = SendMessage.builder()
                 .text(text)
                 .chatId(String.valueOf(chatId))
