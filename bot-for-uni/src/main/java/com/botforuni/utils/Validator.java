@@ -13,8 +13,8 @@ public class Validator {
     private static final String YEAR_PATTERN = "^\\d{4}$";
     private static final int NAME_MIN_LENGTH = 2;
     private static final int NAME_MAX_LENGTH = 100;
-    private static final int YEAR_MIN_VALUE = 1900;
-    private static final int YEAR_MAX_VALUE = 2100;
+    private static final int YEAR_MIN_VALUE = 1990;
+    private static final int YEAR_MAX_VALUE = 2030;
 
 
     private static final List<String> VALID_FACULTIES = Arrays.asList(

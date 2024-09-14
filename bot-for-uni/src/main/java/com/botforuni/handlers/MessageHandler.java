@@ -74,7 +74,7 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Введіть вашу групу (Наприклад: КН23c)⤵");
         } else {
             log.warn("Невдала валідація імені для користувача з ID {}. Невірний формат імені: {}", telegramId, name);
-            sendValidationError(telegramId, result.getMessage());
+            sendValidationError(telegramId, result.message());
         }
     }
 
@@ -90,7 +90,7 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Введіть ваш рік набору (Наприклад: 2021)⤵");
         } else {
             log.warn("Невдала валідація групи для користувача з ID {}. Невірний формат групи: {}", telegramId, group);
-            sendValidationError(telegramId, result.getMessage());
+            sendValidationError(telegramId, result.message());
         }
     }
 
@@ -106,7 +106,7 @@ public class MessageHandler implements Handler<Message> {
             sendMessageService.sendMessage(telegramId, "Виберіть ваш факультет", Keyboards.chooseFaculty());
         } else {
             log.warn("Невдала валідація року для користувача з ID {}. Невірний формат року: {}", telegramId, year);
-            sendValidationError(telegramId, result.getMessage());
+            sendValidationError(telegramId, result.message());
         }
     }
 
