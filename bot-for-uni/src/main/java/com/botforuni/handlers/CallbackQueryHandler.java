@@ -15,16 +15,25 @@ import java.util.List;
 @Slf4j
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
+
+    private final TelegramUserService telegramUserService;
+    private final StatementService statementService;
+    private final StatementCacheService statementCacheService;
+    private final SendMessageService sendMessageService;
+    private final StatementInfoService statementInfoService;
+
     @Autowired
-    private TelegramUserService telegramUserService;
-    @Autowired
-    private StatementService statementService;
-    @Autowired
-    private StatementCacheService statementCacheService;
-    @Autowired
-    private SendMessageService sendMessageService;
-    @Autowired
-    private StatementInfoService statementInfoService;
+    public CallbackQueryHandler(TelegramUserService telegramUserService,
+                                StatementService statementService,
+                                StatementCacheService statementCacheService,
+                                SendMessageService sendMessageService,
+                                StatementInfoService statementInfoService) {
+        this.telegramUserService = telegramUserService;
+        this.statementService = statementService;
+        this.statementCacheService = statementCacheService;
+        this.sendMessageService = sendMessageService;
+        this.statementInfoService = statementInfoService;
+    }
 
     @Override
     public void choose(CallbackQuery callbackQuery) {
@@ -37,84 +46,112 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         TelegramUserCache telegramUserCache = telegramUserService.getOrGenerate(telegramId);
 
         switch (callbackData) {
-            case "/menu" -> {
-                log.info("Користувач з ID: {} вибрав меню", telegramId);
-                sendMessageService.sendMessage(telegramId, Constants.MENU, Keyboards.menuKeyboard());
-            }
-            case "choose_statement" -> {
-                log.info("Користувач з ID: {} вибрав пункт 'Вибрати заяву'", telegramId);
-                sendMessageService.sendMessage(telegramId, Constants.CHOOSESTATEMENT, Keyboards.chooseStatementKeyboard());
-            }
-            case "statements" -> {
-                log.info("Користувач з ID: {} вибрав перегляд своїх заяв", telegramId);
-                List<Statement> statements = statementService.getAllUserStatements(telegramUserCache.getTelegramId());
-
-                if (statements.isEmpty()) {
-                    log.info("У користувача з ID: {} немає жодної зареєстрованої заявки", telegramId);
-                    sendMessageService.sendMessage(telegramId, "У вас немає жодної зареєстрованої заявки", Keyboards.linkToMenuKeyboard());
-                } else {
-                    log.info("У користувача з ID: {} знайдено {} заяв(и)", telegramId, statements.size());
-                    Statement lastStatement = statements.remove(0);
-                    statements.forEach(statement -> sendMessageService.sendMessage(telegramId, statement.toString()));
-                    sendMessageService.sendMessage(telegramId, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
-                }
-            }
-            case "statementForMilitaryOfficer" -> {
-                log.info("Користувач з ID: {} вибрав пункт 'Заява для військової кафедри'", telegramId);
-                StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORMILITARI);
-
-                telegramUserCache.setPosition(Position.INPUT_USER_NAME);
-                telegramUserCache.setStatementCache(statementCache);
-                telegramUserService.save(telegramUserCache);
-
-                sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
-                log.debug("Збережено новий кеш заяви для військової кафедри для користувача з ID: {}", telegramId);
-            }
-            case "statementForStudy" -> {
-                log.info("Користувач з ID: {} вибрав пункт 'Заява для навчання'", telegramId);
-                StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORSTUDY);
-
-                telegramUserCache.setPosition(Position.INPUT_USER_NAME);
-                telegramUserCache.setStatementCache(statementCache);
-                telegramUserService.save(telegramUserCache);
-
-                sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
-                log.debug("Збережено новий кеш заяви для навчання для користувача з ID: {}", telegramId);
-            }
-            case "confirm" -> {
-                log.info("Користувач з ID: {} підтвердив реєстрацію заяви", telegramId);
-                Statement statement = statementService.mapStatement(telegramUserCache.getStatementCache());
-                StatementInfo statementInfo = statementInfoService.generate(statement);
-
-                statement.setStatementInfo(statementInfo);
-                statementService.save(statement);
-
-                statementCacheService.removeAllByUserId(telegramUserCache.getTelegramId());
-
-                telegramUserCache.setStatementCache(null);
-                telegramUserCache.setPosition(Position.NONE);
-                telegramUserService.save(telegramUserCache);
-
-                sendMessageService.sendMessage(telegramId, "Реєстрація пройшла успішно❗", Keyboards.linkToMenuKeyboard());
-                log.info("Заяву користувача з ID: {} успішно зареєстровано", telegramId);
-            }
-            case "cancel" -> {
-                if (Position.CONFIRMATION == telegramUserCache.getPosition()) {
-                    log.info("Користувач з ID: {} скасував реєстрацію заяви", telegramId);
-
-                    statementCacheService.removeAllByUserId(telegramUserCache.getTelegramId());
-
-                    telegramUserCache.setStatementCache(null);
-                    telegramUserCache.setPosition(Position.NONE);
-                    telegramUserService.save(telegramUserCache);
-
-                    sendMessageService.sendMessage(telegramId, "Реєстрацію довідки скасовано", Keyboards.linkToMenuKeyboard());
-                    log.info("Заява користувача з ID: {} успішно скасована", telegramId);
-                } else {
-                    log.warn("Користувач з ID: {} намагався скасувати реєстрацію без підтвердженої заявки", telegramId);
-                }
-            }
-            default -> log.warn("Отримано невідомий callbackData: {} від користувача з ID: {}", callbackData, telegramId);
+            case "/menu" -> handleMenuSelection(telegramId);
+            case "choose_statement" -> handleChooseStatement(telegramId);
+            case "statements" -> handleUserStatements(telegramUserCache);
+            case "statementForMilitaryOfficer" -> handleStatementForMilitaryOfficer(telegramUserCache);
+            case "statementForStudy" -> handleStatementForStudy(telegramUserCache);
+            case "confirm" -> handleConfirmation(telegramUserCache);
+            case "cancel" -> handleCancellation(telegramUserCache);
+            default ->
+                    log.warn("Отримано невідомий callbackData: {} від користувача з ID: {}", callbackData, telegramId);
         }
+    }
+
+    private void handleMenuSelection(Long telegramId) {
+        log.info("Користувач з ID: {} вибрав меню", telegramId);
+        sendMessageService.sendMessage(telegramId, Constants.MENU, Keyboards.menuKeyboard());
+    }
+
+    private void handleChooseStatement(Long telegramId) {
+        log.info("Користувач з ID: {} вибрав пункт 'Вибрати заяву'", telegramId);
+        sendMessageService.sendMessage(telegramId, Constants.CHOOSESTATEMENT, Keyboards.chooseStatementKeyboard());
+    }
+
+    private void handleUserStatements(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} вибрав перегляд своїх заяв", telegramId);
+
+        List<Statement> statements = statementService.getAllUserStatements(telegramId);
+
+        if (statements.isEmpty()) {
+            log.info("У користувача з ID: {} немає жодної зареєстрованої заявки", telegramId);
+            sendMessageService.sendMessage(telegramId, "У вас немає жодної зареєстрованої заявки", Keyboards.linkToMenuKeyboard());
+        } else {
+            log.info("У користувача з ID: {} знайдено {} заяв(и)", telegramId, statements.size());
+            Statement lastStatement = statements.remove(0);
+            statements.forEach(statement -> sendMessageService.sendMessage(telegramId, statement.toString()));
+            sendMessageService.sendMessage(telegramId, lastStatement.toString(), Keyboards.linkToMenuKeyboard());
+        }
+    }
+
+    private void handleStatementForMilitaryOfficer(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} вибрав пункт 'Заява для військової кафедри'", telegramId);
+
+        StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORMILITARI);
+
+        telegramUserCache.setPosition(Position.INPUT_USER_NAME);
+        telegramUserCache.setStatementCache(statementCache);
+        telegramUserService.save(telegramUserCache);
+
+        sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
+        log.debug("Збережено новий кеш заяви для військової кафедри для користувача з ID: {}", telegramId);
+    }
+
+    private void handleStatementForStudy(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} вибрав пункт 'Заява для навчання'", telegramId);
+
+        StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORSTUDY);
+
+        telegramUserCache.setPosition(Position.INPUT_USER_NAME);
+        telegramUserCache.setStatementCache(statementCache);
+        telegramUserService.save(telegramUserCache);
+
+        sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
+        log.debug("Збережено новий кеш заяви для навчання для користувача з ID: {}", telegramId);
+    }
+
+    private void handleConfirmation(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} підтвердив реєстрацію заяви", telegramId);
+
+        StatementCache statementCache = telegramUserCache.getStatementCache();
+        if (statementCache == null) {
+            log.error("Кеш заяви відсутній для користувача з ID: {}. Підтвердження неможливе.", telegramId);
+            sendMessageService.sendMessage(telegramId, "Виникла помилка. Будь ласка, спробуйте ще раз.");
+            return;
+        }
+
+        Statement statement = statementService.mapStatement(statementCache);
+        StatementInfo statementInfo = statementInfoService.generate(statement);
+
+        statement.setStatementInfo(statementInfo);
+        statementService.save(statement);
+
+        statementCacheService.removeAllByUserId(telegramId);
+
+        telegramUserCache.setStatementCache(null);
+        telegramUserCache.setPosition(Position.NONE);
+        telegramUserService.save(telegramUserCache);
+
+        sendMessageService.sendMessage(telegramId, "Реєстрація пройшла успішно❗", Keyboards.linkToMenuKeyboard());
+        log.info("Заяву користувача з ID: {} успішно зареєстровано", telegramId);
+    }
+
+    private void handleCancellation(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} скасував реєстрацію заяви", telegramId);
+
+        statementCacheService.removeAllByUserId(telegramId);
+
+        telegramUserCache.setStatementCache(null);
+        telegramUserCache.setPosition(Position.NONE);
+        telegramUserService.save(telegramUserCache);
+
+        sendMessageService.sendMessage(telegramId, "Реєстрацію довідки скасовано", Keyboards.linkToMenuKeyboard());
+        log.info("Заява користувача з ID: {} успішно скасована", telegramId);
+
     }
 }

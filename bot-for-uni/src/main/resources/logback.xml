@@ -25,6 +25,11 @@
         </encoder>
     </appender>
 
+    <!-- Логер для ваших власних класів: тільки у файл, без виводу в консоль -->
+    <logger name="com.botforuni" level="info" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
     <!-- Рівень логування та додатки для root логера -->
     <root level="info">
         <appender-ref ref="FILE" />
