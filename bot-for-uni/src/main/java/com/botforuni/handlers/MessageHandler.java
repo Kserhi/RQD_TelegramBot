@@ -17,37 +17,40 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class MessageHandler implements Handler<Message> {
 
-    @Autowired
-    private TelegramUserService telegramUserService;
+
+    private final TelegramUserService telegramUserService;
+    private final SendMessageService sendMessageService;
 
     @Autowired
-    private SendMessageService sendMessageService;
+    public MessageHandler(TelegramUserService telegramUserService, SendMessageService sendMessageService) {
+        this.telegramUserService = telegramUserService;
+        this.sendMessageService = sendMessageService;
+    }
 
     @Override
     public void choose(Message message) {
         Long chatId = message.getChatId();
-        log.info("Отримано повідомлення від користувача з ID: {}", chatId);
+        log.info("Отримано повідомлення від користувача з ID: {}. Текст повідомлення: '{}'", chatId, message.getText());
 
         TelegramUserCache userCache = telegramUserService.getOrGenerate(chatId);
         Position currentPosition = userCache.getPosition();
-        log.debug("Поточна позиція користувача: {}", currentPosition);
-
-
+        log.debug("Поточна позиція користувача з ID {}: {}", chatId, currentPosition);
 
         if (currentPosition != Position.NONE) {
+            log.debug("Користувач з ID {} перебуває в позиції: {}. Розпочато обробку введення даних.", chatId, currentPosition);
             handleUserInputByPosition(currentPosition, message, userCache);
         } else if (message.hasText()) {
+            log.debug("Користувач з ID {} не має активної позиції. Перевірка на команди.", chatId);
             handleCommands(message.getText(), chatId);
         }
     }
-
-
 
     private void handleUserInputByPosition(Position position, Message message, TelegramUserCache userCache) {
         Long telegramId = userCache.getTelegramId();
         StatementCache statementCache = userCache.getStatementCache();
         String messageText = message.getText();
 
+        log.debug("Обробка даних користувача з ID {} для позиції: {}", telegramId, position);
 
         switch (position) {
             case INPUT_USER_NAME -> handleNameInput(messageText, telegramId, userCache, statementCache);
@@ -55,7 +58,7 @@ public class MessageHandler implements Handler<Message> {
             case INPUT_USER_YEAR -> handleYearInput(messageText, telegramId, userCache, statementCache);
             case INPUT_USER_FACULTY -> handleFacultyInput(messageText, telegramId, userCache, statementCache);
             case INPUT_USER_PHONE -> handlePhoneInput(message, telegramId, userCache, statementCache);
-            default -> log.warn("Некоректна позиція користувача: {}", position);
+            default -> log.warn("Некоректна позиція користувача: {} для користувача з ID {}", position, telegramId);
         }
     }
 
@@ -66,10 +69,10 @@ public class MessageHandler implements Handler<Message> {
             userCache.setPosition(Position.INPUT_USER_GROUP);
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
+            log.debug("Ім'я користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_GROUP.", telegramId);
             sendMessageService.sendMessage(telegramId, "Введіть вашу групу (Наприклад: КН23c)⤵");
-            log.debug("Оновлено позицію користувача на INPUT_USER_GROUP");
-
         } else {
+            log.warn("Невдала валідація імені для користувача з ID {}. Невірний формат імені: {}", telegramId, name);
             sendValidationError(telegramId, "Ім'я некоректне. Будь ласка, введіть ім'я без чисел і символів.");
         }
     }
@@ -81,26 +84,25 @@ public class MessageHandler implements Handler<Message> {
             userCache.setPosition(Position.INPUT_USER_YEAR);
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
+            log.debug("Групу користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_YEAR.", telegramId);
             sendMessageService.sendMessage(telegramId, "Введіть ваш рік набору (Наприклад: 2021)⤵");
-
-            log.debug("Оновлено позицію користувача на INPUT_USER_YEAR");
         } else {
+            log.warn("Невдала валідація групи для користувача з ID {}. Невірний формат групи: {}", telegramId, group);
             sendValidationError(telegramId, "Група некоректна. Приклад правильного формату: КН23c.");
         }
     }
 
     private void handleYearInput(String year, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить рік набору: {}", telegramId, year);
-
         if (Validator.validateYear(year)) {
             statementCache.setYearEntry(year);
             userCache.setPosition(Position.INPUT_USER_FACULTY);
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
+            log.debug("Рік набору користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_FACULTY.", telegramId);
             sendMessageService.sendMessage(telegramId, "Виберіть ваш факультет", Keyboards.chooseFaculty());
-            log.debug("Оновлено позицію користувача на INPUT_USER_FACULTY");
-
         } else {
+            log.warn("Невдала валідація року для користувача з ID {}. Невірний формат року: {}", telegramId, year);
             sendValidationError(telegramId, "Рік некоректний. Введіть 4 цифри (Наприклад: 2021).");
         }
     }
@@ -111,12 +113,9 @@ public class MessageHandler implements Handler<Message> {
         userCache.setPosition(Position.INPUT_USER_PHONE);
         userCache.setStatementCache(statementCache);
         telegramUserService.save(userCache);
+        log.debug("Факультет користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_PHONE.", telegramId);
         sendMessageService.sendMessage(telegramId, "Введіть ваш номер телефону⤵", Keyboards.keyboardRemove());
-
         sendMessageService.sendMessage(telegramId, "Нажміть, щоб поділитися контактом", Keyboards.phoneKeyboard());
-        log.debug("Оновлено позицію користувача на INPUT_USER_PHONE");
-
-
     }
 
     private void handlePhoneInput(Message message, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
@@ -126,27 +125,32 @@ public class MessageHandler implements Handler<Message> {
             userCache.setPosition(Position.CONFIRMATION);
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
+            log.debug("Номер телефону користувача з ID {} успішно збережено. Оновлено позицію на CONFIRMATION.", telegramId);
             sendMessageService.sendMessage(telegramId, statementCache.toString(), Keyboards.keyboardRemove());
             sendMessageService.sendMessage(telegramId, "Нажміть, щоб підтвердити дані", Keyboards.confirmationKeyboard());
-            log.debug("Оновлено позицію користувача на CONFIRMATION");
         } else {
             log.warn("Користувач з ID: {} не надав контакт", telegramId);
             sendMessageService.sendMessage(telegramId, "Нажміть кнопку, щоб поділитися контактом", Keyboards.phoneKeyboard());
         }
-
     }
 
     private void handleCommands(String text, Long telegramId) {
+        log.debug("Обробка команди '{}' для користувача з ID: {}", text, telegramId);
         switch (text) {
-            case "/start" -> sendMessageService.sendMessage(telegramId, Constants.START, Keyboards.starKeyboard());
-            case "/help" -> sendMessageService.sendMessage(telegramId, Constants.HELP, Keyboards.helpMenu());
-            default -> log.warn("Користувач з ID: {} надіслав невідому команду: {}", telegramId, text);
+            case "/start" -> {
+                log.info("Команда /start отримана від користувача з ID: {}", telegramId);
+                sendMessageService.sendMessage(telegramId, Constants.START, Keyboards.starKeyboard());
+            }
+            case "/help" -> {
+                log.info("Команда /help отримана від користувача з ID: {}", telegramId);
+                sendMessageService.sendMessage(telegramId, Constants.HELP, Keyboards.helpMenu());
+            }
+            default -> log.warn("Невідома команда '{}' від користувача з ID: {}", text, telegramId);
         }
     }
 
-
     private void sendValidationError(Long telegramId, String errorMessage) {
-        log.warn("Помилка валідації для користувача з ID: {}", telegramId);
+        log.warn("Помилка валідації для користувача з ID {}. Повідомлення про помилку: '{}'", telegramId, errorMessage);
         sendMessageService.sendMessage(telegramId, errorMessage);
     }
 }
