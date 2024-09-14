@@ -87,7 +87,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
     private void handleStatementForMilitaryOfficer(TelegramUserCache telegramUserCache) {
         Long telegramId = telegramUserCache.getTelegramId();
-        log.info("Користувач з ID: {} вибрав пункт 'Заява для військової кафедри'", telegramId);
+        log.info("Користувач з ID: {} вибрав пункт 'Заява для військомату'", telegramId);
 
         StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORMILITARI);
 

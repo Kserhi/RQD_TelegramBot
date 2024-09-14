@@ -19,12 +19,15 @@ import java.util.Optional;
 @Service
 public class SendMessageService {
     private final MessageSender messageSender;
-    @Autowired
-    private TelegramUserService telegramUserService;
+    private final TelegramUserService telegramUserService;
 
-    public SendMessageService(MessageSender messageSender) {
+    @Autowired
+    public SendMessageService(MessageSender messageSender, TelegramUserService telegramUserService) {
         this.messageSender = messageSender;
+        this.telegramUserService = telegramUserService;
     }
+
+
 
     public void sendMessage(Long chatId, String text) {
         log.info("Відправка простого повідомлення до чату з ID: {}", chatId);
