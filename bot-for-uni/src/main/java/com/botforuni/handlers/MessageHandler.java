@@ -7,6 +7,7 @@ import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
+import com.botforuni.utils.ValidationResult;
 import com.botforuni.utils.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class MessageHandler implements Handler<Message> {
 
     private void handleNameInput(String name, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить своє ім'я: {}", telegramId, name);
-        Validator.ValidationResult result = Validator.validateName(name);
+        ValidationResult result = Validator.validateName(name);
         if (result.isValid()) {
             statementCache.setFullName(name);
             userCache.setPosition(Position.INPUT_USER_GROUP);
@@ -79,7 +80,7 @@ public class MessageHandler implements Handler<Message> {
 
     private void handleGroupInput(String group, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить групу: {}", telegramId, group);
-        Validator.ValidationResult result = Validator.validateGroup(group);
+        ValidationResult result = Validator.validateGroup(group);
         if (result.isValid()) {
             statementCache.setGroupe(group);
             userCache.setPosition(Position.INPUT_USER_YEAR);
@@ -95,7 +96,7 @@ public class MessageHandler implements Handler<Message> {
 
     private void handleYearInput(String year, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
         log.info("Користувач з ID: {} вводить рік набору: {}", telegramId, year);
-        Validator.ValidationResult result = Validator.validateYear(year);
+        ValidationResult result = Validator.validateYear(year);
         if (result.isValid()) {
             statementCache.setYearEntry(year);
             userCache.setPosition(Position.INPUT_USER_FACULTY);
@@ -110,14 +111,23 @@ public class MessageHandler implements Handler<Message> {
     }
 
     private void handleFacultyInput(String faculty, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
+
         log.info("Користувач з ID: {} вибирає факультет: {}", telegramId, faculty);
-        statementCache.setFaculty(faculty);
-        userCache.setPosition(Position.INPUT_USER_PHONE);
-        userCache.setStatementCache(statementCache);
-        telegramUserService.save(userCache);
-        log.debug("Факультет користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_PHONE.", telegramId);
-        sendMessageService.sendMessage(telegramId, "Введіть ваш номер телефону⤵", Keyboards.keyboardRemove());
-        sendMessageService.sendMessage(telegramId, "Нажміть, щоб поділитися контактом", Keyboards.phoneKeyboard());
+        ValidationResult result=Validator.validateFaculty(faculty);
+        if (result.isValid()) {
+            statementCache.setFaculty(faculty);
+            userCache.setPosition(Position.INPUT_USER_PHONE);
+            userCache.setStatementCache(statementCache);
+            telegramUserService.save(userCache);
+            log.debug("Факультет користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_PHONE.", telegramId);
+            sendMessageService.sendMessage(telegramId, "Введіть ваш номер телефону⤵", Keyboards.keyboardRemove());
+            sendMessageService.sendMessage(telegramId, "Нажміть, щоб поділитися контактом", Keyboards.phoneKeyboard());
+        }else {
+            log.warn("Невдала валідація факультету для користувача з ID {}. Невірний формат року: {}", telegramId, faculty);
+            sendMessageService.sendMessage(telegramId, "Нажміть кнопку, щоб вибрати факультет", Keyboards.chooseFaculty());
+
+        }
+
     }
 
     private void handlePhoneInput(Message message, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
