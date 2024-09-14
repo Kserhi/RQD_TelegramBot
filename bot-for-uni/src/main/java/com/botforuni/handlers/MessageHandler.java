@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 @Slf4j
 @Component
@@ -119,18 +117,23 @@ public class MessageHandler implements Handler<Message> {
         log.debug("Оновлено позицію користувача на INPUT_USER_PHONE");
 
 
-        statementCache.setFaculty(faculty);
-        updateUserPosition(userCache, statementCache, Position.INPUT_USER_PHONE, telegramId, "Введіть ваш номер телефону⤵", Keyboards.phoneKeyboard());
     }
 
     private void handlePhoneInput(Message message, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
-        if (message.hasContact() || Validator.validatePhoneNumber(message.getText())) {
-            String phoneNumber = message.hasContact() ? message.getContact().getPhoneNumber() : message.getText();
-            statementCache.setPhoneNumber(phoneNumber);
-            updateUserPosition(userCache, statementCache, Position.CONFIRMATION, telegramId, statementCache.toString(), Keyboards.confirmationKeyboard());
+        if (message.hasContact()) {
+            log.info("Користувач з ID: {} поділився номером телефону", telegramId);
+            statementCache.setPhoneNumber(message.getContact().getPhoneNumber());
+            userCache.setPosition(Position.CONFIRMATION);
+            userCache.setStatementCache(statementCache);
+            telegramUserService.save(userCache);
+            sendMessageService.sendMessage(telegramId, statementCache.toString(), Keyboards.keyboardRemove());
+            sendMessageService.sendMessage(telegramId, "Нажміть, щоб підтвердити дані", Keyboards.confirmationKeyboard());
+            log.debug("Оновлено позицію користувача на CONFIRMATION");
         } else {
-            sendValidationError(telegramId, "Некоректний номер телефону. Введіть правильний номер у форматі +380XXXXXXXXX.");
+            log.warn("Користувач з ID: {} не надав контакт", telegramId);
+            sendMessageService.sendMessage(telegramId, "Нажміть кнопку, щоб поділитися контактом", Keyboards.phoneKeyboard());
         }
+
     }
 
     private void handleCommands(String text, Long telegramId) {
@@ -140,33 +143,6 @@ public class MessageHandler implements Handler<Message> {
             default -> log.warn("Користувач з ID: {} надіслав невідому команду: {}", telegramId, text);
         }
     }
-
-
-    private void updateUserPosition(TelegramUserCache userCache, StatementCache statementCache, Position newPosition, Long telegramId, String message) {
-        userCache.setPosition(newPosition);
-        userCache.setStatementCache(statementCache);
-        sendMessageService.sendMessage(telegramId, message, Keyboards.keyboardRemove());
-
-    }
-
-    private void updateUserPosition(TelegramUserCache userCache, StatementCache statementCache, Position newPosition, Long telegramId, String message, ReplyKeyboardMarkup keyboard) {
-        userCache.setPosition(newPosition);
-        userCache.setStatementCache(statementCache);
-        telegramUserService.save(userCache);
-        sendMessageService.sendMessage(telegramId, message, keyboard);
-
-
-    }
-
-    private void updateUserPosition(TelegramUserCache userCache, StatementCache statementCache, Position newPosition, Long telegramId, String message, InlineKeyboardMarkup keyboard) {
-        userCache.setPosition(newPosition);
-        userCache.setStatementCache(statementCache);
-        telegramUserService.save(userCache);
-        sendMessageService.sendMessage(telegramId, message, keyboard);
-    }
-
-
-
 
 
     private void sendValidationError(Long telegramId, String errorMessage) {

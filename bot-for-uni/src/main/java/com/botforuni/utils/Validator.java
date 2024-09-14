@@ -5,7 +5,7 @@ public class Validator {
     private static final String NAME_PATTERN = "^[a-zA-Zа-яА-ЯїЇіІєЄґҐ\\s]+$";
     private static final String GROUP_PATTERN = "^[А-Яа-яA-Za-z]{2}\\d{2}[а-яa-z]$";
     private static final String YEAR_PATTERN = "^\\d{4}$";
-    private static final String PHONE_PATTERN = "^\\+?\\d{10,13}$";
+
 
     public static boolean validateName(String name) {
         return name != null && name.matches(NAME_PATTERN);
@@ -19,7 +19,5 @@ public class Validator {
         return year != null && year.matches(YEAR_PATTERN);
     }
 
-    public static boolean validatePhoneNumber(String phoneNumber) {
-        return phoneNumber != null && phoneNumber.matches(PHONE_PATTERN);
-    }
+
 }
