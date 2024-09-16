@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  crm-db:
+    image: postgres:9.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: 'crmDATA'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ../.data/pg96:/var/lib/postgresql/data/
+    container_name: crmDATA
