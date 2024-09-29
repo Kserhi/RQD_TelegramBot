@@ -1,8 +1,8 @@
 package com.botforuni.services;
 
+import com.botforuni.domain.Statement;
 import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.keybords.Keyboards;
-import com.botforuni.domain.Statement;
 import com.botforuni.messageSender.MessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
