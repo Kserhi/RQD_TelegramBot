@@ -94,10 +94,8 @@ public class SendMessageService {
     }
 
     private String formatStatement(Statement statement) {
-        return new StringBuilder()
-                .append("📄 Ваша довідка готова:\n\n")
-                .append(statement.toString())
-                .toString();
+        return "📄 Ваша довідка готова:\n\n" +
+                statement.toString();
     }
 
     public void sendMessage(Long chatId, String text, ReplyKeyboardRemove replyKeyboardRemove) {

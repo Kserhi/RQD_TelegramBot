@@ -1,15 +1,13 @@
-version: '3.3'
-
+version: "3.9"
 services:
-  crm-db:
-    image: postgres:9.6
-    restart: unless-stopped
+  postgresdb:
+    image: postgres
     environment:
-      POSTGRES_USER: 'root'
-      POSTGRES_PASSWORD: 'root'
-      POSTGRES_DB: 'crmDATA'
-    ports:
-      - '5432:5432'
+      POSTGRES_DB: "pgtest"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ../.data/pg96:/var/lib/postgresql/data/
-    container_name: crmDATA
+      - D:/develop/RQD_TelegramBot/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"

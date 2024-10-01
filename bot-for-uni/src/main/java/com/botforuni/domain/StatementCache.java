@@ -36,14 +36,12 @@ public class StatementCache {
     @Override
     public String toString() {
 
-        return new StringBuilder()
-                .append("ПІБ: ").append(fullName).append("\n")
-                .append("Група: ").append(groupe).append("\n")
-                .append("Рік набору: ").append(yearEntry).append("\n")
-                .append("Факультет: ").append(faculty).append("\n")
-                .append("Номер телефону: ").append(phoneNumber).append("\n")
-                .append("Тип заявки: ").append(typeOfStatement).append("\n")
-                .toString();
+        return "ПІБ: " + fullName + "\n" +
+                "Група: " + groupe + "\n" +
+                "Рік набору: " + yearEntry + "\n" +
+                "Факультет: " + faculty + "\n" +
+                "Номер телефону: " + phoneNumber + "\n" +
+                "Тип заявки: " + typeOfStatement + "\n";
     }
 
 }

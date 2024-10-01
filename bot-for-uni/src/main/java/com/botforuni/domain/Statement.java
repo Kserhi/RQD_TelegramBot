@@ -36,15 +36,13 @@ public class Statement {
     public String toString() {
         String status = (statementInfo != null && statementInfo.isStatus()) ? "Готова" : "В обробці";
 
-        return new StringBuilder()
-                .append("ПІБ: ").append(fullName).append("\n")
-                .append("Група: ").append(groupe).append("\n")
-                .append("Рік набору: ").append(yearEntry).append("\n")
-                .append("Факультет: ").append(faculty).append("\n")
-                .append("Номер телефону: ").append(phoneNumber).append("\n")
-                .append("Тип заявки: ").append(typeOfStatement).append("\n")
-                .append("Статус заявки: ").append(status)
-                .toString();
+        return "ПІБ: " + fullName + "\n" +
+                "Група: " + groupe + "\n" +
+                "Рік набору: " + yearEntry + "\n" +
+                "Факультет: " + faculty + "\n" +
+                "Номер телефону: " + phoneNumber + "\n" +
+                "Тип заявки: " + typeOfStatement + "\n" +
+                "Статус заявки: " + status;
     }
 
 
