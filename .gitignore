@@ -26,6 +26,9 @@ bot-for-uni/target/
 .idea/**/tasks.xml
 .idea/**/dataSources/
 .idea/**/gradle.xml
+### IntelliJ IDEA ###
+.idea
+
 
 # NetBeans
 /nbproject/private/
