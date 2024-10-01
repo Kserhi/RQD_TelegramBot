@@ -1,0 +1,14 @@
+services:
+  postgresdb:
+    env_file:
+      - .env  # Вказуємо шлях до файлу .env
+    image: postgres
+    environment:
+      POSTGRES_DB: "${DATASOURCE_NAME}"
+      POSTGRES_USER: "${DATASOURCE_USERNAME}"
+      POSTGRES_PASSWORD: "${DATASOURCE_PASSWORD}"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - D:/develop/RQD_TelegramBot/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
