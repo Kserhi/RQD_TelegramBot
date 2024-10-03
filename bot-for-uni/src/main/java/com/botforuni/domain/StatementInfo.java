@@ -8,18 +8,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
+@Table(name = "statement_info")
 public class StatementInfo {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, unique = true)
     private Long statementId;
+
+    @Column(name = "is_ready")
     private boolean isReady;
-    private  boolean status;
+
+    @Column(name = "statement_status")
+    @Enumerated(EnumType.STRING)
+    private StatementStatus statementStatus;
+
 
     @OneToOne
     @MapsId

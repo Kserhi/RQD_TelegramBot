@@ -8,23 +8,35 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
+@Table(name = "statement")
 public class Statement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "year_entry")
     private String yearEntry;
 
+    @Column(name = "group_name")
     private String groupe;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "faculty")
     private String faculty;
+
+    @Column(name = "type_of_statement")
     private String typeOfStatement;
+
+    @Column(name = "telegram_id")
     private Long telegramId;
 
     @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL)
@@ -34,8 +46,7 @@ public class Statement {
 
     @Override
     public String toString() {
-        String status = (statementInfo != null && statementInfo.isStatus()) ? "Готова" : "В обробці";
-
+        String status = (statementInfo != null && statementInfo.getStatementStatus() == StatementStatus.READY) ? "Готова" : "В обробці";
         return "ПІБ: " + fullName + "\n" +
                 "Група: " + groupe + "\n" +
                 "Рік набору: " + yearEntry + "\n" +

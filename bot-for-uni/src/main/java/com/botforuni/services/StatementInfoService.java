@@ -2,6 +2,7 @@ package com.botforuni.services;
 
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.StatementInfo;
+import com.botforuni.domain.StatementStatus;
 import com.botforuni.repositories.StatementInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class StatementInfoService {
      */
     public StatementInfo generate(Statement statement) {
         log.info("Генерація StatementInfo для Statement з ID: {}", statement.getId());
-        StatementInfo statementInfo = new StatementInfo(statement.getId(), false, false, statement);
+        StatementInfo statementInfo = new StatementInfo(statement.getId(), false, StatementStatus.PENDING, statement);
         log.info("Успішно згенеровано StatementInfo з ID: {}", statementInfo.getStatementId());
         return statementInfo;
     }
@@ -40,7 +41,7 @@ public class StatementInfoService {
      */
     public List<StatementInfo> getReadyStatement() {
         log.info("Запит на отримання готових заявок");
-        List<StatementInfo> readyStatements = statementInfoRepository.findTrueStatusAndFalseIsReady();
+        List<StatementInfo> readyStatements = statementInfoRepository.findWhereIsReadyFalse(StatementStatus.READY);
         log.info("Знайдено {} готових заявок", readyStatements.size());
         return readyStatements;
     }

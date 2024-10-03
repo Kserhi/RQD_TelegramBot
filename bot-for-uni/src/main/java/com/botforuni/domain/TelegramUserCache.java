@@ -7,19 +7,24 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 @Entity
-@Table
+
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
+@Table(name = "telegram_cache")
 public class TelegramUserCache {
+
     @Id
+    @Column(name = "id")
     private Long telegramId;
 
+    @Column(name = "massage_id")
     private Integer massageId;
 
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_position")
     private Position position;
 
     @OneToOne(mappedBy = "telegramUserCache", cascade = CascadeType.ALL)

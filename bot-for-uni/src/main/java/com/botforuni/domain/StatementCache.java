@@ -19,6 +19,7 @@ public class StatementCache {
     @Column(name = "id")
     private Long id;
 
+
     private String fullName;
     private String yearEntry;
     private String groupe;
