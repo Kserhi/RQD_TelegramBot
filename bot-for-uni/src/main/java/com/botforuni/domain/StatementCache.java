@@ -21,7 +21,7 @@ public class StatementCache {
 
 
     private String fullName;
-    private String yearEntry;
+    private String yearBirthday;
     private String groupe;
     private String phoneNumber;
     private String faculty;
@@ -39,7 +39,7 @@ public class StatementCache {
 
         return "ПІБ: " + fullName + "\n" +
                 "Група: " + groupe + "\n" +
-                "Рік набору: " + yearEntry + "\n" +
+                "Рік народження: " + yearBirthday + "\n" +
                 "Факультет: " + faculty + "\n" +
                 "Номер телефону: " + phoneNumber + "\n" +
                 "Тип заявки: " + typeOfStatement + "\n";

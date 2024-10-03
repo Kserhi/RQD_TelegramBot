@@ -47,7 +47,7 @@ public class StatementService {
 
         Statement statement = new Statement();
         statement.setFullName(statementCache.getFullName());
-        statement.setYearEntry(statementCache.getYearEntry());
+        statement.setYearBirthday(statementCache.getYearBirthday());
         statement.setGroupe(statementCache.getGroupe());
         statement.setPhoneNumber(statementCache.getPhoneNumber());
         statement.setFaculty(statementCache.getFaculty());

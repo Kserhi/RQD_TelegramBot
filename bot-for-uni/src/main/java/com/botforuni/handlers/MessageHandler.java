@@ -55,7 +55,7 @@ public class MessageHandler implements Handler<Message> {
         switch (position) {
             case INPUT_USER_NAME -> handleNameInput(messageText, telegramId, userCache, statementCache);
             case INPUT_USER_GROUP -> handleGroupInput(messageText, telegramId, userCache, statementCache);
-            case INPUT_USER_YEAR -> handleYearInput(messageText, telegramId, userCache, statementCache);
+            case INPUT_USER_YEAR -> handleYearBirthday(messageText, telegramId, userCache, statementCache);
             case INPUT_USER_FACULTY -> handleFacultyInput(messageText, telegramId, userCache, statementCache);
             case INPUT_USER_PHONE -> handlePhoneInput(message, telegramId, userCache, statementCache);
             default -> log.warn("Некоректна позиція користувача: {} для користувача з ID {}", position, telegramId);
@@ -87,22 +87,25 @@ public class MessageHandler implements Handler<Message> {
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
             log.debug("Групу користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_YEAR.", telegramId);
-            sendMessageService.sendMessage(telegramId, "Введіть ваш рік набору (Наприклад: 2021)⤵");
+            sendMessageService.sendMessage(telegramId, "Введіть ваш рік народження." +
+                    " \nДата повинна бути у форматі день/місяць/рік \n" +
+                    "наприклад :12/09/2024.");
+
         } else {
             log.warn("Невдала валідація групи для користувача з ID {}. Невірний формат групи: {}", telegramId, group);
             sendValidationError(telegramId, result.message());
         }
     }
 
-    private void handleYearInput(String year, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
-        log.info("Користувач з ID: {} вводить рік набору: {}", telegramId, year);
+    private void handleYearBirthday(String year, Long telegramId, TelegramUserCache userCache, StatementCache statementCache) {
+        log.info("Користувач з ID: {} вводить рік народження: {}", telegramId, year);
         ValidationResult result = Validator.validateYear(year);
         if (result.isValid()) {
-            statementCache.setYearEntry(year);
+            statementCache.setYearBirthday(year);
             userCache.setPosition(Position.INPUT_USER_FACULTY);
             userCache.setStatementCache(statementCache);
             telegramUserService.save(userCache);
-            log.debug("Рік набору користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_FACULTY.", telegramId);
+            log.debug("Рік народження користувача з ID {} успішно збережено. Оновлено позицію на INPUT_USER_FACULTY.", telegramId);
             sendMessageService.sendMessage(telegramId, "Виберіть ваш факультет", Keyboards.chooseFaculty());
         } else {
             log.warn("Невдала валідація року для користувача з ID {}. Невірний формат року: {}", telegramId, year);

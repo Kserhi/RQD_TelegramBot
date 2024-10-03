@@ -51,6 +51,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             case "statements" -> handleUserStatements(telegramUserCache);
             case "statementForMilitaryOfficer" -> handleStatementForMilitaryOfficer(telegramUserCache);
             case "statementForStudy" -> handleStatementForStudy(telegramUserCache);
+            case "statementForm9" ->handleStatementFrom9(telegramUserCache);
             case "confirm" -> handleConfirmation(telegramUserCache);
             case "cancel" -> handleCancellation(telegramUserCache);
             default ->
@@ -103,7 +104,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
         Long telegramId = telegramUserCache.getTelegramId();
         log.info("Користувач з ID: {} вибрав пункт 'Заява для навчання'", telegramId);
 
-        StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORSTUDY);
+        StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORMILITARI);
 
         telegramUserCache.setPosition(Position.INPUT_USER_NAME);
         telegramUserCache.setStatementCache(statementCache);
@@ -111,6 +112,20 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
 
         sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
         log.debug("Збережено новий кеш заяви для навчання для користувача з ID: {}", telegramId);
+    }
+
+    private void handleStatementFrom9(TelegramUserCache telegramUserCache) {
+        Long telegramId = telegramUserCache.getTelegramId();
+        log.info("Користувач з ID: {} вибрав пункт 'Заява форма 9'", telegramId);
+
+        StatementCache statementCache = statementCacheService.generateStatement(telegramUserCache, Constants.STATEMENTFORM9);
+
+        telegramUserCache.setPosition(Position.INPUT_USER_NAME);
+        telegramUserCache.setStatementCache(statementCache);
+        telegramUserService.save(telegramUserCache);
+
+        sendMessageService.sendMessage(telegramId, "Введіть свій ПІБ:");
+        log.debug("Збережено новий кеш заяви форма9 з ID: {}", telegramId);
     }
 
     private void handleConfirmation(TelegramUserCache telegramUserCache) {

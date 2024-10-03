@@ -10,6 +10,8 @@ public class Constants {
 
 
 
-    public static final String STATEMENTFORMILITARI = "Довідка для військкомату";
+    public static final String STATEMENTFORMILITARI = "Довідка для військкомату (Форма 20)";
     public static final String STATEMENTFORSTUDY = "Довідка з місця навчання";
+
+    public static final String STATEMENTFORM9 = "Довідка (Форма 9)";
 }

@@ -13,14 +13,17 @@ public class Validator {
     private static final String YEAR_PATTERN = "^\\d{4}$";
     private static final int NAME_MIN_LENGTH = 2;
     private static final int NAME_MAX_LENGTH = 100;
-    private static final int YEAR_MIN_VALUE = 1990;
-    private static final int YEAR_MAX_VALUE = 2030;
+    private static final int YEAR_MIN_VALUE = 1900;
+    private static final int YEAR_MAX_VALUE = 2024;
 
 
     private static final List<String> VALID_FACULTIES = Arrays.asList(
             "Факультет цивільного захисту",
             "Факультет пожежної та техногенної безпеки",
-            "Факультет психології і соціального захисту"
+            "Факультет психології і соціального захисту",
+            "Інститут післядипломної освіти",
+            "Ад'юктура",
+            "Навчально-методичний цент"
     );
     private static final Set<String> VALID_FACULTY_SET = new HashSet<>(VALID_FACULTIES);
 
@@ -42,16 +45,44 @@ public class Validator {
         return new ValidationResult(true, "Група валідна.");
     }
 
-    public static ValidationResult validateYear(String year) {
-        if (!year.matches(YEAR_PATTERN)) {
-            return new ValidationResult(false, "Рік повинен містити 4 цифри.");
+    public static ValidationResult validateYear(String date) {
+        // Формат дати: день/місяць/рік
+        String DATE_PATTERN = "^\\d{2}/\\d{2}/\\d{4}$"; // dd/mm/yyyy
+        if (!date.matches(DATE_PATTERN)) {
+            return new ValidationResult(false, "Введіть ваш рік народження." +
+                    " \nДата повинна бути у форматі день/місяць/рік \n" +
+                    "наприклад :12/09/2024.");
         }
-        int yearValue = Integer.parseInt(year);
-        if (yearValue < YEAR_MIN_VALUE || yearValue > YEAR_MAX_VALUE) {
+
+        String[] parts = date.split("/");
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[2]);
+
+        if (year < YEAR_MIN_VALUE || year > YEAR_MAX_VALUE) {
             return new ValidationResult(false, "Рік повинен бути в діапазоні від " + YEAR_MIN_VALUE + " до " + YEAR_MAX_VALUE + ".");
         }
-        return new ValidationResult(true, "Рік валідний.");
+
+        // Перевірка на коректність місяців і днів
+        if (month < 1 || month > 12) {
+            return new ValidationResult(false, "Місяць повинен бути в діапазоні від 1 до 12.");
+        }
+        if (day < 1 || day > 31) {
+            return new ValidationResult(false, "День повинен бути в діапазоні від 1 до 31.");
+        }
+        if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) {
+            return new ValidationResult(false, "У цьому місяці не може бути більше 30 днів.");
+        }
+        if (month == 2) {
+            boolean isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+            if (day > 29 || (day == 29 && !isLeapYear)) {
+                return new ValidationResult(false, "Лютий має максимум 28 днів, або 29 у високосний рік.");
+            }
+        }
+
+        return new ValidationResult(true, "Дата валідна.");
     }
+
 
 
     public static ValidationResult validateFaculty(String faculty) {

@@ -21,8 +21,8 @@ public class Statement {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "year_entry")
-    private String yearEntry;
+    @Column(name = "year_birthday")
+    private String yearBirthday;
 
     @Column(name = "group_name")
     private String groupe;
@@ -49,7 +49,7 @@ public class Statement {
         String status = (statementInfo != null && statementInfo.getStatementStatus() == StatementStatus.READY) ? "Готова" : "В обробці";
         return "ПІБ: " + fullName + "\n" +
                 "Група: " + groupe + "\n" +
-                "Рік набору: " + yearEntry + "\n" +
+                "Рік народження: " + yearBirthday + "\n" +
                 "Факультет: " + faculty + "\n" +
                 "Номер телефону: " + phoneNumber + "\n" +
                 "Тип заявки: " + typeOfStatement + "\n" +

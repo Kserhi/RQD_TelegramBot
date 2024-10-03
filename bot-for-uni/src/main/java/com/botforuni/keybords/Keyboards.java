@@ -1,4 +1,5 @@
 package com.botforuni.keybords;
+import com.botforuni.utils.Constants;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
@@ -20,7 +21,7 @@ public class Keyboards {
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
-                                        .text("Замовити довідку з місця навчання")
+                                        .text(Constants.STATEMENTFORSTUDY)
                                         .callbackData("statementForStudy")
 
                                         .build()
@@ -28,8 +29,16 @@ public class Keyboards {
                 .keyboardRow(
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
-                                        .text("Замовити довідку для військомату")
+                                        .text(Constants.STATEMENTFORMILITARI)
                                         .callbackData("statementForMilitaryOfficer")
+                                        .build()
+                        )
+                )
+                .keyboardRow(
+                        Collections.singletonList(
+                                InlineKeyboardButton.builder()
+                                        .text(Constants.STATEMENTFORM9)
+                                        .callbackData("statementForm9")
                                         .build()
                         )
                 )
@@ -71,7 +80,6 @@ public class Keyboards {
     }
 
     public static InlineKeyboardMarkup starKeyboard() {
-        ///менюшка після старту ❗Потрібна послуга деканату
 
         return InlineKeyboardMarkup.builder()
                 .keyboardRow(
@@ -188,6 +196,9 @@ public class Keyboards {
         list.add("Факультет цивільного захисту");
         list.add("Факультет пожежної та техногенної безпеки");
         list.add("Факультет психології і соціального захисту");
+        list.add("Інститут післядипломної освіти");
+        list.add("Ад'юктура");
+        list.add("Навчально-методичний цент");
 
         list.forEach(string -> {
             KeyboardRow keyboardRow = new KeyboardRow();
