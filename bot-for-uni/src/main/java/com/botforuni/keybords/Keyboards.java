@@ -193,12 +193,12 @@ public class Keyboards {
         List<KeyboardRow> keyboardRows = new ArrayList<>();
 
         List<String> list=new ArrayList<>();
-        list.add("Факультет цивільного захисту");
-        list.add("Факультет пожежної та техногенної безпеки");
-        list.add("Факультет психології і соціального захисту");
-        list.add("Інститут післядипломної освіти");
-        list.add("Ад'юктура");
-        list.add("Навчально-методичний цент");
+        list.add(Constants.FACULTYCIVILPROTECTION);
+        list.add(Constants.FACULTYFIRETECHNOLOGYSAFETY);
+        list.add(Constants.FACULTYPSYCHOLOGYSOCIALPROTECTION);
+        list.add(Constants.INSTITUTEPOSTGRADUATEEDUCATION);
+        list.add(Constants.ADJUNCTURE);
+        list.add(Constants.TRAININGMETHODICALCENTER);
 
         list.forEach(string -> {
             KeyboardRow keyboardRow = new KeyboardRow();

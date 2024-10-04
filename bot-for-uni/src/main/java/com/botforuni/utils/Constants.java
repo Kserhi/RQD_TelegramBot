@@ -15,10 +15,10 @@ public class Constants {
 
     public static final String STATEMENTFORM9 = "Довідка (Форма 9)";
 
-    public static final String FACULTY_CIVIL_PROTECTION = "Факультет цивільного захисту";
-    public static final String FACULTY_FIRE_TECHNOLOGY_SAFETY = "Факультет пожежної та техногенної безпеки";
-    public static final String FACULTY_PSYCHOLOGY_SOCIAL_PROTECTION = "Факультет психології і соціального захисту";
-    public static final String INSTITUTE_POSTGRADUATE_EDUCATION = "Інститут післядипломної освіти";
+    public static final String FACULTYCIVILPROTECTION = "Факультет цивільного захисту";
+    public static final String FACULTYFIRETECHNOLOGYSAFETY = "Факультет пожежної та техногенної безпеки";
+    public static final String FACULTYPSYCHOLOGYSOCIALPROTECTION = "Факультет психології і соціального захисту";
+    public static final String INSTITUTEPOSTGRADUATEEDUCATION = "Інститут післядипломної освіти";
     public static final String ADJUNCTURE = "Ад'юктура";
-    public static final String TRAINING_METHODICAL_CENTER = "Навчально-методичний центр";
+    public static final String TRAININGMETHODICALCENTER = "Навчально-методичний центр";
 }

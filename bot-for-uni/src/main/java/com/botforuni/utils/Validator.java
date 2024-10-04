@@ -10,7 +10,7 @@ public class Validator {
 
     private static final String NAME_PATTERN = "^[а-яА-ЯїЇіІєЄґҐ\\s]+$"; // Українські літери та пробіли
     private static final String GROUP_PATTERN = "^[А-Яа-я]{2}\\d{2}[А-Яа-я]$"; // Дві українські літери, дві цифри, одна українська літера
-    private static final String YEAR_PATTERN = "^\\d{4}$";
+    private static final String DATE_PATTERN =  "^\\d{2}/\\d{2}/\\d{4}$";
     private static final int NAME_MIN_LENGTH = 2;
     private static final int NAME_MAX_LENGTH = 100;
     private static final int YEAR_MIN_VALUE = 1900;
@@ -18,12 +18,12 @@ public class Validator {
 
 
     private static final List<String> VALID_FACULTIES = Arrays.asList(
-            "Факультет цивільного захисту",
-            "Факультет пожежної та техногенної безпеки",
-            "Факультет психології і соціального захисту",
-            "Інститут післядипломної освіти",
-            "Ад'юктура",
-            "Навчально-методичний цент"
+            Constants.FACULTYCIVILPROTECTION,
+            Constants.FACULTYFIRETECHNOLOGYSAFETY,
+            Constants.FACULTYPSYCHOLOGYSOCIALPROTECTION,
+            Constants.INSTITUTEPOSTGRADUATEEDUCATION,
+            Constants.ADJUNCTURE,
+            Constants.TRAININGMETHODICALCENTER
     );
     private static final Set<String> VALID_FACULTY_SET = new HashSet<>(VALID_FACULTIES);
 
@@ -47,7 +47,6 @@ public class Validator {
 
     public static ValidationResult validateYear(String date) {
         // Формат дати: день/місяць/рік
-        String DATE_PATTERN = "^\\d{2}/\\d{2}/\\d{4}$"; // dd/mm/yyyy
         if (!date.matches(DATE_PATTERN)) {
             return new ValidationResult(false, "Введіть ваш рік народження." +
                     " \nДата повинна бути у форматі день/місяць/рік \n" +
