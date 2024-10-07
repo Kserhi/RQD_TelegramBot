@@ -125,9 +125,7 @@ public class Keyboards {
                         Collections.singletonList(
                                 InlineKeyboardButton.builder()
                                         .text("Посилання")
-                                        .url("https://telegra.ph/P" +
-                                                "OS%D0%86BNIK-KORISTUVACHA-TELEGRAM-" +
-                                                "BOTA-LDU-BZHD-05-22")
+                                        .url(Constants.URLFORHELLP)
                                         .build()
                         ))
                 .keyboardRow(

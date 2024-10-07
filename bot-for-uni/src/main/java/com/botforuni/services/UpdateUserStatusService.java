@@ -4,6 +4,7 @@ import com.botforuni.domain.Position;
 import com.botforuni.domain.Statement;
 import com.botforuni.domain.StatementInfo;
 import com.botforuni.domain.TelegramUserCache;
+import com.botforuni.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,11 @@ public class UpdateUserStatusService {
             }
         };
         // Планування завдання кожні 12 годин
-        scheduler.scheduleAtFixedRate(task, 0, 12, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(
+                task,
+                0,
+                Constants.TIMETOSTATEMENTUPDATE,
+                TimeUnit.SECONDS);
     }
 
     @PreDestroy

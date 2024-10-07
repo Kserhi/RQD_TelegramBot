@@ -7,8 +7,8 @@ import com.botforuni.keybords.Keyboards;
 import com.botforuni.services.SendMessageService;
 import com.botforuni.services.TelegramUserService;
 import com.botforuni.utils.Constants;
-import com.botforuni.utils.ValidationResult;
-import com.botforuni.utils.Validator;
+import com.botforuni.utils.validator.ValidationResult;
+import com.botforuni.utils.validator.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -154,7 +154,7 @@ public class MessageHandler implements Handler<Message> {
         switch (text) {
             case "/start" -> {
                 log.info("Команда /start отримана від користувача з ID: {}", telegramId);
-                sendMessageService.sendMessage(telegramId, Constants.START, Keyboards.starKeyboard());
+                sendMessageService.sendMessage(telegramId, Constants.STARTTEXT, Keyboards.starKeyboard());
             }
             case "/help" -> {
                 log.info("Команда /help отримана від користувача з ID: {}", telegramId);

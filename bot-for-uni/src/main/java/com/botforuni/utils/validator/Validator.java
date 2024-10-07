@@ -1,4 +1,6 @@
-package com.botforuni.utils;
+package com.botforuni.utils.validator;
+
+import com.botforuni.utils.Constants;
 
 import java.util.Arrays;
 import java.util.HashSet;
