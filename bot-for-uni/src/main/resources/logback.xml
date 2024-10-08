@@ -2,7 +2,7 @@
     <!-- Конфігурація апендера для запису логів у файл -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- Назва файлу логів -->
-        <file>logs/logFileBot.log</file>
+        <file>botLogs/logFileBot.log</file>
 
         <!-- Налаштування ротації файлів логів -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

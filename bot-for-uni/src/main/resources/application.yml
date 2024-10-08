@@ -4,6 +4,8 @@ telegram:
     token: ${BOT_TOKEN}
 
 spring:
+  dotenv:
+    enabled: true
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}

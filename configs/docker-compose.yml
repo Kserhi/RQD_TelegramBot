@@ -9,6 +9,6 @@ services:
       POSTGRES_PASSWORD: "${DATASOURCE_PASSWORD}"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - D:/develop/RQD_TelegramBot/pgdata:/var/lib/postgresql/data
+      - "${VOLUMES_PATH}"
     ports:
-      - "${DATA_BASE_PORTS}"
+      - "${DATABASE_PORTS}"
