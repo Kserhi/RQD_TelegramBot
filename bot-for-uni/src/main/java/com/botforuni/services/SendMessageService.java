@@ -4,6 +4,8 @@ import com.botforuni.domain.Statement;
 import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.keybords.Keyboards;
 import com.botforuni.messageSender.MessageSender;
+import com.botforuni.utils.Constants;
+import com.botforuni.utils.HashFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,6 +94,49 @@ public class SendMessageService {
                 formatStatement(statement),
                 Keyboards.linkToMenuKeyboard());
     }
+
+    public void sendInfoAboutReadyStatementWithFile(Statement statement){
+        log.info("Відправка інформації про готову довідку для користувача з ID: {}", statement.getTelegramId());
+        sendMessage(
+                statement.getTelegramId(),
+                formatStatement(statement)
+        );
+
+        log.info("Відправка посилання на файл з ID: {} для користувача з ID: {} ",statement.getId(), statement.getTelegramId());
+
+        String hashCode= HashFunction.code(statement.getId());
+
+
+        sendFileUrl(statement.getTelegramId(),hashCode);
+
+    }
+
+
+
+
+    public void sendFileUrl(Long telegramId,String hashId){
+
+        String url = Constants.urlToFileService+hashId;
+
+        String textOfMassage ="Щоб завантажити файл із довідкою натисніть на [це посилання]("+url+")";
+
+        SendMessage message = SendMessage.builder()
+                .text(textOfMassage)
+                .chatId(String.valueOf(telegramId))
+                .replyMarkup(Keyboards.linkToMenuKeyboard())
+                .build();
+        message.enableMarkdown(true);
+
+
+
+        removePreviousKeyboard(telegramId);
+        Integer messageId = messageSender.sendMessage(message);
+        telegramUserService.saveMassageId(telegramId, messageId);
+
+
+
+    }
+
 
     private String formatStatement(Statement statement) {
         return "📄 Ваша довідка готова:\n\n" +

@@ -5,6 +5,7 @@ import com.botforuni.domain.Statement;
 import com.botforuni.domain.StatementInfo;
 import com.botforuni.domain.TelegramUserCache;
 import com.botforuni.utils.Constants;
+import com.botforuni.utils.HashFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,8 +71,16 @@ public class UpdateUserStatusService {
                             .orElseThrow(() -> new IllegalArgumentException("Користувача не знайдено: " + statement.getTelegramId()));
 
                     if (telegramUser.getPosition() == Position.NONE) {
-                        sendMessageService.sendInfoAboutReadyStatement(statement);
+
+                        if (statementInfoService.checkFileExistence(statement.getId())){
+                            sendMessageService.sendInfoAboutReadyStatementWithFile(statement);
+                        }else {
+                            sendMessageService.sendInfoAboutReadyStatement(statement);
+                        }
                         readyInfoList.add(statementInfo);
+
+
+
                     }
                 } catch (Exception e) {
                     log.error("Помилка під час відправки повідомлення про готовність заяви для користувача", e);

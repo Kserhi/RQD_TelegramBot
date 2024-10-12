@@ -26,6 +26,8 @@ public class Constants {
     public static final String TRAININGMETHODICALCENTER = "Навчально-методичний центр";
 
 
-    public static final int TIMETOSTATEMENTUPDATE = 12;
+    public static final int TIMETOSTATEMENTUPDATE = 3;
+
+    public static final String urlToFileService ="http://192.168.43.41:8086/file/get-doc?id=";
 
 }

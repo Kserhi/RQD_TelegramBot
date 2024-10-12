@@ -10,16 +10,13 @@ import java.util.List;
 
 public interface StatementInfoRepository extends JpaRepository<StatementInfo,Long> {
 
-//    @Query("SELECT s_i FROM StatementInfo s_i WHERE s_i.statementStatus = 'READY' AND s_i.isReady = false")
-//    List<StatementInfo> findWhereIsReadyFalse();
-//
-//
-//
-//    @Query("SELECT s FROM StatementInfo s WHERE s.isReady = true AND s.statementStatus = :status")
-//    List<StatementInfo> findByStatus(@Param("status") StatementStatus status);
 
 
     @Query("SELECT s_i FROM StatementInfo s_i WHERE s_i.statementStatus = :status AND s_i.isReady = false")
     List<StatementInfo> findWhereIsReadyFalse(@Param("status") StatementStatus status);
+
+
+    @Query(value = "SELECT COUNT(*) > 0 FROM file_info WHERE id = :id", nativeQuery = true)
+    boolean existsFileInfoById(@Param("id") Long id);
 
 }

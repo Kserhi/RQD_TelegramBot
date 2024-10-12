@@ -56,4 +56,9 @@ public class StatementInfoService {
         statementInfoRepository.saveAll(infoList);
         log.info("Успішно збережено {} StatementInfo", infoList.size());
     }
+
+
+    public boolean checkFileExistence(Long id) {
+        return statementInfoRepository.existsFileInfoById(id);
+    }
 }
