@@ -19,9 +19,6 @@ public class FileInfo {
 
     private String fileType;
 
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "statement_id", unique = true)
-//    private StatementInfo statementInfo;
     @Column(name = "statement_id")
     private Long statementId;
 

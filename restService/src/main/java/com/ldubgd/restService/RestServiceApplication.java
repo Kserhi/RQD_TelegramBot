@@ -2,7 +2,7 @@ package com.ldubgd.restService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+////TODO логування до всього, налаштувати файл логування
 @SpringBootApplication
 public class RestServiceApplication {
 

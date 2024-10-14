@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -21,13 +22,25 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileInfo getFile(String docId) {
-        return jpaAppDocumentRepository.findById(Long.parseLong(docId)).orElse(null);
+
+
+        Optional<FileInfo> fileInfo=jpaAppDocumentRepository.findByStatementId(Long.parseLong(docId));
+
+        if (fileInfo.isPresent()){
+            return fileInfo.get();
+        }else {
+            throw new  RuntimeException("файл за id не знайдено");
+        }
+
+
+
     }
 
 
     @Override
     public FileSystemResource getFileSystemResource(FileInfo fileInfo) {
         try {
+            ////TODO виправити костиль із файлами шоб не зберігальсь в основній памяті
             // Створення тимчасового файлу
             File tempFile = File.createTempFile(fileInfo.getFileName(), ".tmp");
             tempFile.deleteOnExit(); // Видалити файл після завершення програми

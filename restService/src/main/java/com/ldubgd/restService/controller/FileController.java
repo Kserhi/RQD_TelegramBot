@@ -22,7 +22,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-
+    /////TODO  ПОБАВИТИСЬІ ІЗ РЕКВЕСТАМИ
     @GetMapping("/get-doc")
     public ResponseEntity<FileSystemResource> getDoc(@RequestParam("id") String id) {
         FileInfo doc = fileService.getFile(id);

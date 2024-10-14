@@ -16,7 +16,7 @@ public interface StatementInfoRepository extends JpaRepository<StatementInfo,Lon
     List<StatementInfo> findWhereIsReadyFalse(@Param("status") StatementStatus status);
 
 
-    @Query(value = "SELECT COUNT(*) > 0 FROM file_info WHERE id = :id", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) > 0 FROM file_info WHERE statement_id = :id", nativeQuery = true)
     boolean existsFileInfoById(@Param("id") Long id);
 
 }

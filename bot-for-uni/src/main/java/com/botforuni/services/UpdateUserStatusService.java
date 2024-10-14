@@ -71,7 +71,7 @@ public class UpdateUserStatusService {
                             .orElseThrow(() -> new IllegalArgumentException("Користувача не знайдено: " + statement.getTelegramId()));
 
                     if (telegramUser.getPosition() == Position.NONE) {
-
+                        ////todo лги
                         if (statementInfoService.checkFileExistence(statement.getId())){
                             sendMessageService.sendInfoAboutReadyStatementWithFile(statement);
                         }else {

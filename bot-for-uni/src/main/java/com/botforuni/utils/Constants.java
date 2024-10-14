@@ -27,7 +27,7 @@ public class Constants {
 
 
     public static final int TIMETOSTATEMENTUPDATE = 3;
-
-    public static final String urlToFileService ="http://192.168.43.41:8086/file/get-doc?id=";
+    ///TODO айпішка компа
+    public static final String urlToFileService ="http://192.168.120.41:8086/file/get-doc?id=";
 
 }
