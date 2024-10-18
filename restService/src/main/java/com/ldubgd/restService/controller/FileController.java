@@ -2,6 +2,7 @@ package com.ldubgd.restService.controller;
 
 import com.ldubgd.restService.entity.FileInfo;
 import com.ldubgd.restService.fileService.FileService;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,18 +15,15 @@ import java.nio.charset.StandardCharsets;
 
 @RequestMapping("/file")
 @RestController
+@AllArgsConstructor
 public class FileController {
 
     private final FileService fileService;
 
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
-
     /////TODO  ПОБАВИТИСЬІ ІЗ РЕКВЕСТАМИ
     @GetMapping("/get-doc")
-    public ResponseEntity<FileSystemResource> getDoc(@RequestParam("id") String id) {
-        FileInfo doc = fileService.getFile(id);
+    public ResponseEntity<FileSystemResource> getDoc(@RequestParam("id") String hashId) {
+        FileInfo doc = fileService.getFile(hashId);
         if (doc == null) {
             return ResponseEntity.badRequest().body(null);
         }

@@ -3,6 +3,8 @@ package com.ldubgd.restService.fileService.impl;
 import com.ldubgd.restService.dao.JpaAppDocumentRepository;
 import com.ldubgd.restService.entity.FileInfo;
 import com.ldubgd.restService.fileService.FileService;
+import com.ldubgd.utils.CryptoTool;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +14,21 @@ import java.nio.file.Files;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class FileServiceImpl implements FileService {
 
     private final JpaAppDocumentRepository jpaAppDocumentRepository;
 
-    public FileServiceImpl(JpaAppDocumentRepository jpaAppDocumentRepository) {
-        this.jpaAppDocumentRepository = jpaAppDocumentRepository;
-    }
+    private final CryptoTool cryptoTool;
+
 
     @Override
-    public FileInfo getFile(String docId) {
+    public FileInfo getFile(String hashId) {
 
 
-        Optional<FileInfo> fileInfo=jpaAppDocumentRepository.findByStatementId(Long.parseLong(docId));
+        Long id = cryptoTool.idOf(hashId);
+
+        Optional<FileInfo> fileInfo=jpaAppDocumentRepository.findByStatementId(id);
 
         if (fileInfo.isPresent()){
             return fileInfo.get();
