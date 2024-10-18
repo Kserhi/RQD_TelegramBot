@@ -13,8 +13,7 @@ spring:
 
 
 link:
-  address: 127.0.0.1:8086
-
+  address: ${REST_SERVICE_URL}
 salt: ${SALT}
 
 
