@@ -7,7 +7,7 @@
         <!-- Налаштування ротації файлів логів -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Формат назви ротаційних файлів: створення нових файлів кожну годину -->
-            <fileNamePattern>logs/application.%d{yyyy-MM-dd.HH}.log</fileNamePattern>
+            <fileNamePattern>botLogs/logFileBot.%d{yyyy-MM-dd.HH}.log</fileNamePattern>
             <!-- Максимальний час зберігання файлів логів (7 днів) -->
             <maxHistory>7</maxHistory>
             <!-- Зберігати файли за допомогою стратегії зберігання -->
