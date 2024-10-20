@@ -5,56 +5,35 @@ import com.ldubgd.restService.entity.FileInfo;
 import com.ldubgd.restService.fileService.FileService;
 import com.ldubgd.utils.CryptoTool;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
+
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Optional;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class FileServiceImpl implements FileService {
 
     private final JpaAppDocumentRepository jpaAppDocumentRepository;
-
     private final CryptoTool cryptoTool;
-
 
     @Override
     public FileInfo getFile(String hashId) {
-
+        log.info("Отримання файлу за hashId: {}", hashId);
 
         Long id = cryptoTool.idOf(hashId);
+        log.debug("Перетворено hashId на id: {}", id);
 
-        Optional<FileInfo> fileInfo=jpaAppDocumentRepository.findByStatementId(id);
+        Optional<FileInfo> fileInfo = jpaAppDocumentRepository.findByStatementId(id);
 
-        if (fileInfo.isPresent()){
+        if (fileInfo.isPresent()) {
+            log.info("Файл знайдено для id: {}", id);
             return fileInfo.get();
-        }else {
-            throw new  RuntimeException("файл за id не знайдено");
-        }
-
-
-
-    }
-
-
-    @Override
-    public FileSystemResource getFileSystemResource(FileInfo fileInfo) {
-        try {
-            ////TODO виправити костиль із файлами шоб не зберігальсь в основній памяті
-            // Створення тимчасового файлу
-            File tempFile = File.createTempFile(fileInfo.getFileName(), ".tmp");
-            tempFile.deleteOnExit(); // Видалити файл після завершення програми
-
-            // Запис вмісту в тимчасовий файл
-            Files.write(tempFile.toPath(), fileInfo.getFileData().getData());
-
-            return new FileSystemResource(tempFile);
-        } catch (IOException e) {
-            throw new RuntimeException("Error creating temporary file", e);
+        } else {
+            log.error("Файл за id не знайдено: {}", id);
+            throw new RuntimeException("Файл за id не знайдено");
         }
     }
 }
+

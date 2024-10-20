@@ -35,7 +35,6 @@ public class SendMessageService {
     @Value("${link.address}")
     private String linkAddress;
 
-
     public void sendMessage(Long chatId, String text) {
         log.info("Відправка простого повідомлення до чату з ID: {}", chatId);
         SendMessage message = SendMessage.builder()
@@ -68,6 +67,8 @@ public class SendMessageService {
             if (telegramUserCache.getMassageId() != null) {
                 log.info("Видалення попередньої клавіатури для повідомлення з ID: {} у чаті з ID: {}", telegramUserCache.getMassageId(), chatId);
                 deleteInlineKeyboard(chatId, telegramUserCache.getMassageId());
+            } else {
+                log.warn("Не знайдено ID повідомлення для користувача з ID: {}", chatId);
             }
         });
     }
@@ -100,32 +101,28 @@ public class SendMessageService {
                 Keyboards.linkToMenuKeyboard());
     }
 
-    public void sendInfoAboutReadyStatementWithFile(Statement statement){
+    public void sendInfoAboutReadyStatementWithFile(Statement statement) {
         log.info("Відправка інформації про готову довідку для користувача з ID: {}", statement.getTelegramId());
         sendMessage(
                 statement.getTelegramId(),
                 formatStatement(statement)
         );
 
-        log.info("Відправка посилання на файл з ID: {} для користувача з ID: {} ",statement.getId(), statement.getTelegramId());
+        log.info("Відправка посилання на файл з ID: {} для користувача з ID: {} ", statement.getId(), statement.getTelegramId());
 
-        String fileUrl=generateLink(statement.getId(), LinkType.GET_DOC);
-
-        sendFileUrl(statement.getTelegramId(),fileUrl);
-
+        String fileUrl = generateLink(statement.getId(), LinkType.GET_DOC);
+        sendFileUrl(statement.getTelegramId(), fileUrl);
     }
 
-
-    private String generateLink(Long docId, LinkType linkType){
-        var hash =cryptoTool.hashOf(docId);
-        return "http://"+linkAddress +"/"+linkType+"?id="+hash;
+    private String generateLink(Long docId, LinkType linkType) {
+        log.info("Генерація посилання для документа з ID: {} тип: {}", docId, linkType);
+        var hash = cryptoTool.hashOf(docId);
+        return "http://" + linkAddress + "/" + linkType + "?id=" + hash;
     }
 
-    public void sendFileUrl(Long telegramId,String fileUrl){
-
-
-
-        String textOfMassage ="Щоб завантажити файл із довідкою натисніть на [це посилання]("+fileUrl+")";
+    public void sendFileUrl(Long telegramId, String fileUrl) {
+        log.info("Відправка URL файлу для користувача з ID: {}", telegramId);
+        String textOfMassage = "Щоб завантажити файл із довідкою натисніть на [це посилання](" + fileUrl + ")";
 
         SendMessage message = SendMessage.builder()
                 .text(textOfMassage)
@@ -134,16 +131,10 @@ public class SendMessageService {
                 .build();
         message.enableMarkdown(true);
 
-
-
         removePreviousKeyboard(telegramId);
         Integer messageId = messageSender.sendMessage(message);
         telegramUserService.saveMassageId(telegramId, messageId);
-
-
-
     }
-
 
     private String formatStatement(Statement statement) {
         return "📄 Ваша довідка готова:\n\n" +
@@ -160,3 +151,4 @@ public class SendMessageService {
         messageSender.sendMessage(message);
     }
 }
+

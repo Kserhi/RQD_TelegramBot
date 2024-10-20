@@ -6,5 +6,5 @@ import org.springframework.core.io.FileSystemResource;
 public interface FileService {
 
     FileInfo getFile(String id);
-    FileSystemResource getFileSystemResource(FileInfo fileInfo);
+
 }

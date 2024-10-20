@@ -62,24 +62,32 @@ public class UpdateUserStatusService {
         List<StatementInfo> readyInfoList = new ArrayList<>();
 
         if (!infoList.isEmpty()) {
+            log.info("Знайдено {} нових заявок для оновлення статусу.", infoList.size());
+
             infoList.forEach(statementInfo -> {
                 try {
                     Statement statement = statementInfo.getStatement();
+                    log.debug("Обробка заяви з id: {}", statement.getId());
+
                     TelegramUserCache telegramUser = telegramUserService
                             .findById(statement.getTelegramId())
                             .orElseThrow(() -> new IllegalArgumentException("Користувача не знайдено: " + statement.getTelegramId()));
 
+                    log.info("Знайдено користувача з id: {}", telegramUser.getTelegramId());
+
                     if (telegramUser.getPosition() == Position.NONE) {
-                        ////todo лги
-                        if (statementInfoService.checkFileExistence(statement.getId())){
+                        log.info("Відправка повідомлення для користувача з id: {}", telegramUser.getTelegramId());
+
+                        if (statementInfoService.checkFileExistence(statement.getId())) {
                             sendMessageService.sendInfoAboutReadyStatementWithFile(statement);
-                        }else {
+                            log.info("Повідомлення з файлом надіслано для заяви з id: {}", statement.getId());
+                        } else {
                             sendMessageService.sendInfoAboutReadyStatement(statement);
+                            log.info("Повідомлення без файлу надіслано для заяви з id: {}", statement.getId());
                         }
                         readyInfoList.add(statementInfo);
-
-
-
+                    } else {
+                        log.info("Користувач з id: {} вже має позицію.", telegramUser.getTelegramId());
                     }
                 } catch (Exception e) {
                     log.error("Помилка під час відправки повідомлення про готовність заяви для користувача", e);
@@ -91,10 +99,12 @@ public class UpdateUserStatusService {
                 readyInfoList.forEach(statementInfo -> statementInfo.setReady(true));
                 statementInfoService.saveAll(readyInfoList);
                 log.info("Статус готових заявок оновлено для {} заяв.", readyInfoList.size());
+            } else {
+                log.info("Немає готових заявок для оновлення статусу.");
             }
-
         } else {
             log.info("Немає нових заявок для оновлення статусу.");
         }
     }
+
 }
