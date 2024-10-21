@@ -11,12 +11,15 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 
 link:
   address: ${REST_SERVICE_URL}
+
 salt: ${SALT}
 
 
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
+
